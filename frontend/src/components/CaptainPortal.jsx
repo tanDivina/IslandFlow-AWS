@@ -4,7 +4,7 @@ import WeatherHorizon from './WeatherHorizon';
 const API_BASE = import.meta.env.VITE_API_BASE || 
   (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
     ? 'http://localhost:8000'
-    : 'https://islandflow-162640897083.us-central1.run.app');
+    : 'https://islandflow-aws-162640897083.us-central1.run.app');
 
 export default function CaptainPortal({ captainId, logistics, lang = 'en', setLang, onBackToLanding }) {
   const [manifest, setManifest] = useState([]);
