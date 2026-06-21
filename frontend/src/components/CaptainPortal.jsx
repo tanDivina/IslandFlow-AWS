@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import WeatherHorizon from './WeatherHorizon';
 
+const API_BASE = import.meta.env.VITE_API_BASE || 
+  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:8000'
+    : 'https://islandflow-162640897083.us-central1.run.app');
+
 export default function CaptainPortal({ captainId, logistics, lang = 'en', setLang, onBackToLanding }) {
   const [manifest, setManifest] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -184,7 +189,7 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
   const fetchManifest = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`/api/captain/manifest/${captainId}`);
+      const res = await fetch(`${API_BASE}/api/captain/manifest/${captainId}`);
       if (!res.ok) throw new Error(currentT.failedRetrieve);
       const data = await res.ok ? await res.json() : [];
       setManifest(data);
@@ -208,7 +213,7 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
     try {
       setSubmittingStatus(true);
       setStatusMessage(null);
-      const res = await fetch('/api/captain/update-status', {
+      const res = await fetch(`${API_BASE}/api/captain/update-status`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -239,7 +244,7 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
     try {
       setSubmittingConditions(true);
       setConditionsMessage(null);
-      const res = await fetch('/api/captain/report-conditions', {
+      const res = await fetch(`${API_BASE}/api/captain/report-conditions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

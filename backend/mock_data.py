@@ -542,9 +542,9 @@ def seed_db():
     if existing_log:
         try:
             log_date = datetime.datetime.strptime(existing_log["date"], "%Y-%m-%d").date()
-            if log_date < today_bocas:
+            if log_date != today_bocas:
                 stale = True
-                logger.info(f"Database dates are stale (found {existing_log['date']}, today is {today_bocas}). Cleared for dynamic shift.")
+                logger.info(f"Database dates do not match today (found {existing_log['date']}, today is {today_bocas}). Cleared for dynamic shift.")
         except Exception:
             stale = True
     else:
