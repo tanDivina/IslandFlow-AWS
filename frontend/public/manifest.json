@@ -1,0 +1,26 @@
+{
+  "name": "IslandFlow Captain Portal",
+  "short_name": "Captain Portal",
+  "description": "Mobile marine dispatch & safety portal for local boat captains in Bocas del Toro.",
+  "start_url": "/?view=captain",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#080c14",
+  "theme_color": "#3ecdc6",
+  "categories": ["travel", "productivity"],
+  "icons": [
+    {
+      "src": "/concierge_avatar.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

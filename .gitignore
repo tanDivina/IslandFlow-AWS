@@ -1,0 +1,20 @@
+# Secrets
+backend/.env
+
+# Python
+backend/venv/
+backend/__pycache__/
+backend/*.pyc
+backend/mock_db.json
+backend/mock_itinerary.md
+
+# Node / Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+
+# IDE / System
+.DS_Store
+.vscode/
+.idea/
