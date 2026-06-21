@@ -1,18 +1,6 @@
 import React from 'react';
 
 export default function ItineraryDoc({ itineraryMarkdown, guestId = "g1" }) {
-  React.useEffect(() => {
-    if (itineraryMarkdown && window.pendo) {
-      try {
-        window.pendo.track("View Itinerary", {
-          guest_id: guestId,
-          length: itineraryMarkdown.length
-        });
-      } catch (e) {
-        console.error("Pendo track error:", e);
-      }
-    }
-  }, [itineraryMarkdown, guestId]);
   const renderMarkdown = (md) => {
     if (!md) {
       return (

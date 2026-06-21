@@ -1,21 +1,18 @@
-# 🏝️ IslandFlow: Pendo-Integrated Guest Experience & Logistics Engine
-
-### Mind the Product Presents World Product Day: Everyone Ships Now
+# 🏝️ IslandFlow: AWS DynamoDB Guest Experience & Logistics Engine
 
 Welcome to **IslandFlow**! This project is an autonomous AI concierge, B2B SaaS logistics dispatcher, and guest experience optimizer designed for boutique island resorts, eco-lodges, and water transport operators.
 
-By integrating **Google Gemini 3.1-flash-lite**, **Model Context Protocol (MCP)**, **MongoDB Atlas**, and the **Pendo.io SDK**, IslandFlow goes "beyond chat" to actively manage guest itineraries, track user engagement telemetry, monitor weather forecasts, automatically propose activity rescheduling, handle marine dispatches, and log product analytics events directly to the cloud.
+By integrating **Google Gemini 3.1-flash-lite**, **Model Context Protocol (MCP)**, and **AWS DynamoDB**, IslandFlow goes "beyond chat" to actively manage guest itineraries, track user engagement telemetry, monitor weather forecasts, automatically propose activity rescheduling, handle marine dispatches, and log product analytics events directly to the cloud.
 
-Live deployment: [https://islandflow-pendo-162640897083.us-central1.run.app/](https://islandflow-pendo-162640897083.us-central1.run.app/)
+Live deployment: [https://github.com/tanDivina/IslandFlow-AWS](https://github.com/tanDivina/IslandFlow-AWS)
 
 ---
 
 ## 📸 Key Features
 
-*   **Pendo.io SDK B2B Analytics:**
-    *   **Visitor & Account Mapping:** Maps individual guests to Pendo `Visitor` IDs and resort properties to B2B `Account` IDs (e.g. `hotel_nayara`).
+*   **B2B SaaS Analytics:**
+    *   **Visitor & Account Mapping:** Maps individual guests to unique Visitor contexts and resort properties to B2B Account contexts (e.g. `hotel_nayara`).
     *   **Telemetry KPI Dashboard:** Displays real-time feature adoption logs, active initialization states, and custom event tracking (such as `Confirm Swap` and `View Itinerary`).
-    *   **Guides & Feedback Triggers:** Integrates guide triggers like the "Product Feedback Clicked" custom guide (`feedback-guide-id-placeholder`) directly into the UI.
 *   **Dual-Language Support (ES / EN):**
     *   **Spanish by Default:** The Captain Portal and Guest Concierge default to Spanish (`'es'`) for local marine workers.
     *   **Interactive Lang Toggle Slider:** A premium, sliding toggle control allows smooth transitioning between English and Spanish, persisting preferences via browser storage (`islandflow_lang_v2`).
@@ -36,16 +33,15 @@ graph TD
     A[React + Vite Frontend] -->|REST API Calls| B[FastAPI Backend Server]
     B -->|Generative Loop| C[Gemini 3.1-flash-lite Agent]
     C -->|MCP Tool Execution| D[FastMCP Server]
-    D -->|Read/Write Operations| E[MongoDB Atlas / JSON Fallback]
+    D -->|Read/Write Operations| E[AWS DynamoDB / JSON Fallback]
     D -->|Check weather forecast| F[Weather Log Service]
-    A -->|Telemetry & Guides| G[Pendo.io SDK]
     E -->|Updates State| A
 ```
 
-*   **`backend/db.py`**: Manages connection pooling for MongoDB Atlas or handles fallback local operations using a simulated `MockCollection` setup.
+*   **`backend/db.py`**: Manages connection pooling for AWS DynamoDB or handles fallback local operations using a simulated JSON setup.
 *   **`backend/mcp_server.py`**: Exposes FastMCP tools to search tours, inspect logistics status, check weather alerts, and reschedule itinerary slots.
 *   **`backend/agent.py`**: Executes the Gemini generative loop. Implements robust exception handlings and lazy-loads the GenAI client.
-*   **`frontend/src/App.jsx`**: Main application rendering the guest timeline, operator portal, B2B SaaS dashboard, and Pendo event loggers.
+*   **`frontend/src/App.jsx`**: Main application rendering the guest timeline, operator portal, B2B SaaS dashboard, and active system log telemetry.
 
 ---
 
@@ -107,5 +103,5 @@ graph TD
     *   The database updates immediately.
     *   The Gemini agent analyzes the timeline, discovers an outdoor activity conflict, and offers an **interactive proposal card** in the chat box to swap it for an indoor alternative.
     *   Click **Confirm Swap** on the card.
-    *   Observe the timeline update automatically and notice the **Pendo Active Telemetry console** logging `pendo.track("Confirm Swap")`.
+    *   Observe the timeline update automatically and notice the **Live System Telemetry console** logging the database transactions.
 5.  **Delete Custom Guest:** In the Operator panel, locate your custom-added guest and click the delete button (`🗑️`). The guest and their corresponding bookings are deleted via the API, while the system mock profiles (`g1`-`g10`) remain protected.

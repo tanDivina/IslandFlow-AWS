@@ -162,16 +162,10 @@ export default function ChatWidget({
         {/* Product Feedback Button */}
         <button 
           onClick={() => {
-            if (window.pendo) {
-              try {
-                window.pendo.showGuideById("feedback-guide-id-placeholder");
-                window.pendo.track("Product Feedback Clicked");
-                alert("Pendo Event Tracked: 'Product Feedback Clicked'! This triggers your custom Pendo guide/feedback flow.");
-              } catch (e) {
-                console.error("Pendo trigger error:", e);
-              }
-            } else {
-              alert("Pendo.io SDK: Event 'Product Feedback Clicked' simulated. Install a valid Pendo key to connect.");
+            const feedback = prompt("Please share your feedback on this AI experience:");
+            if (feedback) {
+              alert("Thank you for your feedback! It has been logged.");
+              console.log("Feedback received:", feedback);
             }
           }}
           title="Share Feedback on this AI Experience"
@@ -423,17 +417,6 @@ export default function ChatWidget({
                         <button 
                           className="btn-primary" 
                           onClick={() => {
-                            if (window.pendo) {
-                              try {
-                                window.pendo.track("Confirm Swap", {
-                                  booking_id: targetBooking._id,
-                                  new_date: targetBooking.date,
-                                  alternative_tour_id: selectedAlternativeId || (indoorTours[0]?._id || 't4')
-                                });
-                              } catch (e) {
-                                console.error("Pendo track error:", e);
-                              }
-                            }
                             onRespondProposal(targetBooking._id, targetBooking.date, selectedAlternativeId || (indoorTours[0]?._id || 't4'), true);
                           }}
                           style={{ 

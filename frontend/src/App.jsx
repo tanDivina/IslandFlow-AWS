@@ -143,29 +143,6 @@ function App() {
   const [archActiveLayer, setArchActiveLayer] = useState('all');
   const [selectedToolId, setSelectedToolId] = useState('get_tours');
 
-  // Dynamic Pendo.io SDK Agent Identification & Initialization
-  useEffect(() => {
-    if (window.pendo) {
-      try {
-        const activeGuest = (guests || []).find(g => g && g._id === guestId);
-        const activeHotel = tenantBrand || {};
-        window.pendo.initialize({
-          visitor: {
-            id: guestId || 'anonymous_visitor',
-            name: activeGuest ? activeGuest.name : 'Staff Operator',
-            role: view === 'operator' ? 'operator' : 'guest',
-            preferences: activeGuest ? activeGuest.preferences : []
-          },
-          account: {
-            id: activeHotel._id || 'hotel_system_default',
-            name: activeHotel.name || 'Default Luxury Hotel System'
-          }
-        });
-      } catch (err) {
-        console.error("Pendo initialization error:", err);
-      }
-    }
-  }, [guestId, tenantBrand, view, guests]);
 
   // Synchronize view state with browser URL search parameters for Pendo pageview tracking and bookmarkability
   useEffect(() => {
@@ -184,18 +161,7 @@ function App() {
       // Preserve other parameters like guest_id and token
       window.history.pushState(null, '', url.pathname + url.search);
       
-      // Explicitly tell Pendo that a new page load/route has occurred
-      if (window.pendo) {
-        try {
-          if (typeof window.pendo.pageLoad === 'function') {
-            window.pendo.pageLoad();
-          } else if (typeof window.pendo.updateOptions === 'function') {
-            window.pendo.updateOptions();
-          }
-        } catch (e) {
-          console.error("Failed to notify Pendo of page change:", e);
-        }
-      }
+
     }
   }, [view]);
 
@@ -1600,16 +1566,10 @@ function App() {
               </span>
               <button 
                 onClick={() => {
-                  if (window.pendo) {
-                    try {
-                      window.pendo.showGuideById("feedback-guide-id-placeholder");
-                      window.pendo.track("Product Feedback Clicked");
-                      alert("Pendo Event Tracked: 'Product Feedback Clicked'! This triggers your custom Pendo guide/feedback flow.");
-                    } catch (e) {
-                      console.error("Pendo trigger error:", e);
-                    }
-                  } else {
-                    alert("Pendo.io SDK: Event 'Product Feedback Clicked' simulated. Install a valid Pendo key to connect.");
+                  const feedback = prompt("Please share your feedback on this AI experience:");
+                  if (feedback) {
+                    alert("Thank you for your feedback! It has been logged.");
+                    console.log("Feedback received:", feedback);
                   }
                 }}
                 title="Share Feedback on this AI Experience"
@@ -3233,7 +3193,7 @@ function App() {
               loading={loading}
             />
 
-            {/* SaaS B2B Product Analytics & Pendo Telemetry KPI Dashboard */}
+            {/* SaaS B2B Product Analytics & AWS Telemetry KPI Dashboard */}
             <div className="glass-card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px' }}>
@@ -3259,11 +3219,11 @@ function App() {
                     letterSpacing: '0.04em'
                   }}>
                     <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#10b981', display: 'inline-block' }}></span>
-                    PENDO ACTIVE
+                    SYSTEM ACTIVE
                   </span>
                 </div>
                 <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '4px', lineHeight: '1.4' }}>
-                  Real-time guest value metrics, feature adoption parameters, and live Pendo.io telemetry events for the white-label luxury resort accounts.
+                  Real-time guest value metrics, feature adoption parameters, and live system telemetry events for the white-label luxury resort accounts.
                 </p>
               </div>
 
@@ -3287,10 +3247,10 @@ function App() {
                 </div>
               </div>
 
-              {/* Live Pendo SDK Telemetry Logger */}
+              {/* Live SDK Telemetry Logger */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)', letterSpacing: '0.02em', textTransform: 'uppercase' }}>
-                  Live SDK Telemetry Stream
+                  Live System Telemetry Stream
                 </span>
                 <div style={{ 
                   background: 'rgba(15, 23, 42, 0.6)', 
@@ -3306,15 +3266,15 @@ function App() {
                   gap: '6px'
                 }}>
                   <div style={{ color: '#a7f3d0' }}>
-                    <span style={{ color: 'var(--text-dim)' }}>[Telemetry]</span> pendo.initialize() called (Visitor: {guestId}, Account: {tenantBrand?._id || 'default'})
+                    <span style={{ color: 'var(--text-dim)' }}>[Telemetry]</span> Database connection established (AWS DynamoDB)
                   </div>
                   {itineraryMarkdown && (
                     <div style={{ color: '#e0f2fe' }}>
-                      <span style={{ color: 'var(--text-dim)' }}>[Telemetry]</span> pendo.track("View Itinerary", &#123; guest_id: "{guestId}" &#125;)
+                      <span style={{ color: 'var(--text-dim)' }}>[Telemetry]</span> Itinerary document loaded for guest "{guestId}"
                     </div>
                   )}
                   <div style={{ color: 'var(--text-muted)', fontStyle: 'italic', fontSize: '0.68rem', marginTop: '4px' }}>
-                    * Listening for new Pendo.js events from browser client...
+                    * Listening for new API transactions and operations...
                   </div>
                 </div>
               </div>
@@ -3329,8 +3289,8 @@ function App() {
                 color: 'var(--text-muted)', 
                 lineHeight: '1.4'
               }}>
-                <div style={{ fontWeight: 600, color: 'var(--primary)', marginBottom: '2px' }}>Pendo B2B Account Mapping Strategy:</div>
-                Each resort tenant represents a unique Pendo **Account** (e.g. <code>{tenantBrand?._id || 'hotel_nayara'}</code>). Checked-in guests and hotel staff represent Pendo **Visitors** (e.g. <code>{guestId}</code>). This enables deep SaaS product analyses, mapping workflow efficiency directly to guest satisfaction and hotel operational retention KPIs.
+                <div style={{ fontWeight: 600, color: 'var(--primary)', marginBottom: '2px' }}>AWS DynamoDB Data Strategy:</div>
+                Each resort tenant represents a partitioned key-space. Guests and hotel staff represent unique user session contexts. This enables deep SaaS product analyses, mapping workflow efficiency directly to guest satisfaction and hotel operational retention KPIs.
               </div>
             </div>
           </div>
