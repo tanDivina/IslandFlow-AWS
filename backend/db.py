@@ -4,9 +4,33 @@ import logging
 from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure
 from dotenv import load_dotenv
+import boto3
+from decimal import Decimal
+import uuid
 
 load_dotenv()
 load_dotenv("backend/.env")
+
+# Helper functions for DynamoDB float/Decimal conversion
+def convert_float_to_decimal(obj):
+    if isinstance(obj, float):
+        return Decimal(str(obj))
+    elif isinstance(obj, dict):
+        return {k: convert_float_to_decimal(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [convert_float_to_decimal(x) for x in obj]
+    return obj
+
+def convert_decimal_to_float(obj):
+    if isinstance(obj, Decimal):
+        if obj % 1 == 0:
+            return int(obj)
+        return float(obj)
+    elif isinstance(obj, dict):
+        return {k: convert_decimal_to_float(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [convert_decimal_to_float(x) for x in obj]
+    return obj
 
 
 logger = logging.getLogger("db_layer")
@@ -234,6 +258,273 @@ class MockCollection:
     def count_documents(self, query=None):
         return len(self.find(query))
 
+class DynamoDBCollection:
+    def __init__(self, table_name, collection_name, dynamodb_resource):
+        self.table_name = table_name
+        self.collection_name = collection_name
+        self.dynamodb = dynamodb_resource
+        self.table = self._get_or_create_table()
+
+    def _get_or_create_table(self):
+        try:
+            table = self.dynamodb.Table(self.table_name)
+            table.load()
+            return table
+        except self.dynamodb.meta.client.exceptions.ResourceNotFoundException:
+            logger.info(f"Creating DynamoDB table: {self.table_name}")
+            table = self.dynamodb.create_table(
+                TableName=self.table_name,
+                KeySchema=[
+                    {'AttributeName': '_id', 'KeyType': 'HASH'}
+                ],
+                AttributeDefinitions=[
+                    {'AttributeName': '_id', 'AttributeType': 'S'}
+                ],
+                BillingMode='PAY_PER_REQUEST'
+            )
+            table.meta.client.get_waiter('table_exists').wait(TableName=self.table_name)
+            logger.info(f"DynamoDB table {self.table_name} created successfully.")
+            return table
+        except Exception as e:
+            logger.error(f"Error connecting to DynamoDB table {self.table_name}: {e}")
+            raise e
+
+    def _get_all_items(self):
+        try:
+            response = self.table.scan()
+            items = response.get('Items', [])
+            while 'LastEvaluatedKey' in response:
+                response = self.table.scan(ExclusiveStartKey=response['LastEvaluatedKey'])
+                items.extend(response.get('Items', []))
+            return convert_decimal_to_float(items)
+        except Exception as e:
+            logger.error(f"Error scanning DynamoDB table {self.table_name}: {e}")
+            return []
+
+    def find(self, query=None, sort=None, *args, **kwargs):
+        query = query or {}
+        items = self._get_all_items()
+        results = []
+        for item in items:
+            match = True
+            for k, v in query.items():
+                if k == "$or":
+                    or_match = False
+                    for cond in v:
+                        cond_match = True
+                        for ck, cv in cond.items():
+                            if item.get(ck) != cv:
+                                cond_match = False
+                                break
+                        if cond_match:
+                            or_match = True
+                            break
+                    if not or_match:
+                        match = False
+                        break
+                elif item.get(k) != v:
+                    match = False
+                    break
+            if match:
+                results.append(item)
+
+        if sort:
+            if isinstance(sort, tuple):
+                sort_keys = [sort]
+            elif isinstance(sort, list):
+                sort_keys = sort
+            else:
+                sort_keys = [(sort, 1)]
+
+            for key, direction in reversed(sort_keys):
+                reverse = (direction == -1)
+                results.sort(key=lambda x: x.get(key, ""), reverse=reverse)
+
+        return results
+
+    def find_one(self, query=None, sort=None, *args, **kwargs):
+        results = self.find(query, sort=sort, *args, **kwargs)
+        return results[0] if results else None
+
+    def insert_one(self, document):
+        if '_id' not in document:
+            document['_id'] = str(uuid.uuid4())
+        
+        item = convert_float_to_decimal(document)
+        try:
+            self.table.put_item(Item=item)
+        except Exception as e:
+            logger.error(f"Error inserting item into DynamoDB table {self.table_name}: {e}")
+            raise e
+
+        class InsertOneResult:
+            inserted_id = document['_id']
+        return InsertOneResult()
+
+    def update_one(self, query, update):
+        doc = self.find_one(query)
+        if not doc:
+            class UpdateResult:
+                matched_count = 0
+                modified_count = 0
+            return UpdateResult()
+
+        updated = False
+        if '$set' in update:
+            for uk, uv in update['$set'].items():
+                if '.' in uk:
+                    parts = uk.split('.')
+                    curr = doc
+                    for p in parts[:-1]:
+                        curr = curr.setdefault(p, {})
+                    curr[parts[-1]] = uv
+                else:
+                    doc[uk] = uv
+            updated = True
+        else:
+            for uk, uv in update.items():
+                if '.' in uk:
+                    parts = uk.split('.')
+                    curr = doc
+                    for p in parts[:-1]:
+                        curr = curr.setdefault(p, {})
+                    curr[parts[-1]] = uv
+                else:
+                    doc[uk] = uv
+            updated = True
+
+        if updated:
+            item = convert_float_to_decimal(doc)
+            try:
+                self.table.put_item(Item=item)
+            except Exception as e:
+                logger.error(f"Error updating item in DynamoDB table {self.table_name}: {e}")
+                raise e
+
+        class UpdateResult:
+            matched_count = 1
+            modified_count = 1 if updated else 0
+        return UpdateResult()
+
+    def update_many(self, query, update):
+        docs = self.find(query)
+        modified_count = 0
+        for doc in docs:
+            updated = False
+            if '$set' in update:
+                for uk, uv in update['$set'].items():
+                    if '.' in uk:
+                        parts = uk.split('.')
+                        curr = doc
+                        for p in parts[:-1]:
+                            curr = curr.setdefault(p, {})
+                        curr[parts[-1]] = uv
+                    else:
+                        doc[uk] = uv
+                updated = True
+            else:
+                for uk, uv in update.items():
+                    if '.' in uk:
+                        parts = uk.split('.')
+                        curr = doc
+                        for p in parts[:-1]:
+                            curr = curr.setdefault(p, {})
+                        curr[parts[-1]] = uv
+                    else:
+                        doc[uk] = uv
+                updated = True
+
+            if updated:
+                item = convert_float_to_decimal(doc)
+                try:
+                    self.table.put_item(Item=item)
+                    modified_count += 1
+                except Exception as e:
+                    logger.error(f"Error updating item in DynamoDB table {self.table_name}: {e}")
+                    raise e
+
+        class UpdateResult:
+            def __init__(self, matched, modified):
+                self.matched_count = matched
+                self.modified_count = modified
+        return UpdateResult(len(docs), modified_count)
+
+    def replace_one(self, query, replacement, upsert=False):
+        doc = self.find_one(query)
+        replaced = False
+        if doc:
+            if '_id' not in replacement and '_id' in doc:
+                replacement['_id'] = doc['_id']
+            replaced = True
+        elif upsert:
+            if '_id' not in replacement:
+                if '_id' in query:
+                    replacement['_id'] = query['_id']
+                else:
+                    replacement['_id'] = str(uuid.uuid4())
+            replaced = True
+
+        if replaced:
+            item = convert_float_to_decimal(replacement)
+            try:
+                self.table.put_item(Item=item)
+            except Exception as e:
+                logger.error(f"Error replacing item in DynamoDB table {self.table_name}: {e}")
+                raise e
+
+        class ReplaceResult:
+            matched_count = 1 if doc else 0
+            modified_count = 1 if replaced else 0
+            upserted_id = replacement.get('_id') if (not doc and upsert) else None
+        return ReplaceResult()
+
+    def delete_one(self, query):
+        doc = self.find_one(query)
+        deleted = False
+        if doc:
+            try:
+                self.table.delete_item(Key={'_id': doc['_id']})
+                deleted = True
+            except Exception as e:
+                logger.error(f"Error deleting item from DynamoDB table {self.table_name}: {e}")
+                raise e
+
+        class DeleteResult:
+            deleted_count = 1 if deleted else 0
+        return DeleteResult()
+
+    def delete_many(self, query):
+        docs = self.find(query)
+        deleted_count = 0
+        for doc in docs:
+            try:
+                self.table.delete_item(Key={'_id': doc['_id']})
+                deleted_count += 1
+            except Exception as e:
+                logger.error(f"Error deleting item from DynamoDB table {self.table_name}: {e}")
+                raise e
+
+        class DeleteResult:
+            pass
+        res = DeleteResult()
+        res.deleted_count = deleted_count
+        return res
+
+    def count_documents(self, query=None):
+        return len(self.find(query))
+
+class DynamoDBDB:
+    def __init__(self, prefix, resource):
+        self.prefix = prefix
+        self.resource = resource
+        self.collections = {}
+
+    def __getitem__(self, name):
+        if name not in self.collections:
+            table_name = f"{self.prefix}{name}"
+            self.collections[name] = DynamoDBCollection(table_name, name, self.resource)
+        return self.collections[name]
+
 class MockDB:
     def __init__(self, db_path):
         self.db_path = db_path
@@ -241,23 +532,54 @@ class MockDB:
     def __getitem__(self, name):
         return MockCollection(self.db_path, name)
 
+def check_aws_credentials():
+    try:
+        session = boto3.Session()
+        credentials = session.get_credentials()
+        return credentials is not None
+    except Exception:
+        return False
+
 # Database Selector
 def get_db():
-    mongo_uri = os.getenv("MONGO_URI")
-    if not mongo_uri:
-        logger.info("MONGO_URI not set. Falling back to high-fidelity JSON Mock DB.")
-        return MockDB("mock_db.json"), False
+    use_dynamo = os.getenv("USE_DYNAMODB", "").lower() == "true"
+    if use_dynamo or check_aws_credentials():
+        try:
+            logger.info("Initializing AWS DynamoDB connection...")
+            region = os.getenv("AWS_REGION", "us-east-1")
+            aws_access_key = os.getenv("AWS_ACCESS_KEY_ID")
+            aws_secret_key = os.getenv("AWS_SECRET_ACCESS_KEY")
+            
+            if aws_access_key and aws_secret_key:
+                session = boto3.Session(
+                    aws_access_key_id=aws_access_key,
+                    aws_secret_access_key=aws_secret_key,
+                    region_name=region
+                )
+            else:
+                session = boto3.Session(region_name=region)
+                
+            dynamodb = session.resource('dynamodb')
+            prefix = os.getenv("AWS_DYNAMODB_TABLE_PREFIX", "IslandFlow-")
+            client = session.client('dynamodb')
+            client.list_tables()
+            logger.info(f"Successfully connected to AWS DynamoDB with prefix '{prefix}'.")
+            return DynamoDBDB(prefix, dynamodb), True
+        except Exception as e:
+            logger.warning(f"Failed to connect to AWS DynamoDB: {e}. Falling back to MongoDB / JSON Mock DB.")
 
-    try:
-        # Check connection with 2 second timeout
-        client = MongoClient(mongo_uri, serverSelectionTimeoutMS=2000)
-        client.server_info()  # Forces connection check
-        logger.info("Successfully connected to MongoDB server.")
-        # Create/use database named "bocas_concierge"
-        return client["bocas_concierge"], True
-    except (ConnectionFailure, Exception) as e:
-        logger.warning(f"Failed to connect to MongoDB URI: {e}. Falling back to high-fidelity JSON Mock DB.")
-        return MockDB("mock_db.json"), False
+    mongo_uri = os.getenv("MONGO_URI")
+    if mongo_uri:
+        try:
+            client = MongoClient(mongo_uri, serverSelectionTimeoutMS=2000)
+            client.server_info()
+            logger.info("Successfully connected to MongoDB server.")
+            return client["bocas_concierge"], True
+        except Exception as e:
+            logger.warning(f"Failed to connect to MongoDB URI: {e}. Falling back to high-fidelity JSON Mock DB.")
+            
+    logger.info("MONGO_URI not set or failed. Falling back to high-fidelity JSON Mock DB.")
+    return MockDB("mock_db.json"), False
 
 _db_instance = None
 _is_real_mongo_instance = None
