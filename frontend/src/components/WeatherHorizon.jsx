@@ -233,7 +233,7 @@ export default function WeatherHorizon({ logistics, lang = 'en' }) {
                   fontSize: '0.62rem',
                   fontWeight: 600,
                   background: 'var(--primary)',
-                  color: '#000',
+                  color: 'var(--primary-btn-text, #000)',
                   padding: '2px 6px',
                   borderRadius: '10px',
                   letterSpacing: '0.04em'

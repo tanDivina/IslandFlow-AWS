@@ -132,6 +132,7 @@ function App() {
   const lastRequestRef = React.useRef(0);
 
   const [view, setView] = useState(initialParams.view);
+  const [mobileTab, setMobileTab] = useState('chat'); // 'chat' or 'itinerary'
   const [lang, setLang] = useState(() => localStorage.getItem('islandflow_lang_v2') || 'es');
 
   useEffect(() => {
@@ -671,10 +672,10 @@ function App() {
         
         if (activeBrand.primary_color && activeBrand.primary_color.includes('hsl')) {
           const colorValue = activeBrand.primary_color.replace('hsl(', '').replace(')', '');
-          target.style.setProperty('--border-color', `hsla(${colorValue}, 0.16)`);
-          target.style.setProperty('--border-glow', `hsla(${colorValue}, 0.35)`);
-          target.style.setProperty('--msg-user-bg', `hsla(${colorValue}, 0.1)`);
-          target.style.setProperty('--msg-agent-bg', `${activeBrand.primary_glow}`);
+          target.style.setProperty('--border-color', `hsla(${colorValue}, 0.24)`);
+          target.style.setProperty('--border-glow', `hsla(${colorValue}, 0.4)`);
+          target.style.setProperty('--msg-user-bg', `hsla(${colorValue}, 0.14)`);
+          target.style.setProperty('--msg-agent-bg', `${activeBrand.primary_glow || `hsla(${colorValue}, 0.08)`}`);
 
           // Dynamically compute complementary/split-complementary accent color and high-contrast button text color
           const hslParts = colorValue.split(',').map(p => p.trim());
@@ -1393,7 +1394,7 @@ function App() {
                 )}
                 {lang === 'es' ? 'Experiencia IslandFlow' : 'IslandFlow Experience'}
               </h1>
-              <p style={{ color: '#ffffff', opacity: 1, fontSize: '0.85rem' }}>
+              <p style={{ color: 'var(--text-muted)', opacity: 1, fontSize: '0.85rem' }}>
                 {lang === 'es' ? 'Coordinación Eco-Turística para Bocas del Toro' : 'Eco-Tourism Coordinator for Bocas del Toro'}
               </p>
             </div>
@@ -1419,19 +1420,19 @@ function App() {
               <div 
                 onClick={() => setLang(lang === 'en' ? 'es' : 'en')}
                 style={{
-                  background: 'rgba(15, 23, 42, 0.6)',
-                  border: '1px solid rgba(62, 205, 198, 0.3)',
+                  background: 'var(--bg-card-nested, rgba(15, 23, 42, 0.15))',
+                  border: '1px solid var(--border-color)',
                   borderRadius: '24px',
                   padding: '3px',
                   display: 'inline-flex',
                   alignItems: 'center',
                   position: 'relative',
-                  width: '130px',
+                  width: '120px',
                   height: '32px',
                   cursor: 'pointer',
                   userSelect: 'none',
                   backdropFilter: 'blur(8px)',
-                  boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.4)',
+                  boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.1)',
                 }}
               >
                 {/* Sliding indicator */}
@@ -1441,12 +1442,12 @@ function App() {
                     top: '3px',
                     left: '3px',
                     bottom: '3px',
-                    width: '60px',
-                    background: 'linear-gradient(135deg, #3ecdc6 0%, #2bb0a9 100%)',
+                    width: '56px',
+                    background: 'linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%)',
                     borderRadius: '20px',
                     transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
-                    transform: lang === 'en' ? 'translateX(0)' : 'translateX(64px)',
-                    boxShadow: '0 2px 6px rgba(62, 205, 198, 0.4)',
+                    transform: lang === 'en' ? 'translateX(0)' : 'translateX(56px)',
+                    boxShadow: '0 1px 4px rgba(0,0,0,0.15)',
                     zIndex: 1
                   }}
                 />
@@ -1457,7 +1458,7 @@ function App() {
                   textAlign: 'center',
                   fontSize: '0.72rem',
                   fontWeight: '700',
-                  color: lang === 'en' ? '#0f172a' : '#94a3b8',
+                  color: lang === 'en' ? 'var(--primary-btn-text, #ffffff)' : 'var(--text-muted)',
                   zIndex: 2,
                   transition: 'color 0.25s ease',
                   display: 'flex',
@@ -1474,7 +1475,7 @@ function App() {
                   textAlign: 'center',
                   fontSize: '0.72rem',
                   fontWeight: '700',
-                  color: lang === 'es' ? '#0f172a' : '#94a3b8',
+                  color: lang === 'es' ? 'var(--primary-btn-text, #ffffff)' : 'var(--text-muted)',
                   zIndex: 2,
                   transition: 'color 0.25s ease',
                   display: 'flex',
@@ -1676,7 +1677,7 @@ function App() {
                   }
                 }}
                 style={{
-                  background: '#090d16',
+                  background: 'var(--panel-bg)',
                   border: '1px solid var(--border-color)',
                   borderRadius: '6px',
                   color: 'var(--text-primary)',
@@ -1690,7 +1691,7 @@ function App() {
                 {(guests || []).map(g => {
                   if (!g) return null;
                   return (
-                    <option key={g._id} value={g._id} style={{ background: '#090d16', color: '#fff' }}>
+                    <option key={g._id} value={g._id} style={{ background: 'var(--bg-color)', color: 'var(--text-primary)' }}>
                       {g.name} ({g._id})
                     </option>
                   );
@@ -1892,53 +1893,53 @@ function App() {
               textAlign: 'left'
             }}>
               {/* Step 1: Hotel Operator Setup */}
-              <div className="glass-card" style={{ padding: '24px', position: 'relative', display: 'flex', flexDirection: 'column', gap: '14px', background: 'rgba(10, 15, 26, 0.4)', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
-                <div style={{ position: 'absolute', top: '-12px', left: '20px', background: 'linear-gradient(135deg, #3ecdc6, #0ea5e9)', color: '#080c14', padding: '4px 12px', borderRadius: '12px', fontSize: '11px', fontWeight: '800', letterSpacing: '1px' }}>
+              <div className="glass-card" style={{ padding: '24px', position: 'relative', display: 'flex', flexDirection: 'column', gap: '14px', background: 'var(--panel-bg)', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)' }}>
+                <div style={{ position: 'absolute', top: '-12px', left: '20px', background: 'linear-gradient(135deg, #3ecdc6, #0ea5e9)', color: '#0f172a', padding: '4px 12px', borderRadius: '12px', fontSize: '11px', fontWeight: '800', letterSpacing: '1px' }}>
                   STEP 1
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '4px' }}>
-                  <div style={{ color: '#3ecdc6' }}>
+                  <div style={{ color: 'var(--accent, #3ecdc6)' }}>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
                       <line x1="9" y1="3" x2="9" y2="21" />
                     </svg>
                   </div>
-                  <h4 style={{ fontSize: '1.05rem', fontWeight: '700', margin: 0, color: '#f8fafc' }}>Hotel Desk Dispatch</h4>
+                  <h4 style={{ fontSize: '1.05rem', fontWeight: '700', margin: 0, color: 'var(--text-primary)' }}>Hotel Desk Dispatch</h4>
                 </div>
-                <p style={{ fontSize: '0.82rem', color: '#94a3b8', lineHeight: '1.5', margin: 0 }}>
+                <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', lineHeight: '1.5', margin: 0 }}>
                   The front desk operator logs into the <strong>Operator Console</strong>, defines boat capacities, and maps local captains. 
                 </p>
-                <div style={{ background: 'rgba(255, 255, 255, 0.02)', padding: '10px 12px', borderRadius: '8px', fontSize: '0.75rem', border: '1px solid rgba(255, 255, 255, 0.04)' }}>
-                  <span style={{ color: '#3ecdc6', fontWeight: '600', display: 'block', marginBottom: '2px' }}>Operational Action:</span>
+                <div style={{ background: 'var(--bg-card-nested)', padding: '10px 12px', borderRadius: '8px', fontSize: '0.75rem', border: '1px solid var(--border-color)' }}>
+                  <span style={{ color: 'var(--accent, #3ecdc6)', fontWeight: '600', display: 'block', marginBottom: '2px' }}>Operational Action:</span>
                   Sync guest details, assign a boat/captain, and click <strong>"Print Welcome Flyer"</strong> to produce a personalized card with a secure room check-in QR code.
                 </div>
               </div>
 
               {/* Step 2: Boat Captain Mobile PWA */}
-              <div className="glass-card" style={{ padding: '24px', position: 'relative', display: 'flex', flexDirection: 'column', gap: '14px', background: 'rgba(10, 15, 26, 0.4)', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
-                <div style={{ position: 'absolute', top: '-12px', left: '20px', background: 'linear-gradient(135deg, #0ea5e9, #a855f7)', color: '#f8fafc', padding: '4px 12px', borderRadius: '12px', fontSize: '11px', fontWeight: '800', letterSpacing: '1px' }}>
+              <div className="glass-card" style={{ padding: '24px', position: 'relative', display: 'flex', flexDirection: 'column', gap: '14px', background: 'var(--panel-bg)', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)' }}>
+                <div style={{ position: 'absolute', top: '-12px', left: '20px', background: 'linear-gradient(135deg, #0ea5e9, #a855f7)', color: '#ffffff', padding: '4px 12px', borderRadius: '12px', fontSize: '11px', fontWeight: '800', letterSpacing: '1px' }}>
                   STEP 2
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '4px' }}>
-                  <div style={{ color: '#0ea5e9' }}>
+                  <div style={{ color: 'var(--primary)' }}>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                     </svg>
                   </div>
-                  <h4 style={{ fontSize: '1.05rem', fontWeight: '700', margin: 0, color: '#f8fafc' }}>Captain PWA Install</h4>
+                  <h4 style={{ fontSize: '1.05rem', fontWeight: '700', margin: 0, color: 'var(--text-primary)' }}>Captain PWA Install</h4>
                 </div>
-                <p style={{ fontSize: '0.82rem', color: '#94a3b8', lineHeight: '1.5', margin: 0 }}>
+                <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', lineHeight: '1.5', margin: 0 }}>
                   Captains don't need App Store downloads! They open the URL on mobile or scan a setup code, then tap <strong>"Add to Home Screen"</strong> for full PWA integration.
                 </p>
-                <div style={{ background: 'rgba(255, 255, 255, 0.02)', padding: '10px 12px', borderRadius: '8px', fontSize: '0.75rem', border: '1px solid rgba(255, 255, 255, 0.04)' }}>
-                  <span style={{ color: '#0ea5e9', fontWeight: '600', display: 'block', marginBottom: '2px' }}>Operational Action:</span>
+                <div style={{ background: 'var(--bg-card-nested)', padding: '10px 12px', borderRadius: '8px', fontSize: '0.75rem', border: '1px solid var(--border-color)' }}>
+                  <span style={{ color: 'var(--primary)', fontWeight: '600', display: 'block', marginBottom: '2px' }}>Operational Action:</span>
                   Open Captain Portal, tap install, select preferred language (<strong>Bilingual Switcher 🇪🇸 / 🇬🇧</strong>), accept dispatches, and log real-time sea swell reports.
                 </div>
               </div>
 
               {/* Step 3: Guest Mobile Companion */}
-              <div className="glass-card" style={{ padding: '24px', position: 'relative', display: 'flex', flexDirection: 'column', gap: '14px', background: 'rgba(10, 15, 26, 0.4)', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
-                <div style={{ position: 'absolute', top: '-12px', left: '20px', background: 'linear-gradient(135deg, #a855f7, #f59e0b)', color: '#f8fafc', padding: '4px 12px', borderRadius: '12px', fontSize: '11px', fontWeight: '800', letterSpacing: '1px' }}>
+              <div className="glass-card" style={{ padding: '24px', position: 'relative', display: 'flex', flexDirection: 'column', gap: '14px', background: 'var(--panel-bg)', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)' }}>
+                <div style={{ position: 'absolute', top: '-12px', left: '20px', background: 'linear-gradient(135deg, #a855f7, #f59e0b)', color: '#ffffff', padding: '4px 12px', borderRadius: '12px', fontSize: '11px', fontWeight: '800', letterSpacing: '1px' }}>
                   STEP 3
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '4px' }}>
@@ -1948,35 +1949,35 @@ function App() {
                       <line x1="12" y1="18" x2="12.01" y2="18" />
                     </svg>
                   </div>
-                  <h4 style={{ fontSize: '1.05rem', fontWeight: '700', margin: 0, color: '#f8fafc' }}>Guest Activation</h4>
+                  <h4 style={{ fontSize: '1.05rem', fontWeight: '700', margin: 0, color: 'var(--text-primary)' }}>Guest Activation</h4>
                 </div>
-                <p style={{ fontSize: '0.82rem', color: '#94a3b8', lineHeight: '1.5', margin: 0 }}>
+                <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', lineHeight: '1.5', margin: 0 }}>
                   Guests scan the room welcome QR code on their device. The secure token authorizes their timeline and skins the interface with the resort's brand.
                 </p>
-                <div style={{ background: 'rgba(255, 255, 255, 0.02)', padding: '10px 12px', borderRadius: '8px', fontSize: '0.75rem', border: '1px solid rgba(255, 255, 255, 0.04)' }}>
+                <div style={{ background: 'var(--bg-card-nested)', padding: '10px 12px', borderRadius: '8px', fontSize: '0.75rem', border: '1px solid var(--border-color)' }}>
                   <span style={{ color: '#a855f7', fontWeight: '600', display: 'block', marginBottom: '2px' }}>Operational Action:</span>
                   View active schedule, chat instantly with our Google ADK concierge, request tour booking extensions, and add custom timeline markers offline.
                 </div>
               </div>
 
               {/* Step 4: Closed-Loop Weather Swaps */}
-              <div className="glass-card" style={{ padding: '24px', position: 'relative', display: 'flex', flexDirection: 'column', gap: '14px', background: 'rgba(10, 15, 26, 0.4)', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
-                <div style={{ position: 'absolute', top: '-12px', left: '20px', background: 'linear-gradient(135deg, #f59e0b, #3ecdc6)', color: '#080c14', padding: '4px 12px', borderRadius: '12px', fontSize: '11px', fontWeight: '800', letterSpacing: '1px' }}>
+              <div className="glass-card" style={{ padding: '24px', position: 'relative', display: 'flex', flexDirection: 'column', gap: '14px', background: 'var(--panel-bg)', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)' }}>
+                <div style={{ position: 'absolute', top: '-12px', left: '20px', background: 'linear-gradient(135deg, #f59e0b, #3ecdc6)', color: '#0f172a', padding: '4px 12px', borderRadius: '12px', fontSize: '11px', fontWeight: '800', letterSpacing: '1px' }}>
                   STEP 4
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '4px' }}>
-                  <div style={{ color: '#f59e0b' }}>
+                  <div style={{ color: 'var(--warning, #f59e0b)' }}>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M19 16.9A5 5 0 0 0 18 7h-1.26a8 8 0 1 0-11.62 8.58" />
                     </svg>
                   </div>
-                  <h4 style={{ fontSize: '1.05rem', fontWeight: '700', margin: 0, color: '#f8fafc' }}>Bilingual Closed Loop</h4>
+                  <h4 style={{ fontSize: '1.05rem', fontWeight: '700', margin: 0, color: 'var(--text-primary)' }}>Bilingual Closed Loop</h4>
                 </div>
-                <p style={{ fontSize: '0.82rem', color: '#94a3b8', lineHeight: '1.5', margin: 0 }}>
+                <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', lineHeight: '1.5', margin: 0 }}>
                   A closed-loop dispatch ecosystem. If captains broadcast an English/Spanish weather warning, dispatches re-route immediately.
                 </p>
-                <div style={{ background: 'rgba(255, 255, 255, 0.02)', padding: '10px 12px', borderRadius: '8px', fontSize: '0.75rem', border: '1px solid rgba(255, 255, 255, 0.04)' }}>
-                  <span style={{ color: '#f59e0b', fontWeight: '600', display: 'block', marginBottom: '2px' }}>Operational Action:</span>
+                <div style={{ background: 'var(--bg-card-nested)', padding: '10px 12px', borderRadius: '8px', fontSize: '0.75rem', border: '1px solid var(--border-color)' }}>
+                  <span style={{ color: 'var(--warning, #f59e0b)', fontWeight: '600', display: 'block', marginBottom: '2px' }}>Operational Action:</span>
                   Captains flag unsafe seas (in Spanish) &rarr; Front desk monitors live alerts &rarr; Gemini backend drafts reschedules &rarr; Guest confirms swap in 1-tap.
                 </div>
               </div>
@@ -2515,65 +2516,83 @@ function App() {
 
       {/* Render Guest Portal View */}
       {view === 'guest' && (
-        <div className="main-grid">
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', minWidth: 0, viewTransitionName: 'schedule-view' }}>
-            <WeatherHorizon logistics={logistics} lang={lang} />
-            <ScheduleView bookings={bookings} tours={tours} logistics={logistics} guestId={guestId} lang={lang} />
-            <ItineraryDoc itineraryMarkdown={itineraryMarkdown} guestId={guestId} />
-            
-            {/* Urgent Human Front Desk Emergency Assistance Card */}
-            <div className="glass-card" style={{ padding: '18px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', flexShrink: 0, border: '1px solid rgba(239, 68, 68, 0.15)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: 'rgba(239, 68, 68, 0.08)', border: '1px solid rgba(239, 68, 68, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ef4444', flexShrink: 0 }}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.79 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                  </svg>
-                </div>
-                <div>
-                  <h4 style={{ fontSize: '0.88rem', fontWeight: 650, margin: 0, color: 'var(--text-primary)' }}>
-                    {lang === 'es' ? '¿Necesita Asistencia de Recepción?' : 'Need Immediate Human Assistance?'}
-                  </h4>
-                  <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', margin: '4px 0 0 0', fontWeight: 300 }}>
-                    {lang === 'es' ? 'Si tiene inconvenientes con su viaje o una emergencia, llame directo a Recepción 24/7.' : 'If you are facing travel disruptions or emergencies, call our 24/7 Front Desk directly.'}
-                  </p>
-                </div>
-              </div>
-              <a 
-                href="tel:+50766554433" 
-                style={{ 
-                  padding: '10px 18px', 
-                  fontSize: '0.82rem', 
-                  textDecoration: 'none', 
-                  background: '#ef4444', 
-                  color: '#ffffff', 
-                  border: 'none', 
-                  borderRadius: '10px', 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  gap: '8px', 
-                  fontWeight: 600,
-                  boxShadow: 'none',
-                  whiteSpace: 'nowrap',
-                  transition: 'background 0.2s ease'
-                }}
-                onMouseEnter={(e) => e.currentTarget.style.background = '#dc2626'}
-                onMouseLeave={(e) => e.currentTarget.style.background = '#ef4444'}
-              >
-                Call Front Desk
-              </a>
-            </div>
+        <div className={`guest-portal-wrapper show-${mobileTab}`} style={{ width: '100%' }}>
+          {/* Mobile Glass Tabs */}
+          <div className="guest-mobile-tabs">
+            <button 
+              className={`guest-mobile-tab-btn ${mobileTab === 'chat' ? 'active' : ''}`}
+              onClick={() => setMobileTab('chat')}
+            >
+              💬 {lang === 'es' ? 'Asistente Chat' : 'Chat Concierge'}
+            </button>
+            <button 
+              className={`guest-mobile-tab-btn ${mobileTab === 'itinerary' ? 'active' : ''}`}
+              onClick={() => setMobileTab('itinerary')}
+            >
+              📅 {lang === 'es' ? 'Mi Itinerario' : 'My Itinerary'}
+            </button>
           </div>
-          <div style={{ viewTransitionName: 'chat-widget', position: 'sticky', top: '24px', alignSelf: 'start' }}>
-            <ChatWidget 
-              messages={messages} 
-              onSendMessage={handleSendMessage} 
-              onRespondProposal={handleRespondProposal} 
-              loading={loading}
-              bookings={bookings}
-              tenantBrand={tenantBrand}
-              tours={tours}
-              logistics={logistics}
-            />
+
+          <div className="main-grid">
+            <div className="guest-col-schedule" style={{ display: 'flex', flexDirection: 'column', gap: '24px', minWidth: 0, viewTransitionName: 'schedule-view' }}>
+              <WeatherHorizon logistics={logistics} lang={lang} />
+              <ScheduleView bookings={bookings} tours={tours} logistics={logistics} guestId={guestId} lang={lang} />
+              <ItineraryDoc itineraryMarkdown={itineraryMarkdown} guestId={guestId} />
+              
+              {/* Urgent Human Front Desk Emergency Assistance Card */}
+              <div className="glass-card" style={{ padding: '18px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', flexShrink: 0, border: '1px solid rgba(239, 68, 68, 0.15)', boxShadow: 'var(--shadow-sm)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                  <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: 'rgba(239, 68, 68, 0.08)', border: '1px solid rgba(239, 68, 68, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ef4444', flexShrink: 0 }}>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.79 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 style={{ fontSize: '0.88rem', fontWeight: 650, margin: 0, color: 'var(--text-primary)' }}>
+                      {lang === 'es' ? '¿Necesita Asistencia de Recepción?' : 'Need Immediate Human Assistance?'}
+                    </h4>
+                    <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', margin: '4px 0 0 0', fontWeight: 300 }}>
+                      {lang === 'es' ? 'Si tiene inconvenientes con su viaje o una emergencia, llame directo a Recepción 24/7.' : 'If you are facing travel disruptions or emergencies, call our 24/7 Front Desk directly.'}
+                    </p>
+                  </div>
+                </div>
+                <a 
+                  href="tel:+50766554433" 
+                  style={{ 
+                    padding: '10px 18px', 
+                    fontSize: '0.82rem', 
+                    textDecoration: 'none', 
+                    background: '#ef4444', 
+                    color: '#ffffff', 
+                    border: 'none', 
+                    borderRadius: '10px', 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: '8px', 
+                    fontWeight: 600,
+                    boxShadow: 'none',
+                    whiteSpace: 'nowrap',
+                    transition: 'background 0.2s ease'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.background = '#dc2626'}
+                  onMouseLeave={(e) => e.currentTarget.style.background = '#ef4444'}
+                >
+                  Call
+                </a>
+              </div>
+            </div>
+            <div className="guest-col-chat" style={{ viewTransitionName: 'chat-widget', position: 'sticky', top: '24px', alignSelf: 'start' }}>
+              <ChatWidget 
+                messages={messages} 
+                onSendMessage={handleSendMessage} 
+                onRespondProposal={handleRespondProposal} 
+                loading={loading}
+                bookings={bookings}
+                tenantBrand={tenantBrand}
+                tours={tours}
+                logistics={logistics}
+              />
+            </div>
           </div>
         </div>
       )}

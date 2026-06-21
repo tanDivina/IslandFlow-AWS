@@ -292,7 +292,7 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
       maxWidth: '800px',
       margin: '0 auto',
       padding: 'calc(24px + env(safe-area-inset-top, 0px)) 16px calc(24px + env(safe-area-inset-bottom, 0px)) 16px',
-      color: '#f8fafc',
+      color: 'var(--text-primary)',
       fontFamily: 'Outfit, Poppins, system-ui, sans-serif'
     }}>
       {/* Header */}
@@ -337,7 +337,7 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
             fontSize: '28px',
             fontWeight: '700',
             margin: '4px 0 0 0',
-            background: 'linear-gradient(135deg, #f8fafc 40%, #a5f3fc 100%)',
+            background: 'linear-gradient(135deg, var(--text-primary) 40%, var(--primary) 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent'
           }}>{currentT.commandPortal}</h1>
@@ -348,19 +348,19 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
           <div 
             onClick={() => setLang(lang === 'en' ? 'es' : 'en')}
             style={{
-              background: 'rgba(15, 23, 42, 0.6)',
-              border: '1px solid rgba(62, 205, 198, 0.3)',
+              background: 'var(--bg-card-nested, rgba(15, 23, 42, 0.15))',
+              border: '1px solid var(--border-color)',
               borderRadius: '24px',
               padding: '3px',
               display: 'inline-flex',
               alignItems: 'center',
               position: 'relative',
-              width: '130px',
+              width: '120px',
               height: '32px',
               cursor: 'pointer',
               userSelect: 'none',
               backdropFilter: 'blur(8px)',
-              boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.4)',
+              boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.1)',
             }}
           >
             {/* Sliding indicator */}
@@ -370,12 +370,12 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
                 top: '3px',
                 left: '3px',
                 bottom: '3px',
-                width: '60px',
-                background: 'linear-gradient(135deg, #3ecdc6 0%, #2bb0a9 100%)',
+                width: '56px',
+                background: 'linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%)',
                 borderRadius: '20px',
                 transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
-                transform: lang === 'en' ? 'translateX(0)' : 'translateX(64px)',
-                boxShadow: '0 2px 6px rgba(62, 205, 198, 0.4)',
+                transform: lang === 'en' ? 'translateX(0)' : 'translateX(56px)',
+                boxShadow: '0 1px 4px rgba(0,0,0,0.15)',
                 zIndex: 1
               }}
             />
@@ -386,7 +386,7 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
               textAlign: 'center',
               fontSize: '0.72rem',
               fontWeight: '700',
-              color: lang === 'en' ? '#0f172a' : '#94a3b8',
+              color: lang === 'en' ? 'var(--primary-btn-text, #ffffff)' : 'var(--text-muted)',
               zIndex: 2,
               transition: 'color 0.25s ease',
               display: 'flex',
@@ -403,7 +403,7 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
               textAlign: 'center',
               fontSize: '0.72rem',
               fontWeight: '700',
-              color: lang === 'es' ? '#0f172a' : '#94a3b8',
+              color: lang === 'es' ? 'var(--primary-btn-text, #ffffff)' : 'var(--text-muted)',
               zIndex: 2,
               transition: 'color 0.25s ease',
               display: 'flex',
@@ -860,11 +860,11 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
                 <div 
                   key={booking._id}
                   style={{
-                    background: 'rgba(10, 15, 26, 0.6)',
-                    border: `1px solid ${isActionsExpanded ? 'var(--primary, #3ecdc6)' : 'rgba(255, 255, 255, 0.06)'}`,
+                    background: 'var(--panel-bg)',
+                    border: `1px solid ${isActionsExpanded ? 'var(--primary, #3ecdc6)' : 'var(--border-color)'}`,
                     borderRadius: '18px',
                     padding: '20px',
-                    boxShadow: '0 4px 24px rgba(0, 0, 0, 0.2)',
+                    boxShadow: 'var(--shadow-sm)',
                     backdropFilter: 'blur(16px)',
                     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
                   }}
@@ -895,7 +895,7 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
                         fontSize: '18px',
                         fontWeight: '700',
                         margin: '6px 0 2px 0',
-                        color: '#f1f5f9'
+                        color: 'var(--text-primary)'
                       }}>{tour?.name || 'Assigned Eco-Tour'}</h3>
                       <p style={{ margin: 0, fontSize: '13px', color: '#64748b' }}>
                         📍 {tour?.location || 'Bocas del Toro'}
@@ -932,12 +932,12 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
                     marginBottom: '16px'
                   }}>
                     <div>
-                      <span style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.5px', color: '#64748b', display: 'block', marginBottom: '2px' }}>{currentT.guestName}</span>
-                      <span style={{ fontSize: '14px', fontWeight: '600', color: '#e2e8f0' }}>{guest?.name || 'Unregistered Guest'}</span>
+                      <span style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-dim)', display: 'block', marginBottom: '2px' }}>{currentT.guestName}</span>
+                      <span style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text-primary)' }}>{guest?.name || 'Unregistered Guest'}</span>
                     </div>
                     <div>
-                      <span style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.5px', color: '#64748b', display: 'block', marginBottom: '2px' }}>{currentT.pickupDock}</span>
-                      <span style={{ fontSize: '14px', fontWeight: '600', color: '#3ecdc6', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <span style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-dim)', display: 'block', marginBottom: '2px' }}>{currentT.pickupDock}</span>
+                      <span style={{ fontSize: '14px', fontWeight: '600', color: 'var(--accent, #3ecdc6)', display: 'flex', alignItems: 'center', gap: '4px' }}>
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                         </svg>
@@ -945,8 +945,8 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
                       </span>
                     </div>
                     <div>
-                      <span style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.5px', color: '#64748b', display: 'block', marginBottom: '2px' }}>{currentT.totalPax}</span>
-                      <span style={{ fontSize: '14px', fontWeight: '600', color: '#e2e8f0', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <span style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-dim)', display: 'block', marginBottom: '2px' }}>{currentT.totalPax}</span>
+                      <span style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '4px' }}>
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                           <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
                           <circle cx="9" cy="7" r="4" />
@@ -961,11 +961,11 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
                   {/* Status update area */}
                   {isActionsExpanded ? (
                     <div style={{
-                      background: 'rgba(0, 0, 0, 0.2)',
+                      background: 'var(--bg-card-nested)',
                       borderRadius: '14px',
                       padding: '16px',
                       marginTop: '16px',
-                      border: '1px solid rgba(255, 255, 255, 0.04)'
+                      border: '1px solid var(--border-color)'
                     }}>
                       <label style={{
                         display: 'block',

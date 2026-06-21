@@ -89,7 +89,7 @@ export default function ChatWidget({
   };
 
   return (
-    <div className="glass-card" style={{ height: 'calc(100vh - 180px)', minHeight: '450px', maxHeight: '650px', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+    <div className="glass-card chat-widget-card" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       {/* Header */}
       <div style={{ padding: '18px 20px', borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', gap: '14px', background: 'hsla(210, 32%, 7%, 0.4)' }}>
         <div style={{ position: 'relative' }}>
