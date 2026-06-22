@@ -1148,12 +1148,13 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
 
         {statusMessage && (
           <div style={{
-            background: statusMessage.type === 'success' ? 'rgba(34, 197, 94, 0.08)' : 'rgba(239, 68, 68, 0.08)',
-            border: `1px solid ${statusMessage.type === 'success' ? 'rgba(34, 197, 94, 0.2)' : 'rgba(239, 68, 68, 0.2)'}`,
+            background: statusMessage.type === 'success' ? 'rgba(21, 128, 61, 0.08)' : 'rgba(185, 28, 28, 0.08)',
+            border: `1px solid ${statusMessage.type === 'success' ? 'rgba(21, 128, 61, 0.2)' : 'rgba(185, 28, 28, 0.2)'}`,
             borderRadius: '12px',
             padding: '14px',
-            color: statusMessage.type === 'success' ? '#86efac' : '#fca5a5',
+            color: statusMessage.type === 'success' ? '#15803d' : '#b91c1c',
             fontSize: '14px',
+            fontWeight: '600',
             marginTop: '16px',
             textAlign: 'center'
           }}>
@@ -1164,16 +1165,17 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
 
       {/* Real-time Condition Report Form */}
       <div style={{
-        background: 'rgba(10, 15, 26, 0.4)',
-        border: '1px solid rgba(255, 255, 255, 0.05)',
+        background: 'var(--panel-bg)',
+        border: '1px solid var(--border-color)',
         borderRadius: '24px',
         padding: '24px',
-        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
-        backdropFilter: 'blur(20px)'
+        boxShadow: 'var(--shadow-lg)',
+        backdropFilter: 'blur(24px)',
+        WebkitBackdropFilter: 'blur(24px)'
       }}>
         <div style={{ marginBottom: '18px' }}>
-          <h2 style={{ fontSize: '20px', fontWeight: '700', margin: 0 }}>{currentT.liveSafetyReport}</h2>
-          <p style={{ margin: '4px 0 0 0', fontSize: '13px', color: '#64748b' }}>
+          <h2 style={{ fontSize: '20px', fontWeight: '700', margin: 0, color: 'var(--text-primary)' }}>{currentT.liveSafetyReport}</h2>
+          <p style={{ margin: '4px 0 0 0', fontSize: '13px', color: 'var(--text-muted)' }}>
             {currentT.liveSafetyDesc}
           </p>
         </div>
@@ -1187,15 +1189,15 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
           }}>
             {/* Sea State */}
             <div>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: '600', color: '#94a3b8', marginBottom: '8px' }}>
+              <label style={{ display: 'block', fontSize: '12px', fontWeight: '600', color: 'var(--text-dim)', marginBottom: '8px' }}>
                 {currentT.seaSwellState}
               </label>
               <div style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(3, 1fr)',
                 gap: '6px',
-                background: 'rgba(15, 23, 42, 0.4)',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
+                background: 'var(--bg-card-nested, rgba(0, 0, 0, 0.03))',
+                border: '1px solid var(--border-color)',
                 borderRadius: '12px',
                 padding: '4px',
                 boxSizing: 'border-box'
@@ -1212,15 +1214,15 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
                       type="button"
                       onClick={() => setConditions(prev => ({ ...prev, sea_state: opt.value }))}
                       style={{
-                        background: isSelected ? 'linear-gradient(135deg, #3ecdc6 0%, #0fa5d3 100%)' : 'transparent',
-                        color: isSelected ? '#080c14' : '#94a3b8',
+                        background: isSelected ? 'linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%)' : 'transparent',
+                        color: isSelected ? 'var(--primary-btn-text, #ffffff)' : 'var(--text-muted)',
                         border: 'none',
                         borderRadius: '8px',
                         padding: '8px 2px',
                         fontSize: '12px',
                         fontWeight: '700',
                         cursor: 'pointer',
-                        transition: 'all 0.2s',
+                        transition: 'all 0.2s ease',
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
@@ -1228,9 +1230,21 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
                         gap: '2px',
                         outline: 'none'
                       }}
+                      onMouseEnter={(e) => {
+                        if (!isSelected) {
+                          e.currentTarget.style.background = 'var(--primary-glow)';
+                          e.currentTarget.style.color = 'var(--primary)';
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (!isSelected) {
+                          e.currentTarget.style.background = 'transparent';
+                          e.currentTarget.style.color = 'var(--text-muted)';
+                        }
+                      }}
                     >
                       <span>{opt.label}</span>
-                      <span style={{ fontSize: '9px', fontWeight: '500', opacity: isSelected ? 0.85 : 0.5 }}>{opt.desc}</span>
+                      <span style={{ fontSize: '9px', fontWeight: '500', opacity: isSelected ? 0.9 : 0.6 }}>{opt.desc}</span>
                     </button>
                   );
                 })}
@@ -1239,15 +1253,15 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
 
             {/* Visibility */}
             <div>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: '600', color: '#94a3b8', marginBottom: '8px' }}>
+              <label style={{ display: 'block', fontSize: '12px', fontWeight: '600', color: 'var(--text-dim)', marginBottom: '8px' }}>
                 {currentT.visibility}
               </label>
               <div style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(3, 1fr)',
                 gap: '6px',
-                background: 'rgba(15, 23, 42, 0.4)',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
+                background: 'var(--bg-card-nested, rgba(0, 0, 0, 0.03))',
+                border: '1px solid var(--border-color)',
                 borderRadius: '12px',
                 padding: '4px',
                 boxSizing: 'border-box'
@@ -1264,15 +1278,15 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
                       type="button"
                       onClick={() => setConditions(prev => ({ ...prev, visibility: opt.value }))}
                       style={{
-                        background: isSelected ? 'linear-gradient(135deg, #3ecdc6 0%, #0fa5d3 100%)' : 'transparent',
-                        color: isSelected ? '#080c14' : '#94a3b8',
+                        background: isSelected ? 'linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%)' : 'transparent',
+                        color: isSelected ? 'var(--primary-btn-text, #ffffff)' : 'var(--text-muted)',
                         border: 'none',
                         borderRadius: '8px',
                         padding: '8px 2px',
                         fontSize: '12px',
                         fontWeight: '700',
                         cursor: 'pointer',
-                        transition: 'all 0.2s',
+                        transition: 'all 0.2s ease',
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
@@ -1280,9 +1294,21 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
                         gap: '2px',
                         outline: 'none'
                       }}
+                      onMouseEnter={(e) => {
+                        if (!isSelected) {
+                          e.currentTarget.style.background = 'var(--primary-glow)';
+                          e.currentTarget.style.color = 'var(--primary)';
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (!isSelected) {
+                          e.currentTarget.style.background = 'transparent';
+                          e.currentTarget.style.color = 'var(--text-muted)';
+                        }
+                      }}
                     >
                       <span>{opt.label}</span>
-                      <span style={{ fontSize: '8px', fontWeight: '500', opacity: isSelected ? 0.85 : 0.5, whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden', width: '100%', textAlign: 'center' }}>{opt.desc}</span>
+                      <span style={{ fontSize: '8px', fontWeight: '500', opacity: isSelected ? 0.9 : 0.6, whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden', width: '100%', textAlign: 'center' }}>{opt.desc}</span>
                     </button>
                   );
                 })}
@@ -1291,15 +1317,15 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
 
             {/* Precipitation */}
             <div>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: '600', color: '#94a3b8', marginBottom: '8px' }}>
+              <label style={{ display: 'block', fontSize: '12px', fontWeight: '600', color: 'var(--text-dim)', marginBottom: '8px' }}>
                 {currentT.precipitation}
               </label>
               <div style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(3, 1fr)',
                 gap: '6px',
-                background: 'rgba(15, 23, 42, 0.4)',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
+                background: 'var(--bg-card-nested, rgba(0, 0, 0, 0.03))',
+                border: '1px solid var(--border-color)',
                 borderRadius: '12px',
                 padding: '4px',
                 boxSizing: 'border-box'
@@ -1316,15 +1342,15 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
                       type="button"
                       onClick={() => setConditions(prev => ({ ...prev, rain: opt.value }))}
                       style={{
-                        background: isSelected ? 'linear-gradient(135deg, #3ecdc6 0%, #0fa5d3 100%)' : 'transparent',
-                        color: isSelected ? '#080c14' : '#94a3b8',
+                        background: isSelected ? 'linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%)' : 'transparent',
+                        color: isSelected ? 'var(--primary-btn-text, #ffffff)' : 'var(--text-muted)',
                         border: 'none',
                         borderRadius: '8px',
                         padding: '8px 2px',
                         fontSize: '12px',
                         fontWeight: '700',
                         cursor: 'pointer',
-                        transition: 'all 0.2s',
+                        transition: 'all 0.2s ease',
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
@@ -1332,9 +1358,21 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
                         gap: '2px',
                         outline: 'none'
                       }}
+                      onMouseEnter={(e) => {
+                        if (!isSelected) {
+                          e.currentTarget.style.background = 'var(--primary-glow)';
+                          e.currentTarget.style.color = 'var(--primary)';
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (!isSelected) {
+                          e.currentTarget.style.background = 'transparent';
+                          e.currentTarget.style.color = 'var(--text-muted)';
+                        }
+                      }}
                     >
                       <span>{opt.label}</span>
-                      <span style={{ fontSize: '8px', fontWeight: '500', opacity: isSelected ? 0.85 : 0.5, whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden', width: '100%', textAlign: 'center' }}>{opt.desc}</span>
+                      <span style={{ fontSize: '8px', fontWeight: '500', opacity: isSelected ? 0.9 : 0.6, whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden', width: '100%', textAlign: 'center' }}>{opt.desc}</span>
                     </button>
                   );
                 })}
@@ -1343,7 +1381,7 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
           </div>
 
           <div style={{ marginBottom: '18px' }}>
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: '600', color: '#94a3b8', marginBottom: '6px' }}>{currentT.waterNotes}</label>
+            <label style={{ display: 'block', fontSize: '12px', fontWeight: '600', color: 'var(--text-dim)', marginBottom: '6px' }}>{currentT.waterNotes}</label>
             <textarea 
               rows="2"
               placeholder={currentT.waterNotesPlaceholder}
@@ -1351,16 +1389,27 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
               onChange={(e) => setConditions(prev => ({ ...prev, notes: e.target.value }))}
               style={{
                 width: '100%',
-                background: 'rgba(15, 23, 42, 0.6)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
+                background: 'var(--bg-card-nested, rgba(0, 0, 0, 0.02))',
+                border: '1px solid var(--border-color)',
                 borderRadius: '10px',
                 padding: '12px',
-                color: '#f8fafc',
+                color: 'var(--text-primary)',
                 fontSize: '16px',
                 fontFamily: 'inherit',
                 outline: 'none',
                 resize: 'vertical',
-                boxSizing: 'border-box'
+                boxSizing: 'border-box',
+                transition: 'all 0.2s ease'
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = 'var(--primary)';
+                e.target.style.background = 'var(--panel-bg)';
+                e.target.style.boxShadow = '0 0 0 2px var(--primary-glow)';
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = 'var(--border-color)';
+                e.target.style.background = 'var(--bg-card-nested, rgba(0, 0, 0, 0.02))';
+                e.target.style.boxShadow = 'none';
               }}
             />
           </div>
@@ -1370,16 +1419,31 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
             disabled={submittingConditions}
             style={{
               width: '100%',
-              background: 'linear-gradient(135deg, #3ecdc6 0%, #0fa5d3 100%)',
+              background: 'linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%)',
               border: 'none',
               borderRadius: '12px',
               padding: '14px',
-              color: '#080c14',
+              color: 'var(--primary-btn-text, #ffffff)',
               fontSize: '15px',
               fontWeight: '700',
-              cursor: 'pointer',
+              cursor: submittingConditions ? 'not-allowed' : 'pointer',
               minHeight: '48px',
-              transition: 'opacity 0.2s'
+              boxShadow: 'var(--shadow-sm)',
+              transition: 'all 0.2s ease'
+            }}
+            onMouseEnter={(e) => {
+              if (!submittingConditions) {
+                e.currentTarget.style.transform = 'translateY(-1px)';
+                e.currentTarget.style.boxShadow = 'var(--shadow-lg)';
+                e.currentTarget.style.filter = 'brightness(1.05)';
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!submittingConditions) {
+                e.currentTarget.style.transform = 'none';
+                e.currentTarget.style.boxShadow = 'var(--shadow-sm)';
+                e.currentTarget.style.filter = 'none';
+              }
             }}
           >
             {submittingConditions ? currentT.broadcasting : currentT.logSeaReport}
@@ -1388,12 +1452,13 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
 
         {conditionsMessage && (
           <div style={{
-            background: conditionsMessage.type === 'success' ? 'rgba(34, 197, 94, 0.08)' : 'rgba(239, 68, 68, 0.08)',
-            border: `1px solid ${conditionsMessage.type === 'success' ? 'rgba(34, 197, 94, 0.2)' : 'rgba(239, 68, 68, 0.2)'}`,
+            background: conditionsMessage.type === 'success' ? 'rgba(21, 128, 61, 0.08)' : 'rgba(185, 28, 28, 0.08)',
+            border: `1px solid ${conditionsMessage.type === 'success' ? 'rgba(21, 128, 61, 0.2)' : 'rgba(185, 28, 28, 0.2)'}`,
             borderRadius: '12px',
             padding: '14px',
-            color: conditionsMessage.type === 'success' ? '#86efac' : '#fca5a5',
+            color: conditionsMessage.type === 'success' ? '#15803d' : '#b91c1c',
             fontSize: '14px',
+            fontWeight: '600',
             marginTop: '16px',
             textAlign: 'center'
           }}>

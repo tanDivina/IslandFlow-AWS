@@ -69,17 +69,18 @@ export default function OperatorLoginForm({ onLoginSuccess }) {
     <div style={{
       width: '100%',
       maxWidth: '480px',
-      background: 'linear-gradient(135deg, hsla(210, 32%, 11%, 0.55), hsla(210, 32%, 7%, 0.55))',
-      backdropFilter: 'blur(16px)',
-      WebkitBackdropFilter: 'blur(16px)',
-      border: '1px solid rgba(255, 255, 255, 0.08)',
+      background: 'var(--panel-bg)',
+      backdropFilter: 'blur(24px)',
+      WebkitBackdropFilter: 'blur(24px)',
+      border: '1px solid var(--border-color)',
       borderRadius: '24px',
       padding: '32px',
-      boxShadow: '0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
+      boxShadow: 'var(--shadow-lg)',
       display: 'flex',
       flexDirection: 'column',
       gap: '28px',
-      animation: 'fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1)'
+      animation: 'fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+      color: 'var(--text-primary)'
     }}>
       {/* Header */}
       <div style={{ textAlign: 'center' }}>
@@ -87,15 +88,15 @@ export default function OperatorLoginForm({ onLoginSuccess }) {
           width: '56px',
           height: '56px',
           borderRadius: '16px',
-          background: 'rgba(62, 205, 198, 0.1)',
-          border: '1px solid rgba(62, 205, 198, 0.25)',
+          background: 'var(--primary-glow)',
+          border: '1px solid var(--border-glow)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           margin: '0 auto 16px auto',
-          boxShadow: '0 0 20px rgba(62, 205, 198, 0.15)'
+          boxShadow: 'none'
         }}>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3ecdc6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <rect x="3" height="18" width="18" y="3" rx="2" />
             <path d="M9 17v-5h6v5" />
             <path d="M8 21h8" />
@@ -105,9 +106,7 @@ export default function OperatorLoginForm({ onLoginSuccess }) {
         <h2 style={{
           fontSize: '1.6rem',
           fontWeight: 700,
-          background: 'linear-gradient(to right, #ffffff, #c2d6ff)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
+          color: 'var(--text-primary)',
           margin: 0
         }}>
           Hotel Operator Console
@@ -131,24 +130,24 @@ export default function OperatorLoginForm({ onLoginSuccess }) {
             placeholder="operator@resort.com"
             disabled={loading}
             style={{
-              background: 'rgba(255, 255, 255, 0.03)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
+              background: 'var(--bg-card-nested, rgba(0, 0, 0, 0.02))',
+              border: '1px solid var(--border-color)',
               borderRadius: '12px',
               padding: '12px 16px',
-              color: '#ffffff',
+              color: 'var(--text-primary)',
               fontSize: '0.9rem',
               outline: 'none',
               transition: 'all 0.2s ease',
               boxShadow: 'none'
             }}
             onFocus={(e) => {
-              e.target.style.borderColor = '#3ecdc6';
-              e.target.style.background = 'rgba(255, 255, 255, 0.05)';
-              e.target.style.boxShadow = '0 0 10px rgba(62, 205, 198, 0.1)';
+              e.target.style.borderColor = 'var(--primary)';
+              e.target.style.background = 'var(--bg-color)';
+              e.target.style.boxShadow = '0 0 0 2px var(--primary-glow)';
             }}
             onBlur={(e) => {
-              e.target.style.borderColor = 'rgba(255, 255, 255, 0.08)';
-              e.target.style.background = 'rgba(255, 255, 255, 0.03)';
+              e.target.style.borderColor = 'var(--border-color)';
+              e.target.style.background = 'var(--bg-card-nested, rgba(0, 0, 0, 0.02))';
               e.target.style.boxShadow = 'none';
             }}
           />
@@ -166,24 +165,24 @@ export default function OperatorLoginForm({ onLoginSuccess }) {
             placeholder="••••••••"
             disabled={loading}
             style={{
-              background: 'rgba(255, 255, 255, 0.03)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
+              background: 'var(--bg-card-nested, rgba(0, 0, 0, 0.02))',
+              border: '1px solid var(--border-color)',
               borderRadius: '12px',
               padding: '12px 16px',
-              color: '#ffffff',
+              color: 'var(--text-primary)',
               fontSize: '0.9rem',
               outline: 'none',
               transition: 'all 0.2s ease',
               boxShadow: 'none'
             }}
             onFocus={(e) => {
-              e.target.style.borderColor = '#3ecdc6';
-              e.target.style.background = 'rgba(255, 255, 255, 0.05)';
-              e.target.style.boxShadow = '0 0 10px rgba(62, 205, 198, 0.1)';
+              e.target.style.borderColor = 'var(--primary)';
+              e.target.style.background = 'var(--bg-color)';
+              e.target.style.boxShadow = '0 0 0 2px var(--primary-glow)';
             }}
             onBlur={(e) => {
-              e.target.style.borderColor = 'rgba(255, 255, 255, 0.08)';
-              e.target.style.background = 'rgba(255, 255, 255, 0.03)';
+              e.target.style.borderColor = 'var(--border-color)';
+              e.target.style.background = 'var(--bg-card-nested, rgba(0, 0, 0, 0.02))';
               e.target.style.boxShadow = 'none';
             }}
           />
@@ -191,12 +190,13 @@ export default function OperatorLoginForm({ onLoginSuccess }) {
 
         {error && (
           <div style={{
-            background: 'rgba(239, 68, 68, 0.08)',
-            border: '1px solid rgba(239, 68, 68, 0.2)',
-            color: '#f87171',
+            background: 'rgba(185, 28, 28, 0.08)',
+            border: '1px solid rgba(185, 28, 28, 0.2)',
+            color: '#b91c1c',
             borderRadius: '10px',
             padding: '10px 14px',
             fontSize: '0.8rem',
+            fontWeight: '600',
             textAlign: 'center',
             display: 'flex',
             alignItems: 'center',
@@ -216,15 +216,15 @@ export default function OperatorLoginForm({ onLoginSuccess }) {
           type="submit"
           disabled={loading}
           style={{
-            background: 'linear-gradient(135deg, #3ecdc6, #25a49e)',
+            background: 'linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%)',
             border: 'none',
             borderRadius: '12px',
             padding: '14px',
-            color: '#080c14',
+            color: 'var(--primary-btn-text, #ffffff)',
             fontSize: '0.9rem',
             fontWeight: 700,
             cursor: loading ? 'not-allowed' : 'pointer',
-            boxShadow: '0 4px 15px rgba(62, 205, 198, 0.25)',
+            boxShadow: 'var(--shadow-sm)',
             transition: 'all 0.2s ease',
             display: 'flex',
             alignItems: 'center',
@@ -235,13 +235,15 @@ export default function OperatorLoginForm({ onLoginSuccess }) {
           onMouseEnter={(e) => {
             if (!loading) {
               e.currentTarget.style.transform = 'translateY(-1px)';
-              e.currentTarget.style.boxShadow = '0 6px 20px rgba(62, 205, 198, 0.35)';
+              e.currentTarget.style.boxShadow = 'var(--shadow-lg)';
+              e.currentTarget.style.filter = 'brightness(1.05)';
             }
           }}
           onMouseLeave={(e) => {
             if (!loading) {
               e.currentTarget.style.transform = 'none';
-              e.currentTarget.style.boxShadow = '0 4px 15px rgba(62, 205, 198, 0.25)';
+              e.currentTarget.style.boxShadow = 'var(--shadow-sm)';
+              e.currentTarget.style.filter = 'none';
             }
           }}
         >
@@ -267,11 +269,11 @@ export default function OperatorLoginForm({ onLoginSuccess }) {
 
       {/* Divider */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-        <div style={{ flex: 1, height: '1px', background: 'rgba(255, 255, 255, 0.06)' }}></div>
+        <div style={{ flex: 1, height: '1px', background: 'var(--border-color)' }}></div>
         <span style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-dim)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
           Or 1-Tap Demo Switcher
         </span>
-        <div style={{ flex: 1, height: '1px', background: 'rgba(255, 255, 255, 0.06)' }}></div>
+        <div style={{ flex: 1, height: '1px', background: 'var(--border-color)' }}></div>
       </div>
 
       {/* 1-Tap Demo Switcher */}
@@ -287,11 +289,11 @@ export default function OperatorLoginForm({ onLoginSuccess }) {
               onClick={() => handleLogin(null, hotel.email)}
               disabled={loading}
               style={{
-                background: 'rgba(255, 255, 255, 0.02)',
-                border: `1px solid rgba(255, 255, 255, 0.06)`,
+                background: 'var(--bg-card-nested, rgba(0, 0, 0, 0.02))',
+                border: `1px solid var(--border-color)`,
                 borderRadius: '12px',
                 padding: '10px 14px',
-                color: '#ffffff',
+                color: 'var(--text-primary)',
                 fontSize: '0.82rem',
                 fontWeight: 600,
                 textAlign: 'left',
@@ -303,15 +305,15 @@ export default function OperatorLoginForm({ onLoginSuccess }) {
               }}
               onMouseEnter={(e) => {
                 if (!loading) {
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)';
+                  e.currentTarget.style.background = 'var(--panel-bg)';
                   e.currentTarget.style.borderColor = hotel.color;
                   e.currentTarget.style.boxShadow = `0 0 12px ${hotel.color}20`;
                 }
               }}
               onMouseLeave={(e) => {
                 if (!loading) {
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)';
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.06)';
+                  e.currentTarget.style.background = 'var(--bg-card-nested, rgba(0, 0, 0, 0.02))';
+                  e.currentTarget.style.borderColor = 'var(--border-color)';
                   e.currentTarget.style.boxShadow = 'none';
                 }
               }}
