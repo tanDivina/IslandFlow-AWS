@@ -1,4 +1,4 @@
-const CACHE_NAME = 'islandflow-cache-v1';
+const CACHE_NAME = 'islandflow-cache-v2';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -23,6 +23,7 @@ self.addEventListener('activate', (event) => {
       return Promise.all(
         cacheNames.map((cache) => {
           if (cache !== CACHE_NAME) {
+            console.log('Clearing old service worker cache:', cache);
             return caches.delete(cache);
           }
         })
@@ -38,6 +39,30 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  const url = new URL(event.request.url);
+
+  // Network-First strategy for navigations (HTML pages) to ensure we always get the latest code.
+  if (event.request.mode === 'navigate' || url.pathname === '/' || url.pathname.endsWith('.html')) {
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const responseToCache = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, responseToCache);
+            });
+          }
+          return networkResponse;
+        })
+        .catch(() => {
+          // Fallback to cache if offline
+          return caches.match('/index.html') || caches.match(event.request);
+        })
+    );
+    return;
+  }
+
+  // Cache-First with Network Fallback strategy for static assets (CSS, JS, images, icons)
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) {
@@ -54,10 +79,7 @@ self.addEventListener('fetch', (event) => {
         });
         return networkResponse;
       }).catch(() => {
-        // Fallback for offline if it fails
-        if (event.request.mode === 'navigate') {
-          return caches.match('/index.html');
-        }
+        // Return empty or nothing if fails
       });
     })
   );
