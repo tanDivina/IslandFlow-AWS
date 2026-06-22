@@ -343,7 +343,7 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
           }}>{currentT.commandPortal}</h1>
         </div>
         
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
           {/* Premium EN/ES Toggle Slider */}
           <div 
             onClick={() => setLang(lang === 'en' ? 'es' : 'en')}
@@ -357,6 +357,7 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
               position: 'relative',
               width: '120px',
               height: '32px',
+              flexShrink: 0,
               cursor: 'pointer',
               userSelect: 'none',
               backdropFilter: 'blur(8px)',
@@ -370,11 +371,11 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
                 top: '3px',
                 left: '3px',
                 bottom: '3px',
-                width: '56px',
+                width: 'calc(50% - 3px)',
                 background: 'linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%)',
                 borderRadius: '20px',
                 transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
-                transform: lang === 'en' ? 'translateX(0)' : 'translateX(56px)',
+                transform: lang === 'en' ? 'translateX(0)' : 'translateX(100%)',
                 boxShadow: '0 1px 4px rgba(0,0,0,0.15)',
                 zIndex: 1
               }}

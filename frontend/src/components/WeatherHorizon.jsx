@@ -66,22 +66,22 @@ export default function WeatherHorizon({ logistics, lang = 'en' }) {
       case 'Heavy Rain':
         return {
           icon: (
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#ef4444' }}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#6366f1' }}>
               <path d="M19 16.9A5 5 0 0 0 18 7h-1.26a8 8 0 1 0-11.62 8.58" />
               <polyline points="13 11 9 17 12 17 10 23" />
             </svg>
           ),
-          bg: 'rgba(239, 68, 68, 0.05)',
-          border: 'rgba(239, 68, 68, 0.2)',
+          bg: 'rgba(99, 102, 241, 0.03)',
+          border: 'rgba(99, 102, 241, 0.15)',
           label: lang === 'es' ? 'Alerta de Tormenta' : 'Storm Alert',
           displayWeather: lang === 'es' ? 'Tormenta' : 'Heavy Rain',
           temp: '26°C / 79°F',
-          textColor: '#ef4444'
+          textColor: '#4f46e5'
         };
       case 'Rainy':
         return {
           icon: (
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#3b82f6' }}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#2563eb' }}>
               <path d="M20 16.58A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25" />
               <path d="M16 13v8M8 13v8M12 15v8" />
             </svg>
@@ -91,12 +91,12 @@ export default function WeatherHorizon({ logistics, lang = 'en' }) {
           label: lang === 'es' ? 'Lluvia Tropical' : 'Tropical Rain',
           displayWeather: lang === 'es' ? 'Lluvioso' : 'Rainy',
           temp: '27°C / 81°F',
-          textColor: '#3b82f6'
+          textColor: '#2563eb'
         };
       case 'Cloudy':
         return {
           icon: (
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#94a3b8' }}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#64748b' }}>
               <path d="M17.5 19A3.5 3.5 0 0 0 21 15.5c0-2.79-3.5-3.5-3.5-3.5-.13-2.95-2.68-6-5.5-6-3.25 0-5.38 3.5-5.38 3.5C6.62 9.5 3 11 3 14c0 3 2.5 5 5.5 5" />
             </svg>
           ),
@@ -105,13 +105,13 @@ export default function WeatherHorizon({ logistics, lang = 'en' }) {
           label: lang === 'es' ? 'Nublado / Cubierto' : 'Overcast',
           displayWeather: lang === 'es' ? 'Nublado' : 'Cloudy',
           temp: '29°C / 84°F',
-          textColor: '#94a3b8'
+          textColor: '#475569'
         };
       case 'Sunny':
       default:
         return {
           icon: (
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--primary)' }}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#b45309' }}>
               <circle cx="12" cy="12" r="5" />
               <line x1="12" y1="1" x2="12" y2="3" />
               <line x1="12" y1="21" x2="12" y2="23" />
@@ -128,7 +128,7 @@ export default function WeatherHorizon({ logistics, lang = 'en' }) {
           label: lang === 'es' ? 'Paraíso Perfecto' : 'Perfect Paradise',
           displayWeather: lang === 'es' ? 'Soleado' : 'Sunny',
           temp: '31°C / 88°F',
-          textColor: '#e5b842'
+          textColor: '#b45309'
         };
     }
   };
@@ -151,7 +151,7 @@ export default function WeatherHorizon({ logistics, lang = 'en' }) {
               width: '32px',
               height: '32px',
               borderRadius: '50%',
-              background: 'rgba(0,0,0,0.3)',
+              background: 'var(--bg-card-nested, rgba(0,0,0,0.03))',
               border: '1px solid var(--border-color)',
               color: 'var(--text-primary)',
               cursor: 'pointer',
@@ -160,8 +160,14 @@ export default function WeatherHorizon({ logistics, lang = 'en' }) {
               justifyContent: 'center',
               transition: 'var(--transition)'
             }}
-            onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--primary)'}
-            onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--border-color)'}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = 'var(--primary)';
+              e.currentTarget.style.background = 'var(--primary-glow)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = 'var(--border-color)';
+              e.currentTarget.style.background = 'var(--bg-card-nested, rgba(0,0,0,0.03))';
+            }}
           >
             ‹
           </button>
@@ -171,7 +177,7 @@ export default function WeatherHorizon({ logistics, lang = 'en' }) {
               width: '32px',
               height: '32px',
               borderRadius: '50%',
-              background: 'rgba(0,0,0,0.3)',
+              background: 'var(--bg-card-nested, rgba(0,0,0,0.03))',
               border: '1px solid var(--border-color)',
               color: 'var(--text-primary)',
               cursor: 'pointer',
@@ -180,8 +186,14 @@ export default function WeatherHorizon({ logistics, lang = 'en' }) {
               justifyContent: 'center',
               transition: 'var(--transition)'
             }}
-            onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--primary)'}
-            onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--border-color)'}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = 'var(--primary)';
+              e.currentTarget.style.background = 'var(--primary-glow)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = 'var(--border-color)';
+              e.currentTarget.style.background = 'var(--bg-card-nested, rgba(0,0,0,0.03))';
+            }}
           >
             ›
           </button>
@@ -268,10 +280,10 @@ export default function WeatherHorizon({ logistics, lang = 'en' }) {
 
               {/* Reef Sensor Wave Height Status */}
               <div style={{
-                background: 'rgba(0,0,0,0.2)',
+                background: 'var(--bg-card-nested, rgba(0,0,0,0.03))',
                 borderRadius: '8px',
                 padding: '8px',
-                border: '1px solid rgba(255,255,255,0.02)',
+                border: '1px solid var(--border-color)',
                 fontSize: '0.75rem',
                 display: 'flex',
                 flexDirection: 'column',
@@ -282,12 +294,12 @@ export default function WeatherHorizon({ logistics, lang = 'en' }) {
                   <span style={{
                     fontSize: '0.65rem',
                     fontWeight: 700,
-                    color: isDangerWave ? '#ef4444' : '#10b981',
+                    color: isDangerWave ? '#d97706' : '#10b981',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '3px'
                   }}>
-                    <span style={{ display: 'inline-block', width: '6px', height: '6px', borderRadius: '50%', background: isDangerWave ? '#ef4444' : '#10b981' }}></span>
+                    <span style={{ display: 'inline-block', width: '6px', height: '6px', borderRadius: '50%', background: isDangerWave ? '#d97706' : '#10b981' }}></span>
                     {isDangerWave ? currentL.hazardous : currentL.safe}
                   </span>
                 </div>
@@ -301,9 +313,9 @@ export default function WeatherHorizon({ logistics, lang = 'en' }) {
                 <div style={{
                   fontSize: '0.68rem',
                   lineHeight: '1.3',
-                  background: 'rgba(239, 68, 68, 0.08)',
-                  border: '1px solid rgba(239, 68, 68, 0.2)',
-                  color: '#ef4444',
+                  background: visuals.bg === 'rgba(212, 175, 55, 0.04)' ? 'rgba(212, 175, 55, 0.08)' : visuals.bg,
+                  border: `1px solid ${visuals.border}`,
+                  color: visuals.textColor,
                   borderRadius: '6px',
                   padding: '6px 8px',
                   display: 'flex',
