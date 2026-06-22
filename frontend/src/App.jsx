@@ -104,6 +104,32 @@ const DEFAULT_GUEST_BRANDS = {
   g10: 'hotel_redfrog'
 };
 
+// Safe localStorage wrapper functions to prevent crash in restricted environments (incognito, sandboxed iframes, etc.)
+const safeLocalStorageGet = (key, fallback) => {
+  try {
+    return localStorage.getItem(key) || fallback;
+  } catch (e) {
+    console.warn(`localStorage read failed for key "${key}":`, e);
+    return fallback;
+  }
+};
+
+const safeLocalStorageSet = (key, value) => {
+  try {
+    localStorage.setItem(key, value);
+  } catch (e) {
+    console.warn(`localStorage write failed for key "${key}":`, e);
+  }
+};
+
+const safeLocalStorageRemove = (key) => {
+  try {
+    localStorage.removeItem(key);
+  } catch (e) {
+    console.warn(`localStorage remove failed for key "${key}":`, e);
+  }
+};
+
 function App() {
   const [bookings, setBookings] = useState([]);
   const [tours, setTours] = useState([]);
@@ -126,17 +152,17 @@ function App() {
   const [isSecureModeActive, setIsSecureModeActive] = useState(initialParams.secureActive);
   const [isSecureMode, setIsSecureMode] = useState(false);
   const [operatorFlyerToken, setOperatorFlyerToken] = useState('');
-  const [operatorHotelId, setOperatorHotelId] = useState(() => localStorage.getItem('operatorHotelId') || null);
-  const [operatorHotelName, setOperatorHotelName] = useState(() => localStorage.getItem('operatorHotelName') || null);
+  const [operatorHotelId, setOperatorHotelId] = useState(() => safeLocalStorageGet('operatorHotelId', null));
+  const [operatorHotelName, setOperatorHotelName] = useState(() => safeLocalStorageGet('operatorHotelName', null));
   const lastGuestIdRef = React.useRef(null);
   const lastRequestRef = React.useRef(0);
 
   const [view, setView] = useState(initialParams.view);
   const [mobileTab, setMobileTab] = useState('chat'); // 'chat' or 'itinerary'
-  const [lang, setLang] = useState(() => localStorage.getItem('islandflow_lang_v2') || 'es');
+  const [lang, setLang] = useState(() => safeLocalStorageGet('islandflow_lang_v2', 'es'));
 
   useEffect(() => {
-    localStorage.setItem('islandflow_lang_v2', lang);
+    safeLocalStorageSet('islandflow_lang_v2', lang);
   }, [lang]);
   const [captainId, setCaptainId] = useState(initialParams.captainId || 'cap1');
   const [onboardingCaptainId, setOnboardingCaptainId] = useState('cap1');
@@ -1506,8 +1532,8 @@ function App() {
                   <button
                     onClick={() => {
                       transitionState(() => {
-                        localStorage.removeItem('operatorHotelId');
-                        localStorage.removeItem('operatorHotelName');
+                        safeLocalStorageRemove('operatorHotelId');
+                        safeLocalStorageRemove('operatorHotelName');
                         setOperatorHotelId(null);
                         setOperatorHotelName(null);
                       });
@@ -2603,8 +2629,8 @@ function App() {
           <OperatorLoginForm 
             onLoginSuccess={(hotelId, hotelName) => {
               transitionState(() => {
-                localStorage.setItem('operatorHotelId', hotelId);
-                localStorage.setItem('operatorHotelName', hotelName);
+                safeLocalStorageSet('operatorHotelId', hotelId);
+                safeLocalStorageSet('operatorHotelName', hotelName);
                 setOperatorHotelId(hotelId);
                 setOperatorHotelName(hotelName);
               });
