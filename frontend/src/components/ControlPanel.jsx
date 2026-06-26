@@ -15,6 +15,110 @@ const logTypes = [
   { emoji: '🔄', label: 'SYSTEM', bg: 'rgba(107, 114, 128, 0.12)', color: '#9ca3af', border: 'rgba(107, 114, 128, 0.25)' },
 ];
 
+function getLogIcon(label) {
+  const props = {
+    width: "12",
+    height: "12",
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "2.5",
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    style: { display: 'inline-block', flexShrink: 0 }
+  };
+
+  switch (label) {
+    case 'AGENT':
+      return (
+        <svg {...props}>
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+          <path d="M12 2v3M8 5h8" />
+          <circle cx="8" cy="15" r="1" />
+          <circle cx="16" cy="15" r="1" />
+        </svg>
+      );
+    case 'GUEST':
+      return (
+        <svg {...props}>
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </svg>
+      );
+    case 'ERROR':
+      return (
+        <svg {...props}>
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" y1="8" x2="12" y2="12" />
+          <line x1="12" y1="16" x2="12.01" y2="16" />
+        </svg>
+      );
+    case 'WEATHER':
+      return (
+        <svg {...props}>
+          <path d="M20 17.58A5 5 0 0 0 18 8h-1.26A8 8 0 1 0 4 16.25" />
+          <line x1="8" y1="16" x2="8" y2="21" />
+          <line x1="12" y1="18" x2="12" y2="23" />
+          <line x1="16" y1="16" x2="16" y2="21" />
+        </svg>
+      );
+    case 'TOOL CALL':
+      return (
+        <svg {...props}>
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+      );
+    case 'TOOL RETURN':
+      return (
+        <svg {...props}>
+          <polyline points="17 8 12 13 7 8" />
+          <line x1="12" y1="13" x2="12" y2="3" />
+        </svg>
+      );
+    case 'DECISION':
+      return (
+        <svg {...props}>
+          <path d="M18 8h-6a4 4 0 0 0-4 4v8" />
+          <circle cx="18" cy="8" r="3" />
+          <circle cx="8" cy="20" r="3" />
+        </svg>
+      );
+    case 'SUCCESS':
+      return (
+        <svg {...props}>
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+          <polyline points="22 4 12 14.01 9 11.01" />
+        </svg>
+      );
+    case 'PMS WEBHOOK':
+      return (
+        <svg {...props}>
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+          <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+        </svg>
+      );
+    case 'INTEGRATION':
+      return (
+        <svg {...props}>
+          <ellipse cx="12" cy="5" rx="9" ry="3" />
+          <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+          <path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3" />
+        </svg>
+      );
+    case 'INFO':
+    case 'SYSTEM':
+    default:
+      return (
+        <svg {...props}>
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" y1="16" x2="12" y2="12" />
+          <line x1="12" y1="8" x2="12.01" y2="8" />
+        </svg>
+      );
+  }
+}
+
 function renderParsedLog(log, index) {
   let matched = null;
   for (const lt of logTypes) {
@@ -33,10 +137,12 @@ function renderParsedLog(log, index) {
     logText = log.substring(matched.emoji.length).trim();
   }
 
+  const staggerClass = `stagger-${(index % 8) + 1}`;
+
   return (
     <div 
       key={index} 
-      className={`console-line ${isCall ? 'call' : (isRet ? 'ret' : (isError ? 'err' : ''))}`}
+      className={`console-line ${isCall ? 'call' : (isRet ? 'ret' : (isError ? 'err' : ''))} fade-in-entry ${staggerClass}`}
       style={{ 
         display: 'flex', 
         alignItems: 'flex-start', 
@@ -61,11 +167,14 @@ function renderParsedLog(log, index) {
             fontWeight: 700, 
             textTransform: 'uppercase',
             letterSpacing: '0.05em',
-            display: 'inline-block',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
             flexShrink: 0,
             userSelect: 'none'
           }}
         >
+          {getLogIcon(matched.label)}
           {matched.label}
         </span>
       )}
@@ -477,7 +586,30 @@ export default function ControlPanel({
               alignItems: 'center',
               gap: '6px'
             }}>
-              {hasRainAlert ? '⛈️ Threat Detected' : '☀️ All Clear (Optimal)'}
+              {hasRainAlert ? (
+                <>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--warning)', display: 'inline-block', flexShrink: 0 }}>
+                    <path d="M19 16.9A5 5 0 0 0 18 7h-1.26a8 8 0 1 0-11.62 8.58" />
+                    <polyline points="13 11 9 17 12 17 10 23" />
+                  </svg>
+                  Threat Detected
+                </>
+              ) : (
+                <>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--primary)', display: 'inline-block', flexShrink: 0 }}>
+                    <circle cx="12" cy="12" r="5" />
+                    <line x1="12" y1="1" x2="12" y2="3" />
+                    <line x1="12" y1="21" x2="12" y2="23" />
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                    <line x1="1" y1="12" x2="3" y2="12" />
+                    <line x1="21" y1="12" x2="23" y2="12" />
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                  </svg>
+                  All Clear (Optimal)
+                </>
+              )}
             </span>
           </div>
 

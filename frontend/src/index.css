@@ -11,10 +11,12 @@
 
 /* Sunny Mode (Premium Beach Coast - Soft Cream & Warm Gold/Sand) */
 body, body.theme-sunny {
+  color-scheme: light;
   --bg-color: hsl(38, 30%, 98%);
   --panel-bg: hsla(38, 30%, 95%, 0.85);
   --border-color: hsla(38, 40%, 60%, 0.22);
   --border-glow: hsla(38, 40%, 60%, 0.4);
+  --primary-btn-text: #ffffff;
   
   --primary: hsl(38, 40%, 45%);        /* Champagne/Sand Gold (darker for contrast) */
   --primary-glow: hsla(38, 40%, 45%, 0.08);
@@ -41,10 +43,12 @@ body, body.theme-sunny {
 
 /* Rainy Mode (Cozy Stormy Harbor - Soft Mist Gray & Cool Navy) */
 body.theme-rainy {
+  color-scheme: light;
   --bg-color: hsl(222, 15%, 97%);
   --panel-bg: hsla(222, 15%, 94%, 0.85);
   --border-color: hsla(222, 12%, 50%, 0.22);
   --border-glow: hsla(222, 22%, 55%, 0.35);
+  --primary-btn-text: #ffffff;
   
   --primary: hsl(222, 22%, 48%);       /* Stormy Navy Blue */
   --primary-glow: hsla(222, 22%, 48%, 0.08);
@@ -842,4 +846,30 @@ body {
   }
 }
 
+/* ==========================================================================
+   PREMIUM MOTION SKILL UPGRADES: STAGGERED FADE-IN TRANSITIONS
+   ========================================================================== */
+@keyframes floatInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 15px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
 
+.fade-in-entry {
+  animation: floatInUp 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  opacity: 0;
+}
+
+.stagger-1 { animation-delay: 0.04s; }
+.stagger-2 { animation-delay: 0.08s; }
+.stagger-3 { animation-delay: 0.12s; }
+.stagger-4 { animation-delay: 0.16s; }
+.stagger-5 { animation-delay: 0.20s; }
+.stagger-6 { animation-delay: 0.24s; }
+.stagger-7 { animation-delay: 0.28s; }
+.stagger-8 { animation-delay: 0.32s; }

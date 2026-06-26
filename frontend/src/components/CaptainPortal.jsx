@@ -337,9 +337,7 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
             fontSize: '28px',
             fontWeight: '700',
             margin: '4px 0 0 0',
-            background: 'linear-gradient(135deg, var(--text-primary) 40%, var(--primary) 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent'
+            color: 'var(--text-primary)'
           }}>{currentT.commandPortal}</h1>
         </div>
         
@@ -372,7 +370,7 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
                 left: '3px',
                 bottom: '3px',
                 width: 'calc(50% - 3px)',
-                background: 'linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%)',
+                background: 'var(--primary)',
                 borderRadius: '20px',
                 transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
                 transform: lang === 'en' ? 'translateX(0)' : 'translateX(100%)',
@@ -564,7 +562,7 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
               {isMobile ? (
                 <div style={{
                   flex: '1 1 240px',
-                  background: 'linear-gradient(135deg, rgba(62, 205, 198, 0.1) 0%, rgba(62, 205, 198, 0.03) 100%)',
+                  background: 'rgba(62, 205, 198, 0.04)',
                   border: '1px solid rgba(62, 205, 198, 0.25)',
                   borderRadius: '12px',
                   padding: '16px',
@@ -1113,7 +1111,7 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
                       }}
                       style={{
                         width: '100%',
-                        background: 'linear-gradient(135deg, rgba(62, 205, 198, 0.15) 0%, rgba(62, 205, 198, 0.05) 100%)',
+                        background: 'rgba(62, 205, 198, 0.08)',
                         border: '1px solid rgba(62, 205, 198, 0.25)',
                         borderRadius: '12px',
                         padding: '12px',
@@ -1129,11 +1127,11 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
                         transition: 'all 0.2s'
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.background = 'linear-gradient(135deg, rgba(62, 205, 198, 0.2) 0%, rgba(62, 205, 198, 0.08) 100%)';
+                        e.currentTarget.style.background = 'rgba(62, 205, 198, 0.15)';
                         e.currentTarget.style.borderColor = 'rgba(62, 205, 198, 0.4)';
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.background = 'linear-gradient(135deg, rgba(62, 205, 198, 0.15) 0%, rgba(62, 205, 198, 0.05) 100%)';
+                        e.currentTarget.style.background = 'rgba(62, 205, 198, 0.08)';
                         e.currentTarget.style.borderColor = 'rgba(62, 205, 198, 0.25)';
                       }}
                     >
@@ -1214,8 +1212,8 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
                       type="button"
                       onClick={() => setConditions(prev => ({ ...prev, sea_state: opt.value }))}
                       style={{
-                        background: isSelected ? 'linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%)' : 'transparent',
-                        color: isSelected ? 'var(--primary-btn-text, #ffffff)' : 'var(--text-muted)',
+                        background: isSelected ? 'var(--primary)' : 'transparent',
+                        color: isSelected ? 'var(--primary-btn-text, #000000)' : 'var(--text-muted)',
                         border: 'none',
                         borderRadius: '8px',
                         padding: '8px 2px',
@@ -1278,8 +1276,8 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
                       type="button"
                       onClick={() => setConditions(prev => ({ ...prev, visibility: opt.value }))}
                       style={{
-                        background: isSelected ? 'linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%)' : 'transparent',
-                        color: isSelected ? 'var(--primary-btn-text, #ffffff)' : 'var(--text-muted)',
+                        background: isSelected ? 'var(--primary)' : 'transparent',
+                        color: isSelected ? 'var(--primary-btn-text, #000000)' : 'var(--text-muted)',
                         border: 'none',
                         borderRadius: '8px',
                         padding: '8px 2px',
@@ -1342,8 +1340,8 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
                       type="button"
                       onClick={() => setConditions(prev => ({ ...prev, rain: opt.value }))}
                       style={{
-                        background: isSelected ? 'linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%)' : 'transparent',
-                        color: isSelected ? 'var(--primary-btn-text, #ffffff)' : 'var(--text-muted)',
+                        background: isSelected ? 'var(--primary)' : 'transparent',
+                        color: isSelected ? 'var(--primary-btn-text, #000000)' : 'var(--text-muted)',
                         border: 'none',
                         borderRadius: '8px',
                         padding: '8px 2px',
@@ -1419,11 +1417,11 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
             disabled={submittingConditions}
             style={{
               width: '100%',
-              background: 'linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%)',
+              background: 'var(--primary)',
               border: 'none',
               borderRadius: '12px',
               padding: '14px',
-              color: 'var(--primary-btn-text, #ffffff)',
+              color: 'var(--primary-btn-text, #000000)',
               fontSize: '15px',
               fontWeight: '700',
               cursor: submittingConditions ? 'not-allowed' : 'pointer',

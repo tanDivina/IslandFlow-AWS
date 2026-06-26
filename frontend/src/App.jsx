@@ -8,6 +8,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import WeatherHorizon from './components/WeatherHorizon';
 import CaptainPortal from './components/CaptainPortal';
 import OperatorLoginForm from './components/OperatorLoginForm';
+import Magnet from './components/Magnet';
 
 
 
@@ -493,7 +494,7 @@ function App() {
       
       const data = await res.json();
       if (res.ok && data.success) {
-        alert(data.message || "Custom excursion successfully added to MongoDB!");
+        alert(data.message || "Custom excursion successfully added to DynamoDB!");
         setCustomTourName('');
         setCustomTourDesc('');
         setCustomTourPrice('50.0');
@@ -900,7 +901,7 @@ function App() {
         addLog(`✅ Booking updated and slots shifted successfully!`);
         setMessages((prev) => [...prev, { 
           role: 'model', 
-          text: "Respect, my friend! I have processed the change in MongoDB, updated your booking slots, and generated your new official travel receipt below. Pura vida! 🌴" 
+          text: "Respect, my friend! I have processed the change in DynamoDB, updated your booking slots, and generated your new official travel receipt below. Pura vida! 🌴" 
         }]);
         setShowItineraryModal(true);
       } else {
@@ -1470,7 +1471,7 @@ function App() {
                     left: '3px',
                     bottom: '3px',
                     width: 'calc(50% - 3px)',
-                    background: 'linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%)',
+                    background: 'var(--primary)',
                     borderRadius: '20px',
                     transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
                     transform: lang === 'en' ? 'translateX(0)' : 'translateX(100%)',
@@ -1591,7 +1592,7 @@ function App() {
                   borderRadius: '50%',
                   background: isRealMongo ? '#10b981' : 'var(--primary)'
                 }}></span>
-                {isRealMongo ? 'MONGO ATLAS LIVE' : 'LOCAL SANDBOX DB'}
+                {isRealMongo ? 'AWS DYNAMODB LIVE' : 'LOCAL SANDBOX DB'}
               </span>
               <button 
                 onClick={() => {
@@ -1797,7 +1798,12 @@ function App() {
                 e.currentTarget.style.color = 'var(--primary)';
               }}
             >
-              <span>Portal 🚀</span>
+              <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                Portal
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
+              </span>
             </button>
           </div>
         </div>
@@ -1810,7 +1816,7 @@ function App() {
           <div className="landing-hero">
             <h2 className="landing-tagline">Eco-Tourism Coordinator for Bocas del Toro</h2>
             <p className="landing-intro">
-              Moving beyond basic text chat. A dedicated local travel agent that actively manages schedules, monitors live weather conditions, automatically proposes indoor reschedules during storms, and commits verified transactions directly to MongoDB Atlas.
+              Moving beyond basic text chat. A dedicated local travel agent that actively manages schedules, monitors live weather conditions, automatically proposes indoor reschedules during storms, and commits verified transactions directly to Amazon DynamoDB.
             </p>
           </div>
 
@@ -1921,7 +1927,7 @@ function App() {
             }}>
               {/* Step 1: Hotel Operator Setup */}
               <div className="glass-card" style={{ padding: '24px', position: 'relative', display: 'flex', flexDirection: 'column', gap: '14px', background: 'var(--panel-bg)', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)' }}>
-                <div style={{ position: 'absolute', top: '-12px', left: '20px', background: 'linear-gradient(135deg, #3ecdc6, #0ea5e9)', color: '#0f172a', padding: '4px 12px', borderRadius: '12px', fontSize: '11px', fontWeight: '800', letterSpacing: '1px' }}>
+                <div style={{ position: 'absolute', top: '-12px', left: '20px', background: '#3ecdc6', color: '#000000', padding: '4px 12px', borderRadius: '12px', fontSize: '11px', fontWeight: '800', letterSpacing: '1px' }}>
                   STEP 1
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '4px' }}>
@@ -1944,7 +1950,7 @@ function App() {
 
               {/* Step 2: Boat Captain Mobile PWA */}
               <div className="glass-card" style={{ padding: '24px', position: 'relative', display: 'flex', flexDirection: 'column', gap: '14px', background: 'var(--panel-bg)', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)' }}>
-                <div style={{ position: 'absolute', top: '-12px', left: '20px', background: 'linear-gradient(135deg, #0ea5e9, #a855f7)', color: '#ffffff', padding: '4px 12px', borderRadius: '12px', fontSize: '11px', fontWeight: '800', letterSpacing: '1px' }}>
+                <div style={{ position: 'absolute', top: '-12px', left: '20px', background: '#0ea5e9', color: '#ffffff', padding: '4px 12px', borderRadius: '12px', fontSize: '11px', fontWeight: '800', letterSpacing: '1px' }}>
                   STEP 2
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '4px' }}>
@@ -1966,7 +1972,7 @@ function App() {
 
               {/* Step 3: Guest Mobile Companion */}
               <div className="glass-card" style={{ padding: '24px', position: 'relative', display: 'flex', flexDirection: 'column', gap: '14px', background: 'var(--panel-bg)', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)' }}>
-                <div style={{ position: 'absolute', top: '-12px', left: '20px', background: 'linear-gradient(135deg, #a855f7, #f59e0b)', color: '#ffffff', padding: '4px 12px', borderRadius: '12px', fontSize: '11px', fontWeight: '800', letterSpacing: '1px' }}>
+                <div style={{ position: 'absolute', top: '-12px', left: '20px', background: '#a855f7', color: '#ffffff', padding: '4px 12px', borderRadius: '12px', fontSize: '11px', fontWeight: '800', letterSpacing: '1px' }}>
                   STEP 3
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '4px' }}>
@@ -1989,7 +1995,7 @@ function App() {
 
               {/* Step 4: Closed-Loop Weather Swaps */}
               <div className="glass-card" style={{ padding: '24px', position: 'relative', display: 'flex', flexDirection: 'column', gap: '14px', background: 'var(--panel-bg)', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)' }}>
-                <div style={{ position: 'absolute', top: '-12px', left: '20px', background: 'linear-gradient(135deg, #f59e0b, #3ecdc6)', color: '#0f172a', padding: '4px 12px', borderRadius: '12px', fontSize: '11px', fontWeight: '800', letterSpacing: '1px' }}>
+                <div style={{ position: 'absolute', top: '-12px', left: '20px', background: '#f59e0b', color: '#000000', padding: '4px 12px', borderRadius: '12px', fontSize: '11px', fontWeight: '800', letterSpacing: '1px' }}>
                   STEP 4
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '4px' }}>
@@ -2063,16 +2069,23 @@ function App() {
                       <path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3" />
                     </svg>
                   </div>
-                  <div className="feature-title">Live MongoDB Transactions</div>
+                  <div className="feature-title">Live Amazon DynamoDB Transactions</div>
                 </div>
-                <div className="feature-desc">Transactions are safely committed back to MongoDB, accurately adjusting available slots and creating official itinerary receipts.</div>
+                <div className="feature-desc">Transactions are safely committed back to Amazon DynamoDB, accurately adjusting available slots and creating official itinerary receipts.</div>
               </div>
             </div>
           </div>
 
           {/* Interactive System Architecture Section */}
           <div className="landing-features" style={{ marginTop: '80px', borderTop: '1px solid var(--border-color)', paddingTop: '60px' }}>
-            <h3 className="section-title">🗺️ System Architecture & Developer Docs</h3>
+            <h3 className="section-title" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: 'middle' }}>
+                <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21" />
+                <line x1="9" y1="3" x2="9" y2="18" />
+                <line x1="15" y1="6" x2="15" y2="21" />
+              </svg>
+              System Architecture & Developer Docs
+            </h3>
             <p className="landing-intro" style={{ maxWidth: '750px', margin: '-20px auto 40px auto', fontSize: '0.95rem' }}>
               Explore our native Google Cloud multi-tenant SaaS integration. Click any layer on the left blueprint to inspect the endpoints, core AI agents, and underlying Model Context Protocol (MCP) tools in the right panel.
             </p>
@@ -2215,7 +2228,7 @@ function App() {
                   </div>
                 </div>
 
-                {/* Layer Card 5: MongoDB Persistence Layer */}
+                {/* Layer Card 5: Amazon DynamoDB Persistence Layer */}
                 <div 
                   className="glass-card" 
                   onClick={() => setArchActiveLayer('database')}
@@ -2238,8 +2251,8 @@ function App() {
                         </svg>
                       </div>
                       <div>
-                        <div style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-primary)' }}>5. MongoDB Persistence Layer</div>
-                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Atlas Collections & Stay State Engine</div>
+                        <div style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-primary)' }}>5. Amazon DynamoDB Persistence Layer</div>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>DynamoDB Tables & Stay State Engine</div>
                       </div>
                     </div>
                     <span style={{ fontSize: '0.7rem', fontWeight: 600, padding: '3px 8px', borderRadius: '10px', background: 'rgba(5, 150, 105, 0.1)', color: '#10b981' }}>
@@ -2275,22 +2288,27 @@ function App() {
                 {/* 1. All Summary view */}
                 {archActiveLayer === 'all' && (
                   <>
-                    <h4 style={{ fontSize: '1.25rem', fontFamily: 'var(--font-serif)', color: 'var(--text-primary)', margin: 0 }}>
-                      🌐 Platform Integration Blueprint
+                    <h4 style={{ fontSize: '1.25rem', fontFamily: 'var(--font-serif)', color: 'var(--text-primary)', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="2" y1="12" x2="22" y2="12" />
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                      </svg>
+                      Platform Integration Blueprint
                     </h4>
                     <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: '1.6', margin: 0 }}>
-                      IslandFlow shifts AI travel coordinators out of plain conversation models into an active, contextual stay manager. It binds React portals, FastAPI, Google's ADK, and MongoDB Atlas.
+                      IslandFlow shifts AI travel coordinators out of plain conversation models into an active, contextual stay manager. It binds React portals, FastAPI, Google's ADK, and Amazon DynamoDB.
                     </p>
                     <div style={{ borderLeft: '3px solid var(--primary)', paddingLeft: '14px', background: 'rgba(255,255,255,0.01)', borderRadius: '0 8px 8px 0', padding: '10px 14px' }}>
                       <div style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--primary)', marginBottom: '4px' }}>How data moves during weather shifts (Automated):</div>
                       <ol style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: 0, paddingLeft: '16px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
                         <li>OpenWeatherMap API or an IoT reef sensor transmits a live weather/swell alert (simulated in the Operator console for testing).</li>
-                        <li>FastAPI receives the weather/swell shift and automatically commits it to MongoDB.</li>
+                        <li>FastAPI receives the weather/swell shift and automatically commits it to Amazon DynamoDB.</li>
                         <li>The backend triggers an automated background check through the Google ADK model.</li>
                         <li>Gemini uses `check_weather` and `get_bookings` to scan for outdoor conflicts.</li>
                         <li>Finding a slot conflict, Gemini queries `get_tours` for indoor options.</li>
                         <li>Gemini creates a rescheduling swap payload, rendering a card in the chat.</li>
-                        <li>The guest approves the swap, triggering a live write back to Atlas.</li>
+                        <li>The guest approves the swap, triggering a live write back to Amazon DynamoDB.</li>
                       </ol>
                     </div>
                     <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
@@ -2304,7 +2322,7 @@ function App() {
                       </div>
                       <div style={{ flex: 1, padding: '10px', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', borderRadius: '8px' }}>
                         <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Partner Database</div>
-                        <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)' }}>MongoDB Atlas</div>
+                        <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)' }}>Amazon DynamoDB</div>
                       </div>
                     </div>
                   </>
@@ -2314,7 +2332,12 @@ function App() {
                 {archActiveLayer === 'frontend' && (
                   <>
                     <h4 style={{ fontSize: '1.25rem', fontFamily: 'var(--font-serif)', color: 'var(--text-primary)', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      💻 Client Interface Layer (Vite Web App)
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                        <line x1="8" y1="21" x2="16" y2="21" />
+                        <line x1="12" y1="17" x2="12" y2="21" />
+                      </svg>
+                      Client Interface Layer (Vite Web App)
                     </h4>
                     <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: '1.5', margin: 0 }}>
                       A high-fidelity client app composed of separate role portals and synchronization sub-views.
@@ -2336,11 +2359,15 @@ function App() {
                 {/* 3. FastAPI SaaS Gateway View */}
                 {archActiveLayer === 'gateway' && (
                   <>
-                    <h4 style={{ fontSize: '1.25rem', fontFamily: 'var(--font-serif)', color: 'var(--text-primary)', margin: 0 }}>
-                      ⚙️ FastAPI SaaS Routing Gateway
+                    <h4 style={{ fontSize: '1.25rem', fontFamily: 'var(--font-serif)', color: 'var(--text-primary)', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                        <circle cx="12" cy="12" r="3" />
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                      </svg>
+                      FastAPI SaaS Routing Gateway
                     </h4>
                     <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: '1.5', margin: 0 }}>
-                      Connects client web layers with MongoDB data layers and our ADK reasoning loops.
+                      Connects client web layers with Amazon DynamoDB data layers and our ADK reasoning loops.
                     </p>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.75rem', marginTop: '4px' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '6px 10px', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', borderRadius: '6px' }}>
@@ -2375,8 +2402,20 @@ function App() {
                 {/* 4. Google ADK Agent Core View */}
                 {archActiveLayer === 'brain' && (
                   <>
-                    <h4 style={{ fontSize: '1.25rem', fontFamily: 'var(--font-serif)', color: 'var(--text-primary)', margin: 0 }}>
-                      🧠 Google Cloud Agent Development Kit (ADK) Core
+                    <h4 style={{ fontSize: '1.25rem', fontFamily: 'var(--font-serif)', color: 'var(--text-primary)', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                        <rect x="4" y="4" width="16" height="16" rx="2" />
+                        <rect x="9" y="9" width="6" height="6" />
+                        <line x1="9" y1="1" x2="9" y2="4" />
+                        <line x1="15" y1="1" x2="15" y2="4" />
+                        <line x1="9" y1="20" x2="9" y2="23" />
+                        <line x1="15" y1="20" x2="15" y2="23" />
+                        <line x1="20" y1="9" x2="23" y2="9" />
+                        <line x1="20" y1="15" x2="23" y2="15" />
+                        <line x1="1" y1="9" x2="4" y2="9" />
+                        <line x1="1" y1="15" x2="4" y2="15" />
+                      </svg>
+                      Google Cloud Agent Development Kit (ADK) Core
                     </h4>
                     <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: '1.5', margin: 0 }}>
                       IslandFlow runs natively on the Google ADK ecosystem, removing any reliance on competitive third-party orchestrators.
@@ -2398,8 +2437,11 @@ function App() {
                 {/* 5. Specialized MCP Tools View */}
                 {archActiveLayer === 'mcp' && (
                   <>
-                    <h4 style={{ fontSize: '1.15rem', fontFamily: 'var(--font-serif)', color: 'var(--text-primary)', margin: 0 }}>
-                      🛠️ Custom Model Context Protocol (MCP) Tools Explorer
+                    <h4 style={{ fontSize: '1.15rem', fontFamily: 'var(--font-serif)', color: 'var(--text-primary)', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94-7.94L11 3.96l-3.5-3.5L3.96 4 1.36 1.4a6 6 0 0 0 7.94 7.94l3.77-3.77a1 1 0 0 0 0-1.4L11.47 5.7a1 1 0 0 0-1.4 0l-3.77 3.77a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0L14.7 6.3z" />
+                      </svg>
+                      Custom Model Context Protocol (MCP) Tools Explorer
                     </h4>
                     <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', margin: 0 }}>
                       Select an MCP tool below to inspect its detailed parameters and business logic inside our FastMCP environment.
@@ -2453,7 +2495,7 @@ function App() {
                         {selectedToolId === 'get_tours' && (
                           <>
                             <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}><strong style={{ color: 'var(--text-primary)' }}>Parameters:</strong> <code>guest_id: str</code></div>
-                            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}><strong style={{ color: 'var(--text-primary)' }}>Business Logic:</strong> Fetches all available resort excursions from MongoDB, filtering out expired dates and tours that the specific guest has already completed.</div>
+                            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}><strong style={{ color: 'var(--text-primary)' }}>Business Logic:</strong> Fetches all available resort excursions from Amazon DynamoDB, filtering out expired dates and tours that the specific guest has already completed.</div>
                           </>
                         )}
                         {selectedToolId === 'get_bookings' && (
@@ -2471,7 +2513,7 @@ function App() {
                         {selectedToolId === 'add_booking' && (
                           <>
                             <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}><strong style={{ color: 'var(--text-primary)' }}>Parameters:</strong> <code>guest_id: str, tour_id: str, date: str, slot: str</code></div>
-                            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}><strong style={{ color: 'var(--text-primary)' }}>Business Logic:</strong> Adds a new excursion item into Atlas, reducing the excursion capacity securely.</div>
+                            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}><strong style={{ color: 'var(--text-primary)' }}>Business Logic:</strong> Adds a new excursion item into DynamoDB, reducing the excursion capacity securely.</div>
                           </>
                         )}
                         {selectedToolId === 'reschedule_booking' && (
@@ -2483,7 +2525,7 @@ function App() {
                         {selectedToolId === 'cancel_booking' && (
                           <>
                             <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}><strong style={{ color: 'var(--text-primary)' }}>Parameters:</strong> <code>booking_id: str</code></div>
-                            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}><strong style={{ color: 'var(--text-primary)' }}>Business Logic:</strong> Removes the target booking document from Atlas, releases the reserved spot, and fires cancellation tasks to local captains and operators.</div>
+                            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}><strong style={{ color: 'var(--text-primary)' }}>Business Logic:</strong> Removes the target booking document from DynamoDB, releases the reserved spot, and fires cancellation tasks to local captains and operators.</div>
                           </>
                         )}
                         {selectedToolId === 'update_guest_profile' && (
@@ -2509,14 +2551,19 @@ function App() {
                   </>
                 )}
 
-                {/* 6. MongoDB View */}
+                {/* 6. Amazon DynamoDB View */}
                 {archActiveLayer === 'database' && (
                   <>
-                    <h4 style={{ fontSize: '1.25rem', fontFamily: 'var(--font-serif)', color: 'var(--text-primary)', margin: 0 }}>
-                      🍃 MongoDB Persistence Layer
+                    <h4 style={{ fontSize: '1.25rem', fontFamily: 'var(--font-serif)', color: 'var(--text-primary)', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                        <ellipse cx="12" cy="5" rx="9" ry="3" />
+                        <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+                        <path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3" />
+                      </svg>
+                      Amazon DynamoDB Persistence Layer
                     </h4>
                     <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: '1.5', margin: 0 }}>
-                      An Atlas-backed persistent structure tracking resort resources, itineraries, and tenant color presets.
+                      A DynamoDB-backed persistent structure tracking resort resources, itineraries, and tenant color presets.
                     </p>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.78rem', marginTop: '4px' }}>
                       <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', padding: '8px 12px', borderRadius: '6px' }}>
@@ -2546,28 +2593,49 @@ function App() {
         <div className={`guest-portal-wrapper show-${mobileTab}`} style={{ width: '100%' }}>
           {/* Mobile Glass Tabs */}
           <div className="guest-mobile-tabs">
-            <button 
-              className={`guest-mobile-tab-btn ${mobileTab === 'chat' ? 'active' : ''}`}
-              onClick={() => setMobileTab('chat')}
-            >
-              💬 {lang === 'es' ? 'Asistente Chat' : 'Chat Concierge'}
-            </button>
-            <button 
-              className={`guest-mobile-tab-btn ${mobileTab === 'itinerary' ? 'active' : ''}`}
-              onClick={() => setMobileTab('itinerary')}
-            >
-              📅 {lang === 'es' ? 'Mi Itinerario' : 'My Itinerary'}
-            </button>
+            <Magnet style={{ flex: 1, display: 'flex' }} strength={12} padding={25}>
+              <button 
+                className={`guest-mobile-tab-btn ${mobileTab === 'chat' ? 'active' : ''}`}
+                onClick={() => setMobileTab('chat')}
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', width: '100%' }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                </svg>
+                {lang === 'es' ? 'Asistente Chat' : 'Chat Concierge'}
+              </button>
+            </Magnet>
+            <Magnet style={{ flex: 1, display: 'flex' }} strength={12} padding={25}>
+              <button 
+                className={`guest-mobile-tab-btn ${mobileTab === 'itinerary' ? 'active' : ''}`}
+                onClick={() => setMobileTab('itinerary')}
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', width: '100%' }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                  <line x1="16" y1="2" x2="16" y2="6" />
+                  <line x1="8" y1="2" x2="8" y2="6" />
+                  <line x1="3" y1="10" x2="21" y2="10" />
+                </svg>
+                {lang === 'es' ? 'Mi Itinerario' : 'My Itinerary'}
+              </button>
+            </Magnet>
           </div>
 
           <div className="main-grid">
             <div className="guest-col-schedule" style={{ display: 'flex', flexDirection: 'column', gap: '24px', minWidth: 0, viewTransitionName: 'schedule-view' }}>
-              <WeatherHorizon logistics={logistics} lang={lang} />
-              <ScheduleView bookings={bookings} tours={tours} logistics={logistics} guestId={guestId} lang={lang} />
-              <ItineraryDoc itineraryMarkdown={itineraryMarkdown} guestId={guestId} />
+              <div className="fade-in-entry stagger-1">
+                <WeatherHorizon logistics={logistics} lang={lang} />
+              </div>
+              <div className="fade-in-entry stagger-2">
+                <ScheduleView bookings={bookings} tours={tours} logistics={logistics} guestId={guestId} lang={lang} />
+              </div>
+              <div className="fade-in-entry stagger-3">
+                <ItineraryDoc itineraryMarkdown={itineraryMarkdown} guestId={guestId} />
+              </div>
               
               {/* Urgent Human Front Desk Emergency Assistance Card */}
-              <div className="glass-card" style={{ padding: '18px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', flexShrink: 0, border: '1px solid rgba(239, 68, 68, 0.15)', boxShadow: 'var(--shadow-sm)' }}>
+              <div className="glass-card fade-in-entry stagger-4" style={{ padding: '18px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', flexShrink: 0, border: '1px solid rgba(239, 68, 68, 0.15)', boxShadow: 'var(--shadow-sm)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
                   <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: 'rgba(239, 68, 68, 0.08)', border: '1px solid rgba(239, 68, 68, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ef4444', flexShrink: 0 }}>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -2608,7 +2676,7 @@ function App() {
                 </a>
               </div>
             </div>
-            <div className="guest-col-chat" style={{ viewTransitionName: 'chat-widget', position: 'sticky', top: '24px', alignSelf: 'start' }}>
+            <div className="guest-col-chat fade-in-entry stagger-5" style={{ viewTransitionName: 'chat-widget', position: 'sticky', top: '24px', alignSelf: 'start' }}>
               <ChatWidget 
                 messages={messages} 
                 onSendMessage={handleSendMessage} 
@@ -2626,7 +2694,7 @@ function App() {
 
       {/* Render Operator Console View */}
       {view === 'operator' && !operatorHotelId && (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh', padding: '24px' }}>
+        <div className="fade-in-entry stagger-1" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh', padding: '24px' }}>
           <OperatorLoginForm 
             onLoginSuccess={(hotelId, hotelName) => {
               transitionState(() => {
@@ -2643,11 +2711,15 @@ function App() {
       {view === 'operator' && operatorHotelId && (
         <div className="main-grid">
           <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', minWidth: 0, viewTransitionName: 'schedule-view' }}>
-            <WeatherHorizon logistics={logistics} lang={lang} />
-            <ScheduleView bookings={bookings} tours={tours} logistics={logistics} guestId={guestId} lang={lang} />
+            <div className="fade-in-entry stagger-1">
+              <WeatherHorizon logistics={logistics} lang={lang} />
+            </div>
+            <div className="fade-in-entry stagger-2">
+              <ScheduleView bookings={bookings} tours={tours} logistics={logistics} guestId={guestId} lang={lang} />
+            </div>
             
             {/* Onboarding Welcome Flyer Generator */}
-            <div className="glass-card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div className="glass-card fade-in-entry stagger-3" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <div>
                 <h3 style={{ fontSize: '1.1rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-primary)' }}>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -2669,7 +2741,7 @@ function App() {
                     onClick={() => setFlyerDropdownOpen(!flyerDropdownOpen)}
                     className={`custom-dropdown-trigger ${flyerDropdownOpen ? 'active' : ''}`}
                     style={{
-                      background: 'var(--slot-bg)',
+                      background: 'var(--bg-color, #ffffff)',
                       borderColor: 'var(--border-color)',
                       color: 'var(--text-primary)',
                       display: 'flex',
@@ -2822,7 +2894,7 @@ function App() {
                     {/* The Printable Container */}
                     <div className="print-welcome-card-area glass-card" style={{
                       padding: '24px',
-                      background: 'linear-gradient(135deg, hsla(210, 32%, 11%, 0.4), hsla(210, 32%, 7%, 0.4))',
+                      background: 'var(--panel-bg, #0c0c0f)',
                       border: '1px dashed var(--primary)',
                       borderRadius: '12px',
                       textAlign: 'center',
@@ -2862,27 +2934,29 @@ function App() {
                       </span>
                     </div>
 
-                    <button 
-                      className="btn-primary" 
-                      onClick={() => {
-                        window.print();
-                      }}
-                      style={{ padding: '10px 16px', display: 'inline-flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}
-                    >
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                        <polyline points="6 9 6 2 18 2 18 9" />
-                        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
-                        <rect x="6" y="14" width="12" height="8" />
-                      </svg>
-                      Print Welcome Card for {selectedGuest.name}
-                    </button>
+                    <Magnet style={{ width: '100%', display: 'block' }} strength={12} padding={25}>
+                      <button 
+                        className="btn-primary" 
+                        onClick={() => {
+                          window.print();
+                        }}
+                        style={{ padding: '10px 16px', display: 'inline-flex', alignItems: 'center', gap: '8px', justifyContent: 'center', width: '100%' }}
+                      >
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="6 9 6 2 18 2 18 9" />
+                          <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+                          <rect x="6" y="14" width="12" height="8" />
+                        </svg>
+                        Print Welcome Card for {selectedGuest.name}
+                      </button>
+                    </Magnet>
                   </div>
                 );
               })()}
             </div>
 
             {/* Boat Captain PWA Onboarding Cards */}
-            <div className="glass-card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div className="glass-card fade-in-entry stagger-4" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <div>
                 <h3 style={{ fontSize: '1.1rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-primary)' }}>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -2901,13 +2975,14 @@ function App() {
                   value={onboardingCaptainId}
                   onChange={(e) => setOnboardingCaptainId(e.target.value)}
                   style={{
-                    background: 'var(--slot-bg)',
+                    background: 'var(--bg-color, #ffffff)',
                     border: '1px solid var(--border-color)',
                     color: 'var(--text-primary)',
                     borderRadius: '8px',
                     padding: '8px 12px',
                     fontSize: '13px',
                     outline: 'none',
+                    colorScheme: 'light',
                     cursor: 'pointer'
                   }}
                 >
@@ -2936,8 +3011,8 @@ function App() {
                     {/* The Printable Captain Card */}
                     <div className="print-welcome-card-area glass-card" style={{
                       padding: '24px',
-                      background: 'linear-gradient(135deg, rgba(14, 165, 233, 0.05), rgba(168, 85, 247, 0.05))',
-                      border: '1px dashed #0ea5e9',
+                      background: 'var(--panel-bg, #0c0c0f)',
+                      border: '1px dashed var(--primary)',
                       borderRadius: '12px',
                       textAlign: 'center',
                       display: 'flex',
@@ -3013,20 +3088,22 @@ function App() {
                     </div>
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%' }}>
-                      <button 
-                        className="btn-primary" 
-                        onClick={() => {
-                          window.print();
-                        }}
-                        style={{ padding: '10px 16px', display: 'inline-flex', alignItems: 'center', gap: '8px', justifyContent: 'center', background: 'linear-gradient(135deg, #0ea5e9, #a855f7)', border: 'none', width: '100%' }}
-                      >
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                          <polyline points="6 9 6 2 18 2 18 9" />
-                          <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
-                          <rect x="6" y="14" width="12" height="8" />
-                        </svg>
-                        Print Setup Card for {selectedCaptain.name}
-                      </button>
+                      <Magnet style={{ width: '100%', display: 'block' }} strength={12} padding={25}>
+                        <button 
+                          className="btn-primary" 
+                          onClick={() => {
+                            window.print();
+                          }}
+                          style={{ padding: '10px 16px', display: 'inline-flex', alignItems: 'center', gap: '8px', justifyContent: 'center', background: 'var(--primary)', color: 'var(--primary-btn-text, #000000)', border: 'none', width: '100%', borderRadius: '8px', fontWeight: 650 }}
+                        >
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="6 9 6 2 18 2 18 9" />
+                            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+                            <rect x="6" y="14" width="12" height="8" />
+                          </svg>
+                          Print Setup Card for {selectedCaptain.name}
+                        </button>
+                      </Magnet>
 
                       {/* Dynamic Digital Onboarding Dispatch Tools (No Paper Needed!) */}
                       <div style={{
@@ -3135,7 +3212,7 @@ function App() {
             </div>
 
             {/* Active Itinerary Bookings & Boat Captains Assignment */}
-            <div className="glass-card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div className="glass-card fade-in-entry stagger-5" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <div>
                 <h3 style={{ fontSize: '1.1rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-primary)' }}>
                   Boat Captain Assignments
@@ -3232,16 +3309,18 @@ function App() {
             </div>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', viewTransitionName: 'control-panel' }}>
-            <ControlPanel 
-              logistics={logistics} 
-              onSimulate={handleSimulate} 
-              onReset={handleReset} 
-              agentLogs={agentLogs} 
-              loading={loading}
-            />
+            <div className="fade-in-entry stagger-6">
+              <ControlPanel 
+                logistics={logistics} 
+                onSimulate={handleSimulate} 
+                onReset={handleReset} 
+                agentLogs={agentLogs} 
+                loading={loading}
+              />
+            </div>
 
             {/* SaaS B2B Product Analytics & AWS Telemetry KPI Dashboard */}
-            <div className="glass-card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div className="glass-card fade-in-entry stagger-7" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px' }}>
                   <h3 style={{ fontSize: '1.1rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-primary)', margin: 0 }}>
@@ -3487,8 +3566,8 @@ function App() {
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px', marginTop: '4px' }}>
                   
                   {/* Step 1 */}
-                  <div style={{ background: 'rgba(0, 0, 0, 0.2)', border: '1px solid rgba(255,255,255,0.03)', borderRadius: '12px', padding: '16px', display: 'flex', flexDirection: 'column', gap: '10px', position: 'relative' }}>
-                    <div style={{ position: 'absolute', top: '12px', right: '12px', fontSize: '1.5rem', fontWeight: 900, color: 'rgba(255,255,255,0.03)', fontFamily: 'var(--font-serif)' }}>01</div>
+                  <div style={{ background: 'var(--slot-bg, rgba(255, 255, 255, 0.5))', border: '1px solid var(--border-color)', borderRadius: '12px', padding: '16px', display: 'flex', flexDirection: 'column', gap: '10px', position: 'relative', transition: 'all 0.2s ease' }}>
+                    <div style={{ position: 'absolute', top: '12px', right: '12px', fontSize: '1.5rem', fontWeight: 900, color: 'var(--border-color)', opacity: 0.35, fontFamily: 'var(--font-serif)' }}>01</div>
                     <div style={{ color: 'var(--primary)', background: 'var(--primary-glow)', width: '36px', height: '36px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
@@ -3504,8 +3583,8 @@ function App() {
                   </div>
 
                   {/* Step 2 */}
-                  <div style={{ background: 'rgba(0, 0, 0, 0.2)', border: '1px solid rgba(255,255,255,0.03)', borderRadius: '12px', padding: '16px', display: 'flex', flexDirection: 'column', gap: '10px', position: 'relative' }}>
-                    <div style={{ position: 'absolute', top: '12px', right: '12px', fontSize: '1.5rem', fontWeight: 900, color: 'rgba(255,255,255,0.03)', fontFamily: 'var(--font-serif)' }}>02</div>
+                  <div style={{ background: 'var(--slot-bg, rgba(255, 255, 255, 0.5))', border: '1px solid var(--border-color)', borderRadius: '12px', padding: '16px', display: 'flex', flexDirection: 'column', gap: '10px', position: 'relative', transition: 'all 0.2s ease' }}>
+                    <div style={{ position: 'absolute', top: '12px', right: '12px', fontSize: '1.5rem', fontWeight: 900, color: 'var(--border-color)', opacity: 0.35, fontFamily: 'var(--font-serif)' }}>02</div>
                     <div style={{ color: 'var(--primary)', background: 'var(--primary-glow)', width: '36px', height: '36px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                         <rect x="3" y="4" width="18" height="12" rx="2" />
@@ -3521,8 +3600,8 @@ function App() {
                   </div>
 
                   {/* Step 3 */}
-                  <div style={{ background: 'rgba(0, 0, 0, 0.2)', border: '1px solid rgba(255,255,255,0.03)', borderRadius: '12px', padding: '16px', display: 'flex', flexDirection: 'column', gap: '10px', position: 'relative' }}>
-                    <div style={{ position: 'absolute', top: '12px', right: '12px', fontSize: '1.5rem', fontWeight: 900, color: 'rgba(255,255,255,0.03)', fontFamily: 'var(--font-serif)' }}>03</div>
+                  <div style={{ background: 'var(--slot-bg, rgba(255, 255, 255, 0.5))', border: '1px solid var(--border-color)', borderRadius: '12px', padding: '16px', display: 'flex', flexDirection: 'column', gap: '10px', position: 'relative', transition: 'all 0.2s ease' }}>
+                    <div style={{ position: 'absolute', top: '12px', right: '12px', fontSize: '1.5rem', fontWeight: 900, color: 'var(--border-color)', opacity: 0.35, fontFamily: 'var(--font-serif)' }}>03</div>
                     <div style={{ color: 'var(--primary)', background: 'var(--primary-glow)', width: '36px', height: '36px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                         <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
@@ -3538,8 +3617,8 @@ function App() {
                   </div>
 
                   {/* Step 4 */}
-                  <div style={{ background: 'rgba(0, 0, 0, 0.2)', border: '1px solid rgba(255,255,255,0.03)', borderRadius: '12px', padding: '16px', display: 'flex', flexDirection: 'column', gap: '10px', position: 'relative' }}>
-                    <div style={{ position: 'absolute', top: '12px', right: '12px', fontSize: '1.5rem', fontWeight: 900, color: 'rgba(255,255,255,0.03)', fontFamily: 'var(--font-serif)' }}>04</div>
+                  <div style={{ background: 'var(--slot-bg, rgba(255, 255, 255, 0.5))', border: '1px solid var(--border-color)', borderRadius: '12px', padding: '16px', display: 'flex', flexDirection: 'column', gap: '10px', position: 'relative', transition: 'all 0.2s ease' }}>
+                    <div style={{ position: 'absolute', top: '12px', right: '12px', fontSize: '1.5rem', fontWeight: 900, color: 'var(--border-color)', opacity: 0.35, fontFamily: 'var(--font-serif)' }}>04</div>
                     <div style={{ color: 'var(--primary)', background: 'var(--primary-glow)', width: '36px', height: '36px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M12 22c1-4 1-8 0-12" />
@@ -3575,7 +3654,7 @@ function App() {
                     Manual Guest Check-In Form
                   </h3>
                   <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', margin: 0 }}>
-                    For local overwater lodges, boutique stays, and tour operators with manual reservation books. Register check-ins live into your MongoDB Atlas cluster.
+                    For local overwater lodges, boutique stays, and tour operators with manual reservation books. Register check-ins live into your Amazon DynamoDB cluster.
                   </p>
                 </div>
 
@@ -3594,14 +3673,25 @@ function App() {
                         value={manualName}
                         onChange={(e) => setManualName(e.target.value)}
                         style={{
-                          background: 'rgba(15, 23, 42, 0.4)',
+                          background: 'var(--bg-color, #ffffff)',
                           border: '1px solid var(--border-color)',
-                          borderRadius: '8px',
+                          borderRadius: '12px',
                           color: 'var(--text-primary)',
                           padding: '10px 12px',
                           fontSize: '0.88rem',
                           outline: 'none',
-                          width: '100%'
+                          width: '100%',
+                          transition: 'all 0.25s ease'
+                        }}
+                        onFocus={(e) => {
+                          e.target.style.borderColor = 'var(--primary)';
+                          e.target.style.background = '#ffffff';
+                          e.target.style.boxShadow = '0 0 0 2px var(--primary-glow)';
+                        }}
+                        onBlur={(e) => {
+                          e.target.style.borderColor = 'var(--border-color)';
+                          e.target.style.background = 'var(--bg-color, #ffffff)';
+                          e.target.style.boxShadow = 'none';
                         }}
                       />
                     </div>
@@ -3616,14 +3706,25 @@ function App() {
                         value={manualPhone}
                         onChange={(e) => setManualPhone(e.target.value)}
                         style={{
-                          background: 'rgba(15, 23, 42, 0.4)',
+                          background: 'var(--bg-color, #ffffff)',
                           border: '1px solid var(--border-color)',
-                          borderRadius: '8px',
+                          borderRadius: '12px',
                           color: 'var(--text-primary)',
                           padding: '10px 12px',
                           fontSize: '0.88rem',
                           outline: 'none',
-                          width: '100%'
+                          width: '100%',
+                          transition: 'all 0.25s ease'
+                        }}
+                        onFocus={(e) => {
+                          e.target.style.borderColor = 'var(--primary)';
+                          e.target.style.background = '#ffffff';
+                          e.target.style.boxShadow = '0 0 0 2px var(--primary-glow)';
+                        }}
+                        onBlur={(e) => {
+                          e.target.style.borderColor = 'var(--border-color)';
+                          e.target.style.background = 'var(--bg-color, #ffffff)';
+                          e.target.style.boxShadow = 'none';
                         }}
                       />
                     </div>
@@ -3654,7 +3755,7 @@ function App() {
                             key={hotel._id}
                             onClick={() => setManualHotel(hotel._id)}
                             style={{
-                              background: isSelected ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.2)',
+                              background: isSelected ? 'var(--slot-bg, rgba(255, 255, 255, 0.65))' : 'var(--bg-card-nested, rgba(0, 0, 0, 0.03))',
                               border: '2px solid',
                               borderColor: isSelected ? accentColor : 'var(--border-color)',
                               borderRadius: '12px',
@@ -3665,7 +3766,7 @@ function App() {
                               flexDirection: 'column',
                               gap: '8px',
                               position: 'relative',
-                              boxShadow: 'none',
+                              boxShadow: isSelected ? `0 4px 14px ${previewGlow}` : 'none',
                               transform: isSelected ? 'scale(1.02)' : 'none'
                             }}
                           >
@@ -3674,9 +3775,9 @@ function App() {
                                 width: '28px',
                                 height: '28px',
                                 borderRadius: '50%',
-                                background: 'rgba(0,0,0,0.3)',
+                                background: 'var(--slot-empty-bg, rgba(255, 255, 255, 0.35))',
                                 border: '1.5px solid',
-                                borderColor: isSelected ? accentColor : 'rgba(255,255,255,0.1)',
+                                borderColor: isSelected ? accentColor : 'var(--border-color)',
                                 boxShadow: 'none',
                                 display: 'flex',
                                 alignItems: 'center',
@@ -3775,14 +3876,26 @@ function App() {
                         value={manualStayStart}
                         onChange={(e) => setManualStayStart(e.target.value)}
                         style={{
-                          background: 'rgba(15, 23, 42, 0.4)',
+                          background: 'var(--bg-color, #ffffff)',
                           border: '1px solid var(--border-color)',
-                          borderRadius: '8px',
+                          borderRadius: '12px',
                           color: 'var(--text-primary)',
                           padding: '10px 12px',
                           fontSize: '0.88rem',
                           outline: 'none',
-                          width: '100%'
+                          width: '100%',
+                          colorScheme: 'light',
+                          transition: 'all 0.25s ease'
+                        }}
+                        onFocus={(e) => {
+                          e.target.style.borderColor = 'var(--primary)';
+                          e.target.style.background = '#ffffff';
+                          e.target.style.boxShadow = '0 0 0 2px var(--primary-glow)';
+                        }}
+                        onBlur={(e) => {
+                          e.target.style.borderColor = 'var(--border-color)';
+                          e.target.style.background = 'var(--bg-color, #ffffff)';
+                          e.target.style.boxShadow = 'none';
                         }}
                       />
                     </div>
@@ -3795,14 +3908,26 @@ function App() {
                         value={manualStayEnd}
                         onChange={(e) => setManualStayEnd(e.target.value)}
                         style={{
-                          background: 'rgba(15, 23, 42, 0.4)',
+                          background: 'var(--bg-color, #ffffff)',
                           border: '1px solid var(--border-color)',
-                          borderRadius: '8px',
+                          borderRadius: '12px',
                           color: 'var(--text-primary)',
                           padding: '10px 12px',
                           fontSize: '0.88rem',
                           outline: 'none',
-                          width: '100%'
+                          width: '100%',
+                          colorScheme: 'light',
+                          transition: 'all 0.25s ease'
+                        }}
+                        onFocus={(e) => {
+                          e.target.style.borderColor = 'var(--primary)';
+                          e.target.style.background = '#ffffff';
+                          e.target.style.boxShadow = '0 0 0 2px var(--primary-glow)';
+                        }}
+                        onBlur={(e) => {
+                          e.target.style.borderColor = 'var(--border-color)';
+                          e.target.style.background = 'var(--bg-color, #ffffff)';
+                          e.target.style.boxShadow = 'none';
                         }}
                       />
                     </div>
@@ -3828,10 +3953,10 @@ function App() {
                               }
                             }}
                             style={{
-                              background: isSelected ? 'var(--primary)' : 'rgba(255,255,255,0.03)',
+                              background: isSelected ? 'var(--primary)' : 'var(--bg-color, #ffffff)',
                               border: '1px solid',
                               borderColor: isSelected ? 'var(--primary)' : 'var(--border-color)',
-                              color: isSelected ? '#0f172a' : 'var(--text-muted)',
+                              color: isSelected ? 'var(--primary-btn-text, #ffffff)' : 'var(--text-primary)',
                               padding: '6px 12px',
                               borderRadius: '16px',
                               fontSize: '0.74rem',
@@ -3859,16 +3984,27 @@ function App() {
                       onChange={(e) => setManualNotes(e.target.value)}
                       rows={2}
                       style={{
-                        background: 'rgba(15, 23, 42, 0.4)',
+                        background: 'var(--bg-color, #ffffff)',
                         border: '1px solid var(--border-color)',
-                        borderRadius: '8px',
+                        borderRadius: '12px',
                         color: 'var(--text-primary)',
                         padding: '10px 12px',
                         fontSize: '0.88rem',
                         outline: 'none',
                         width: '100%',
                         resize: 'none',
-                        fontFamily: 'var(--font-sans)'
+                        fontFamily: 'var(--font-sans)',
+                        transition: 'all 0.25s ease'
+                      }}
+                      onFocus={(e) => {
+                        e.target.style.borderColor = 'var(--primary)';
+                        e.target.style.background = '#ffffff';
+                        e.target.style.boxShadow = '0 0 0 2px var(--primary-glow)';
+                      }}
+                      onBlur={(e) => {
+                        e.target.style.borderColor = 'var(--border-color)';
+                        e.target.style.background = 'var(--bg-color, #ffffff)';
+                        e.target.style.boxShadow = 'none';
                       }}
                     />
                   </div>
@@ -3884,7 +4020,7 @@ function App() {
                       border: '1px solid var(--border-color)',
                       padding: '10px',
                       borderRadius: '8px',
-                      background: 'rgba(0, 0, 0, 0.15)',
+                      background: 'var(--bg-card-nested, rgba(0, 0, 0, 0.03))',
                       display: 'flex',
                       flexDirection: 'column',
                       gap: '8px'
@@ -3893,7 +4029,7 @@ function App() {
                         const isChecked = manualBookings.some(b => b.tour_id === tour._id);
                         const bookingDetail = manualBookings.find(b => b.tour_id === tour._id);
                         return (
-                          <div key={tour._id} style={{ display: 'flex', flexDirection: 'column', gap: '6px', borderBottom: '1px solid rgba(255,255,255,0.03)', paddingBottom: '8px' }}>
+                          <div key={tour._id} style={{ display: 'flex', flexDirection: 'column', gap: '6px', borderBottom: '1px solid var(--border-color)', paddingBottom: '8px' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                               <input 
                                 type="checkbox"
@@ -3907,7 +4043,7 @@ function App() {
                                     
                                     let nextDate = manualStayStart;
                                     let nextSlot = tour.slots?.[0] || 'morning';
-
+ 
                                     if (manualBookings.length > 0) {
                                       // Sort existing bookings chronologically
                                       const sortedBookings = [...manualBookings].sort((a, b) => {
@@ -3948,7 +4084,7 @@ function App() {
                                         nextSlot = sortedTourSlots[0] || 'morning';
                                       }
                                     }
-
+ 
                                     setManualBookings(prev => [...prev, {
                                       tour_id: tour._id,
                                       date: nextDate,
@@ -3966,9 +4102,9 @@ function App() {
                                 <span style={{ color: 'var(--primary)', fontWeight: 600 }}>${tour.price}</span>
                               </label>
                             </div>
-
+ 
                             {isChecked && bookingDetail && (
-                              <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '8px', marginLeft: '22px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', padding: '8px', borderRadius: '6px' }}>
+                              <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '8px', marginLeft: '22px', background: 'var(--slot-bg, rgba(255,255,255,0.5))', border: '1px solid var(--border-color)', padding: '8px', borderRadius: '6px' }}>
                                 <div>
                                   <label style={{ fontSize: '0.68rem', color: 'var(--text-muted)', display: 'block', marginBottom: '2px' }}>Excursion Date</label>
                                   <input 
@@ -3981,12 +4117,13 @@ function App() {
                                       setManualBookings(prev => prev.map(b => b.tour_id === tour._id ? { ...b, date: dVal } : b));
                                     }}
                                     style={{
-                                      background: '#090d16',
-                                      border: '1px solid rgba(255,255,255,0.08)',
+                                      background: 'var(--bg-color, hsla(38, 30%, 98%, 1))',
+                                      border: '1px solid var(--border-color)',
                                       borderRadius: '4px',
                                       color: 'var(--text-primary)',
                                       padding: '4px 6px',
                                       fontSize: '0.74rem',
+                                      colorScheme: 'light',
                                       width: '100%'
                                     }}
                                   />
@@ -4000,8 +4137,8 @@ function App() {
                                       setManualBookings(prev => prev.map(b => b.tour_id === tour._id ? { ...b, slot: sVal } : b));
                                     }}
                                     style={{
-                                      background: '#090d16',
-                                      border: '1px solid rgba(255,255,255,0.08)',
+                                      background: 'var(--bg-color, hsla(38, 30%, 98%, 1))',
+                                      border: '1px solid var(--border-color)',
                                       borderRadius: '4px',
                                       color: 'var(--text-primary)',
                                       padding: '4px 6px',
@@ -4147,45 +4284,51 @@ function App() {
                     </div>
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '4px' }}>
-                      <button 
-                        onClick={() => {
-                          const url = successGuest.secure_token 
-                            ? `${window.location.origin}/?token=${successGuest.secure_token}`
-                            : `${window.location.origin}/?guest_id=${successGuest.guest_id}&secure=true`;
-                          window.open(url, '_blank');
-                        }}
-                        style={{
-                          background: 'var(--primary)',
-                          color: '#000',
-                          border: 'none',
-                          padding: '12px',
-                          borderRadius: '8px',
-                          fontSize: '0.88rem',
-                          fontWeight: 700,
-                          cursor: 'pointer',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          gap: '8px',
-                          boxShadow: '0 4px 14px rgba(0,0,0,0.3)',
-                          transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)'
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.transform = 'translateY(-1px)';
-                          e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.4)';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.transform = 'translateY(0)';
-                          e.currentTarget.style.boxShadow = '0 4px 14px rgba(0,0,0,0.3)';
-                        }}
-                      >
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                          <polyline points="15 3 21 3 21 9" />
-                          <line x1="10" y1="14" x2="21" y2="3" />
-                        </svg>
-                        Launch Isolated Guest Portal (New Tab) 🚀
-                      </button>
+                      <Magnet style={{ width: '100%', display: 'block' }} strength={15} padding={35}>
+                        <button 
+                          onClick={() => {
+                            const url = successGuest.secure_token 
+                              ? `${window.location.origin}/?token=${successGuest.secure_token}`
+                              : `${window.location.origin}/?guest_id=${successGuest.guest_id}&secure=true`;
+                            window.open(url, '_blank');
+                          }}
+                          style={{
+                            background: 'var(--primary)',
+                            color: '#000',
+                            border: 'none',
+                            padding: '12px',
+                            borderRadius: '8px',
+                            fontSize: '0.88rem',
+                            fontWeight: 700,
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '8px',
+                            boxShadow: '0 4px 14px rgba(0,0,0,0.3)',
+                            width: '100%',
+                            transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)'
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.transform = 'translateY(-1px)';
+                            e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.4)';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.transform = 'translateY(0)';
+                            e.currentTarget.style.boxShadow = '0 4px 14px rgba(0,0,0,0.3)';
+                          }}
+                        >
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                            <polyline points="15 3 21 3 21 9" />
+                            <line x1="10" y1="14" x2="21" y2="3" />
+                          </svg>
+                          <span>Launch Isolated Guest Portal (New Tab)</span>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: '4px' }}>
+                            <polyline points="9 18 15 12 9 6" />
+                          </svg>
+                        </button>
+                      </Magnet>
 
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
                         <button
@@ -4331,7 +4474,7 @@ function App() {
                         <line x1="12" y1="16" x2="12" y2="12" />
                         <line x1="12" y1="8" x2="12.01" y2="8" />
                       </svg>
-                      <span><strong>Upon submission:</strong> This guest will be recorded in MongoDB, a secure magic-link QR will generate, and you can instantly launch their 100% isolated private companion portal or simulate them here.</span>
+                      <span><strong>Upon submission:</strong> This guest will be recorded in Amazon DynamoDB, a secure magic-link QR will generate, and you can instantly launch their 100% isolated private companion portal or simulate them here.</span>
                     </div>
                   </div>
                 )}
@@ -4356,14 +4499,25 @@ function App() {
                         value={extractionUrl}
                         onChange={(e) => setExtractionUrl(e.target.value)}
                         style={{
-                          background: 'rgba(15, 23, 42, 0.4)',
+                          background: 'var(--bg-color, #ffffff)',
                           border: '1px solid var(--border-color)',
-                          borderRadius: '8px',
+                          borderRadius: '12px',
                           color: 'var(--text-primary)',
                           padding: '10px 12px',
                           fontSize: '0.88rem',
                           outline: 'none',
-                          width: '100%'
+                          width: '100%',
+                          transition: 'all 0.25s ease'
+                        }}
+                        onFocus={(e) => {
+                          e.target.style.borderColor = 'var(--primary)';
+                          e.target.style.background = '#ffffff';
+                          e.target.style.boxShadow = '0 0 0 2px var(--primary-glow)';
+                        }}
+                        onBlur={(e) => {
+                          e.target.style.borderColor = 'var(--border-color)';
+                          e.target.style.background = 'var(--bg-color, #ffffff)';
+                          e.target.style.boxShadow = 'none';
                         }}
                       />
                     </div>
@@ -4441,7 +4595,7 @@ function App() {
                     <div style={{ background: 'var(--primary-glow)', color: 'var(--primary)', borderRadius: '50%', width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '0.8rem', flexShrink: 0 }}>3</div>
                     <div>
                       <span style={{ fontSize: '0.85rem', fontWeight: 650, display: 'block', color: 'var(--text-primary)' }}>Itinerary Activated Instantly</span>
-                      <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>MongoDB is seeded, the AI compiles a weather-aware flyer, and prints their welcome QR code!</span>
+                      <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>Amazon DynamoDB tables are seeded, the AI compiles a weather-aware flyer, and prints their welcome QR code!</span>
                     </div>
                   </div>
                 </div>
@@ -4613,7 +4767,7 @@ function App() {
                     Register New Local Excursion
                   </h3>
                   <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', margin: 0 }}>
-                    Create custom premium activities, eco-tours, or wellness experiences for your resort and sync them live to MongoDB.
+                    Create custom premium activities, eco-tours, or wellness experiences for your resort and sync them live to Amazon DynamoDB.
                   </p>
                 </div>
 
@@ -4789,24 +4943,26 @@ function App() {
                   </div>
 
                   {/* Submit Button */}
-                  <button 
-                    type="submit" 
-                    className="btn-primary"
-                    disabled={loading}
-                    style={{ padding: '12px', fontSize: '0.9rem', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '8px', justifyContent: 'center', marginTop: '4px' }}
-                  >
-                    {loading ? (
-                      <span className="spinner"></span>
-                    ) : (
-                      <>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                          <line x1="12" y1="5" x2="12" y2="19"></line>
-                          <line x1="5" y1="12" x2="19" y2="12"></line>
-                        </svg>
-                        Publish Excursion to MongoDB
-                      </>
-                    )}
-                  </button>
+                  <Magnet style={{ width: '100%', display: 'block' }} strength={12} padding={25}>
+                    <button 
+                      type="submit" 
+                      className="btn-primary"
+                      disabled={loading}
+                      style={{ padding: '12px', fontSize: '0.9rem', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '8px', justifyContent: 'center', width: '100%' }}
+                    >
+                      {loading ? (
+                        <span className="spinner"></span>
+                      ) : (
+                        <>
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                          </svg>
+                          Publish Excursion to Amazon DynamoDB
+                        </>
+                      )}
+                    </button>
+                  </Magnet>
 
                 </form>
               </div>
@@ -4909,7 +5065,7 @@ function App() {
                 </div>
                 
                 {/* Segment Controls */}
-                <div style={{ display: 'flex', background: 'rgba(0, 0, 0, 0.2)', padding: '4px', borderRadius: '30px', border: '1px solid var(--border-color)' }}>
+                <div style={{ display: 'flex', background: 'var(--bg-card-nested, rgba(0, 0, 0, 0.03))', padding: '4px', borderRadius: '30px', border: '1px solid var(--border-color)' }}>
                   <button 
                     onClick={() => setMessagingSubTab('guest')}
                     style={{
@@ -4968,13 +5124,14 @@ function App() {
                           value={messagingGuestId}
                           onChange={(e) => setMessagingGuestId(e.target.value)}
                           style={{
-                            background: 'rgba(0,0,0,0.2)',
+                            background: 'var(--bg-color, #ffffff)',
                             border: '1px solid var(--border-color)',
                             borderRadius: '6px',
                             color: 'var(--text-primary)',
                             padding: '10px 12px',
                             fontSize: '0.85rem',
                             outline: 'none',
+                            colorScheme: 'light',
                             cursor: 'pointer',
                             flex: 1
                           }}
@@ -5014,7 +5171,7 @@ function App() {
                     </div>
 
                     {/* Dynamic Modules Toggle */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', background: 'rgba(0, 0, 0, 0.15)', padding: '16px', borderRadius: '10px', border: '1px solid var(--border-color)' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', background: 'var(--bg-card-nested, rgba(0, 0, 0, 0.03))', padding: '16px', borderRadius: '10px', border: '1px solid var(--border-color)' }}>
                       <span style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>
                         Smart Copy Modules
                       </span>
@@ -5233,7 +5390,13 @@ function App() {
                               maxWidth: '90%',
                               lineHeight: '1.3'
                             }}>
-                              🔐 Messages are fully synchronized live with MongoDB, secure token pre-authenticated.
+                              <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#ffe69c' }}>
+                                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                                </svg>
+                                Messages are fully synchronized live with Amazon DynamoDB, secure token pre-authenticated.
+                              </span>
                             </div>
 
                             {/* Guest Message bubble */}
@@ -5623,7 +5786,7 @@ function App() {
               </div>
               <h3 style={{ fontSize: '1.4rem', fontWeight: 700, margin: 0, color: 'var(--primary)' }}>Itinerary Updated!</h3>
               <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', maxWidth: '280px', margin: 0 }}>
-                Your activities have been successfully updated in MongoDB. Scan the QR code below to save your new itinerary directly onto your phone!
+                Your activities have been successfully updated in Amazon DynamoDB. Scan the QR code below to save your new itinerary directly onto your phone!
               </p>
               
               {/* QR Code Container */}

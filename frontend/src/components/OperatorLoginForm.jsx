@@ -216,11 +216,11 @@ export default function OperatorLoginForm({ onLoginSuccess }) {
           type="submit"
           disabled={loading}
           style={{
-            background: 'linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%)',
+            background: 'var(--primary)',
             border: 'none',
             borderRadius: '12px',
             padding: '14px',
-            color: 'var(--primary-btn-text, #ffffff)',
+            color: 'var(--primary-btn-text, #000000)',
             fontSize: '0.9rem',
             fontWeight: 700,
             cursor: loading ? 'not-allowed' : 'pointer',
