@@ -22,6 +22,9 @@ Live deployment: [https://github.com/tanDivina/IslandFlow-AWS](https://github.co
 *   **Real-time Weather Dispatcher:** Simulates tropical weather forecasts. If heavy rain affects outdoor activity bookings, the Gemini agent automatically generates alternative schedules and prompts an interactive proposal card in the chat.
 *   **Human-in-the-Loop Rescheduling:** Guests retain final approval. Swapping activities requires explicit user consent, instantly updating MongoDB and recalculating travel invoices dynamically.
 *   **Live MCP Reasoning Log Console:** A sliding console displaying real-time developer logs of the agent's MCP tool calls (e.g., `get_bookings`, `check_weather`, `reschedule_booking`, `generate_itinerary`).
+*   **Tactile Physics Micro-interactions & Vector Icons:**
+    *   **Custom Physics Magnet Component:** Wrap-around physical hover states (`Magnet.jsx`) that pull elements toward the user's cursor with custom coordinates tracking and smooth spring-back inertia transitions.
+    *   **Crisp Inline Vector SVGs & Staggered Animations:** Streamlines the live console and operator panel with responsive SVG icons and staggered CSS entrance delays instead of static emojis or box-outlined icons.
 *   **Dual Database Adaptability:** Detects MongoDB Atlas connection status dynamically. If connection is blocked by SSL/IP whitelists, the app seamlessly falls back to a high-fidelity local `mock_db.json` database.
 
 ---
