@@ -11,7 +11,12 @@ const getBocasFallbackDates = () => {
       day: '2-digit'
     });
     const todayStr = formatter.format(d);
-    const [yyyy, mm, dd] = todayStr.split('-').map(Number);
+    // Support both YYYY-MM-DD and YYYY/MM/DD formats securely
+    const parts = todayStr.split(/[-/]/).map(Number);
+    const [yyyy, mm, dd] = parts;
+    if (isNaN(yyyy) || isNaN(mm) || isNaN(dd)) {
+      throw new Error("Parsed date values contain NaN; forcing safe native catch fallback.");
+    }
     const baseDate = new Date(yyyy, mm - 1, dd, 12, 0, 0);
     for (let i = 0; i < 4; i++) {
       const nextD = new Date(baseDate);
@@ -38,8 +43,9 @@ const getBocasFallbackDates = () => {
 export default function WeatherHorizon({ logistics, lang = 'en' }) {
   const scrollContainerRef = useRef(null);
 
-  const dates = logistics && logistics.length > 0
-    ? [...logistics].sort((a, b) => a.date.localeCompare(b.date))
+  const safeLogistics = (logistics || []).filter(l => l && typeof l.date === 'string');
+  const dates = safeLogistics.length > 0
+    ? [...safeLogistics].sort((a, b) => a.date.localeCompare(b.date))
     : getBocasFallbackDates().map(d => ({
         date: d,
         weather: "Sunny",
@@ -330,12 +336,12 @@ export default function WeatherHorizon({ logistics, lang = 'en' }) {
                   <span style={{
                     fontSize: '0.65rem',
                     fontWeight: 700,
-                    color: isDangerWave ? '#d97706' : '#10b981',
+                    color: isDangerWave ? '#d97706' : '#059669',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '3px'
                   }}>
-                    <span style={{ display: 'inline-block', width: '6px', height: '6px', borderRadius: '50%', background: isDangerWave ? '#d97706' : '#10b981' }}></span>
+                    <span style={{ display: 'inline-block', width: '6px', height: '6px', borderRadius: '50%', background: isDangerWave ? '#d97706' : '#059669' }}></span>
                     {isDangerWave ? currentL.hazardous : currentL.safe}
                   </span>
                 </div>

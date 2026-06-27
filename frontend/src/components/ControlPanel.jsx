@@ -193,7 +193,9 @@ export default function ControlPanel({
   const [isProductionMode, setIsProductionMode] = useState(true);
   const [selectedWaveHeight, setSelectedWaveHeight] = useState(2.2);
 
-  const sortedLogistics = logistics ? [...logistics].sort((a, b) => a.date.localeCompare(b.date)) : [];
+  const sortedLogistics = logistics 
+    ? [...logistics].filter(l => l && typeof l.date === 'string').sort((a, b) => a.date.localeCompare(b.date)) 
+    : [];
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedWeather, setSelectedWeather] = useState('Heavy Rain');
   const [selectedAlert, setSelectedAlert] = useState('rain_warning');
@@ -298,7 +300,7 @@ export default function ControlPanel({
               fontWeight: 600,
               borderRadius: '6px',
               border: 'none',
-              background: isProductionMode ? '#10b981' : 'transparent',
+              background: isProductionMode ? '#059669' : 'transparent',
               color: isProductionMode ? '#000' : 'var(--text-muted)',
               cursor: 'pointer',
               transition: 'var(--transition)'
@@ -311,8 +313,8 @@ export default function ControlPanel({
 
       {isProductionMode ? (
         <div style={{
-          background: 'rgba(16, 185, 129, 0.03)',
-          border: '1px solid rgba(16, 185, 129, 0.15)',
+          background: 'rgba(5, 150, 105, 0.03)',
+          border: '1px solid rgba(5, 150, 105, 0.15)',
           borderRadius: '12px',
           padding: '16px',
           display: 'flex',
@@ -325,9 +327,9 @@ export default function ControlPanel({
               width: '8px',
               height: '8px',
               borderRadius: '50%',
-              background: '#10b981'
+              background: '#059669'
             }}></span>
-            <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#10b981', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#059669', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
               Live Telemetry Stream Active
             </span>
           </div>
@@ -339,10 +341,10 @@ export default function ControlPanel({
           <div style={{ borderLeft: '2px solid var(--primary)', paddingLeft: '12px', display: 'flex', flexDirection: 'column', gap: '6px', margin: '4px 0' }}>
             <div style={{ fontSize: '0.68rem', color: 'var(--text-dim)', fontWeight: 600, letterSpacing: '0.04em' }}>ACTIVE API CHANNELS</div>
             <div style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span style={{ color: '#10b981' }}>[ONLINE]</span> OpenWeatherMap API <span style={{ color: 'var(--text-muted)', fontWeight: 400, fontSize: '0.7rem' }}>(Live Weather Code Stream)</span>
+              <span style={{ color: '#059669' }}>[ONLINE]</span> OpenWeatherMap API <span style={{ color: 'var(--text-muted)', fontWeight: 400, fontSize: '0.7rem' }}>(Live Weather Code Stream)</span>
             </div>
             <div style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span style={{ color: '#10b981' }}>[ONLINE]</span> Open-Meteo Marine API <span style={{ color: 'var(--text-muted)', fontWeight: 400, fontSize: '0.7rem' }}>(Real-time Reef Swells)</span>
+              <span style={{ color: '#059669' }}>[ONLINE]</span> Open-Meteo Marine API <span style={{ color: 'var(--text-muted)', fontWeight: 400, fontSize: '0.7rem' }}>(Real-time Reef Swells)</span>
             </div>
           </div>
 
@@ -365,7 +367,7 @@ export default function ControlPanel({
               onReset();
             }}
             disabled={loading}
-            style={{ width: '100%', justifyContent: 'center', background: '#10b981', border: 'none', color: '#000', fontSize: '0.8rem', fontWeight: 650, height: '36px' }}
+            style={{ width: '100%', justifyContent: 'center', background: '#059669', border: 'none', color: '#fff', fontSize: '0.8rem', fontWeight: 650, height: '36px' }}
           >
             {loading ? 'Polling Telemetry...' : 'Force Live API Poll Sync'}
           </button>

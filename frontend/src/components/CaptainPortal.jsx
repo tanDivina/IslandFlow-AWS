@@ -266,7 +266,7 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
 
   const getStatusBadgeColor = (status) => {
     switch (status) {
-      case 'confirmed': return '#22c55e'; // green
+      case 'confirmed': return '#059669'; // green
       case 'en-route': return '#0ea5e9'; // blue
       case 'delayed': return '#f59e0b'; // orange
       case 'unsafe-conditions': return '#ef4444'; // red
@@ -317,18 +317,18 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
               gap: '4px',
               padding: '2px 8px',
               borderRadius: '20px',
-              background: isOnline ? 'rgba(34, 197, 94, 0.1)' : 'rgba(245, 158, 11, 0.1)',
-              border: `1px solid ${isOnline ? 'rgba(34, 197, 94, 0.2)' : 'rgba(245, 158, 11, 0.2)'}`,
+              background: isOnline ? 'rgba(5, 150, 105, 0.08)' : 'rgba(245, 158, 11, 0.08)',
+              border: `1px solid ${isOnline ? 'rgba(5, 150, 105, 0.25)' : 'rgba(245, 158, 11, 0.2)'}`,
               fontSize: '10px',
               fontWeight: '600',
-              color: isOnline ? '#22c55e' : '#f59e0b'
+              color: isOnline ? '#059669' : '#f59e0b'
             }}>
               <span style={{
                 width: '6px',
                 height: '6px',
                 borderRadius: '50%',
-                background: isOnline ? '#22c55e' : '#f59e0b',
-                boxShadow: isOnline ? '0 0 6px #22c55e' : '0 0 6px #f59e0b'
+                background: isOnline ? '#059669' : '#f59e0b',
+                boxShadow: isOnline ? '0 0 6px #059669' : '0 0 6px #f59e0b'
               }} />
               {isOnline ? (lang === 'es' ? 'EN LÍNEA' : 'ONLINE') : (lang === 'es' ? 'SIN CONEXIÓN' : 'OFFLINE')}
             </span>
@@ -449,10 +449,10 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
         {isStandalone ? (
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ display: 'inline-block', width: '8px', height: '8px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 8px #10b981' }}></span>
-              <span className="pulse-dot" style={{ position: 'absolute', width: '16px', height: '16px', borderRadius: '50%', border: '2px solid rgba(16, 185, 129, 0.4)' }}></span>
+              <span style={{ display: 'inline-block', width: '8px', height: '8px', borderRadius: '50%', background: '#059669', boxShadow: '0 0 8px #059669' }}></span>
+              <span className="pulse-dot" style={{ position: 'absolute', width: '16px', height: '16px', borderRadius: '50%', border: '2px solid rgba(5, 150, 105, 0.4)' }}></span>
             </div>
-            <span style={{ fontSize: '0.82rem', fontWeight: 600, color: '#10b981', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+            <span style={{ fontSize: '0.82rem', fontWeight: 600, color: '#059669', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
               {lang === 'es' ? 'Aplicación Móvil Sincronizada (Modo Offline Activado)' : 'Mobile Marine Dispatch App Synced (Offline Mode Enabled)'}
             </span>
             <style>{`
@@ -1002,9 +1002,9 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
                           disabled={submittingStatus}
                           onClick={() => handleUpdateStatus(booking._id, 'confirmed')}
                           style={{
-                            background: 'rgba(34, 197, 94, 0.08)',
-                            color: '#22c55e',
-                            border: '1px solid rgba(34, 197, 94, 0.2)',
+                            background: 'rgba(5, 150, 105, 0.08)',
+                            color: '#059669',
+                            border: '1px solid rgba(5, 150, 105, 0.2)',
                             borderRadius: '10px',
                             padding: '12px',
                             fontWeight: '600',

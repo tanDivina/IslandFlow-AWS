@@ -11,7 +11,12 @@ const getBocasFallbackDates = () => {
       day: '2-digit'
     });
     const todayStr = formatter.format(d);
-    const [yyyy, mm, dd] = todayStr.split('-').map(Number);
+    // Support both YYYY-MM-DD and YYYY/MM/DD formats securely
+    const parts = todayStr.split(/[-/]/).map(Number);
+    const [yyyy, mm, dd] = parts;
+    if (isNaN(yyyy) || isNaN(mm) || isNaN(dd)) {
+      throw new Error("Parsed date values contain NaN; forcing safe native catch fallback.");
+    }
     const baseDate = new Date(yyyy, mm - 1, dd, 12, 0, 0);
     for (let i = 0; i < 4; i++) {
       const nextD = new Date(baseDate);
@@ -40,8 +45,9 @@ export default function ScheduleView({ bookings = [], tours = [], logistics = []
   const safeTours = Array.isArray(tours) ? tours : [];
   const safeLogistics = Array.isArray(logistics) ? logistics : [];
 
-  const dates = safeLogistics && safeLogistics.length > 0
-    ? [...safeLogistics].sort((a, b) => a.date.localeCompare(b.date)).map(l => l.date)
+  const filteredLogistics = safeLogistics.filter(l => l && typeof l.date === 'string');
+  const dates = filteredLogistics.length > 0
+    ? [...filteredLogistics].sort((a, b) => a.date.localeCompare(b.date)).map(l => l.date)
     : getBocasFallbackDates();
 
   // Fallback for browsers without native CSS scroll timelines support (e.g. Firefox)

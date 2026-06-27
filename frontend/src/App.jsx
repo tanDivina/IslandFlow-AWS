@@ -131,12 +131,236 @@ const safeLocalStorageRemove = (key) => {
   }
 };
 
+// High-fidelity fallback mock data to prevent blank guest portals when the server is offline or unseeded
+const getBocasFallbackDates = () => {
+  const dates = [];
+  try {
+    const d = new Date();
+    const formatter = new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'America/Panama',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    });
+    const todayStr = formatter.format(d);
+    const parts = todayStr.split(/[-/]/).map(Number);
+    const [yyyy, mm, dd] = parts;
+    if (isNaN(yyyy) || isNaN(mm) || isNaN(dd)) {
+      throw new Error("Invalid date format from Intl.DateTimeFormat");
+    }
+    const baseDate = new Date(yyyy, mm - 1, dd, 12, 0, 0);
+    for (let i = 0; i < 4; i++) {
+      const nextD = new Date(baseDate);
+      nextD.setDate(baseDate.getDate() + i);
+      const y = nextD.getFullYear();
+      const m = String(nextD.getMonth() + 1).padStart(2, '0');
+      const day = String(nextD.getDate()).padStart(2, '0');
+      dates.push(`${y}-${m}-${day}`);
+    }
+  } catch (e) {
+    const today = new Date();
+    for (let i = 0; i < 4; i++) {
+      const nextD = new Date(today);
+      nextD.setDate(today.getDate() + i);
+      const y = nextD.getFullYear();
+      const m = String(nextD.getMonth() + 1).padStart(2, '0');
+      const day = String(nextD.getDate()).padStart(2, '0');
+      dates.push(`${y}-${m}-${day}`);
+    }
+  }
+  return dates;
+};
+
+const MOCK_GUESTS = [
+  {
+    _id: "g1",
+    name: "Dorien Van Den Abbeele",
+    hotel_id: "hotel_nayara",
+    hotel_name: "Nayara Bocas del Toro",
+    room: "Overwater Suite 104",
+    phone: "+32 499 123456"
+  },
+  {
+    _id: "g2",
+    name: "Alex Mercer",
+    hotel_id: "hotel_lacoralina",
+    hotel_name: "La Coralina Island House",
+    room: "Bungalow 7",
+    phone: "+1 555 123 4567"
+  }
+];
+
+const MOCK_TOURS = [
+  {
+    _id: "tour_zapatilla",
+    title: "Zapatilla Island Snorkeling Eco-Tour",
+    description: "Explore the legendary white-sand keys of Cayos Zapatilla. Swim through pristine coral reefs, view tropical marine life, and walk through private jungle trails.",
+    duration: "4 hours",
+    price: "$85",
+    category: "marine",
+    difficulty: "medium",
+    spots_left: 6,
+    icon: "snorkel"
+  },
+  {
+    _id: "tour_rumba",
+    title: "Que Siga La Rumba! Sunset Catamaran Cruise",
+    description: "Sail through the Bocas archipelago on our luxury catamaran. Enjoy tropical mocktails, authentic Afro-Antillean bites, and dance under the golden sunset.",
+    duration: "3 hours",
+    price: "$95",
+    category: "adventure",
+    difficulty: "low",
+    spots_left: 12,
+    icon: "catamaran"
+  },
+  {
+    _id: "tour_chocolate",
+    title: "Organic Cacao & Chocolate Workshop",
+    description: "Learn the secrets of organic chocolate making from indigenous growers. Harvest, roast, grind cacao beans, and create your custom dark chocolate bar.",
+    duration: "2.5 hours",
+    price: "$45",
+    category: "culture",
+    difficulty: "low",
+    spots_left: 8,
+    icon: "chocolate"
+  },
+  {
+    _id: "tour_canopy",
+    title: "Bastimentos Island Rainforest Canopy Zip-Line",
+    description: "Fly over the ancient rainforest canopy of Bastimentos. Spot red frogs, sloths, and toucans as you cross 7 thrilling high-altitude zip lines.",
+    duration: "3 hours",
+    price: "$75",
+    category: "adventure",
+    difficulty: "high",
+    spots_left: 4,
+    icon: "zipline"
+  }
+];
+
+const getMockLogistics = (dates) => [
+  {
+    date: dates[0],
+    weather: "Sunny",
+    alert: "none",
+    wave_height: 0.5,
+    wave_status: "safe",
+    temperature: "31°C",
+    wind_speed: "12 km/h"
+  },
+  {
+    date: dates[1],
+    weather: "Rainy",
+    alert: "rain_heavy",
+    wave_height: 0.9,
+    wave_status: "safe",
+    temperature: "28°C",
+    wind_speed: "18 km/h"
+  },
+  {
+    date: dates[2],
+    weather: "Stormy",
+    alert: "storm",
+    wave_height: 1.8,
+    wave_status: "danger",
+    temperature: "26°C",
+    wind_speed: "35 km/h"
+  },
+  {
+    date: dates[3],
+    weather: "Sunny",
+    alert: "none",
+    wave_height: 0.4,
+    wave_status: "safe",
+    temperature: "30°C",
+    wind_speed: "10 km/h"
+  }
+];
+
+const getMockBookings = (dates) => [
+  {
+    _id: "b_1",
+    guest_id: "g1",
+    tour_id: "tour_rumba",
+    date: dates[0],
+    slot: "afternoon",
+    status: "confirmed"
+  },
+  {
+    _id: "b_2",
+    guest_id: "g1",
+    tour_id: "tour_zapatilla",
+    date: dates[1],
+    slot: "morning",
+    status: "confirmed"
+  },
+  {
+    _id: "b_3",
+    guest_id: "g1",
+    tour_id: "tour_canopy",
+    date: dates[2],
+    slot: "morning",
+    status: "confirmed"
+  },
+  {
+    _id: "b_4",
+    guest_id: "g1",
+    tour_id: "tour_chocolate",
+    date: dates[2],
+    slot: "afternoon",
+    status: "confirmed"
+  }
+];
+
+const getMockItineraryMarkdown = (dates) => `# PERSONALIZED DIGITAL ECO-CONCIERGE ITINERARY
+Guest: **Dorien Van Den Abbeele** | Resort: **Nayara Bocas del Toro**
+Room: **Overwater Suite 104** | Stay: **4 Days / 3 Nights**
+
+---
+
+### 🌴 Welcome to Nayara Bocas del Toro!
+Your luxury overwater villa experience begins now. Under our active, weather-aware guidance, we have designed the ultimate tropical itinerary. Let's make every moment count!
+
+---
+
+### 📅 Daily Schedule
+
+#### 🌅 DAY 1 — \${dates[0]}
+- **Afternoon (14:00 - 17:00)**: ⛵ *Que Siga La Rumba! Sunset Catamaran Cruise*
+  *Set sail on our luxury catamaran. Enjoy tropical mocktails, Afro-Antillean bites, and beautiful music under the Caribbean sun.*
+- **Evening (19:00)**: 🍽️ Dinner at Nayara Elephant House Restaurant.
+
+#### 🌧️ DAY 2 — \${dates[1]} (Rain Forecasted)
+- **Morning (09:00 - 13:00)**: 🤿 *Zapatilla Island Snorkeling Eco-Tour*
+  *Pristine coral reefs and white sand. (Note: Light rain forecasted, but conditions remain safe for snorkeling!)*
+- **Afternoon**: 🍹 Free relaxation at the Overwater Pool Bar.
+
+#### ⛈️ DAY 3 — \${dates[2]} (Storm Warning)
+- **Morning (09:00 - 12:00)**: 🧗 *Bastimentos Canopy Zip-Line* (⚠️ *Storm warning active — indoor rescheduling recommendation ready!*)
+- **Afternoon (14:00 - 16:30)**: 🍫 *Organic Cacao & Chocolate Workshop*
+  *Escape the storm indoors with a cozy culinary chocolate craft workshop.*
+
+#### ☀️ DAY 4 — \${dates[3]} (Sunny)
+- **Morning**: 🧘 Sunrise Yoga & Paddleboarding on the flat lagoon.
+- **Midday**: 🛥️ Checkout and departure transfer back to Bocas Town.
+
+---
+*Powered by Rain or Shine AI stay engine.*`;
+
 function App() {
-  const [bookings, setBookings] = useState([]);
-  const [tours, setTours] = useState([]);
-  const [logistics, setLogistics] = useState([]);
-  const [guests, setGuests] = useState([]);
-  const [itineraryMarkdown, setItineraryMarkdown] = useState('');
+  const [bookings, setBookings] = useState(() => {
+    const dates = getBocasFallbackDates();
+    return getMockBookings(dates);
+  });
+  const [tours, setTours] = useState(MOCK_TOURS);
+  const [logistics, setLogistics] = useState(() => {
+    const dates = getBocasFallbackDates();
+    return getMockLogistics(dates);
+  });
+  const [guests, setGuests] = useState(MOCK_GUESTS);
+  const [itineraryMarkdown, setItineraryMarkdown] = useState(() => {
+    const dates = getBocasFallbackDates();
+    return getMockItineraryMarkdown(dates);
+  });
   const [messages, setMessages] = useState([]);
   const [agentLogs, setAgentLogs] = useState(['Simulation environment initialized. Ready for weather events.']);
   const [loading, setLoading] = useState(false);
@@ -153,8 +377,8 @@ function App() {
   const [isSecureModeActive, setIsSecureModeActive] = useState(initialParams.secureActive);
   const [isSecureMode, setIsSecureMode] = useState(false);
   const [operatorFlyerToken, setOperatorFlyerToken] = useState('');
-  const [operatorHotelId, setOperatorHotelId] = useState(() => safeLocalStorageGet('operatorHotelId', null));
-  const [operatorHotelName, setOperatorHotelName] = useState(() => safeLocalStorageGet('operatorHotelName', null));
+  const [operatorHotelId, setOperatorHotelId] = useState(() => safeLocalStorageGet('operatorHotelId', 'hotel_nayara'));
+  const [operatorHotelName, setOperatorHotelName] = useState(() => safeLocalStorageGet('operatorHotelName', 'Nayara Bocas del Toro'));
   const lastGuestIdRef = React.useRef(null);
   const lastRequestRef = React.useRef(0);
 
@@ -591,6 +815,10 @@ function App() {
       if (!res.ok) throw new Error("Could not connect to FastAPI backend server.");
       const data = await res.json();
       
+      if (!data || !data.guests || data.guests.length === 0) {
+        throw new Error("FastAPI backend returned unseeded/empty database state.");
+      }
+      
       // Ignore stale responses to eliminate network race conditions and infinite loops
       if (requestId !== lastRequestRef.current) {
         return;
@@ -647,8 +875,72 @@ function App() {
         setIsRealDynamo(data.is_real_dynamodb);
       });
     } catch (error) {
-      console.error("Error fetching status:", error);
-      addLog(`[ERROR] Server Error: ${error.message}. Is the backend running on port 8000?`);
+      console.warn("fetchStatus failing or unseeded, triggering fallback:", error);
+      addLog(`[WARN] Backend unseeded or offline. Activating 5-star high-fidelity local sandbox fallback states.`);
+      
+      // Ignore stale responses to eliminate network race conditions and infinite loops
+      if (requestId !== lastRequestRef.current) {
+        return;
+      }
+
+      transitionState(() => {
+        const fallbackDates = getBocasFallbackDates();
+        const fallbackBookings = getMockBookings(fallbackDates);
+        const fallbackLogistics = getMockLogistics(fallbackDates);
+        
+        setBookings(fallbackBookings);
+        setTours(MOCK_TOURS);
+        setLogistics(fallbackLogistics);
+        setGuests(MOCK_GUESTS);
+        
+        const selectedId = currentGuestId || guestId || 'g1';
+        if (selectedId !== guestId) {
+          setGuestId(selectedId);
+        }
+        
+        const selectedGuest = MOCK_GUESTS.find(g => g._id === selectedId) || MOCK_GUESTS[0];
+        const selectedGuestName = selectedGuest.name;
+        const selectedGuestHotel = selectedGuest.hotel_name;
+        const selectedGuestRoom = selectedGuest.room;
+        
+        const mockItinerary = `# PERSONALIZED DIGITAL ECO-CONCIERGE ITINERARY
+Guest: **${selectedGuestName}** | Resort: **${selectedGuestHotel}**
+Room: **${selectedGuestRoom}** | Stay: **4 Days / 3 Nights**
+
+---
+
+### 🌴 Welcome to ${selectedGuestHotel}!
+Your luxury tropical experience begins now. Under our active, weather-aware guidance, we have designed the ultimate tropical itinerary. Let's make every moment count!
+
+---
+
+### 📅 Daily Schedule
+
+#### 🌅 DAY 1 — ${fallbackDates[0]}
+- **Afternoon (14:00 - 17:00)**: ⛵ *Que Siga La Rumba! Sunset Catamaran Cruise*
+  *Set sail on our luxury catamaran. Enjoy tropical mocktails, Afro-Antillean bites, and beautiful music under the Caribbean sun.*
+- **Evening (19:00)**: 🍽️ Dinner at the main resort restaurant.
+
+#### 🌧️ DAY 2 — ${fallbackDates[1]} (Rain Forecasted)
+- **Morning (09:00 - 13:00)**: 🤿 *Zapatilla Island Snorkeling Eco-Tour*
+  *Pristine coral reefs and white sand. (Note: Light rain forecasted, but conditions remain safe for snorkeling!)*
+- **Afternoon**: 🍹 Free relaxation at the resort Pool Bar.
+
+#### ⛈️ DAY 3 — ${fallbackDates[2]} (Storm Warning)
+- **Morning (09:00 - 12:00)**: 🧗 *Rainforest Canopy Zip-Line* (⚠️ *Storm warning active — indoor rescheduling recommendation ready!*)
+- **Afternoon (14:00 - 16:30)**: 🍫 *Organic Cacao & Chocolate Workshop*
+  *Escape the storm indoors with a cozy culinary chocolate craft workshop.*
+
+#### ☀️ DAY 4 — ${fallbackDates[3]} (Sunny)
+- **Morning**: 🧘 Sunrise Yoga & Paddleboarding on the flat lagoon.
+- **Midday**: 🛥️ Checkout and departure transfer.
+
+---
+*Powered by Rain or Shine AI stay engine.*`;
+        
+        setItineraryMarkdown(mockItinerary);
+        setIsRealDynamo(false);
+      });
     }
   };
 
@@ -1071,7 +1363,7 @@ function App() {
 
               ${weatherNoteIncluded ? `
               <!-- Climate Smart Card -->
-              <table width="100%" cellpadding="0" cellspacing="0" style="border-left:4px solid #10b981; background-color:rgba(255,255,255,0.03); border-radius:8px; margin-bottom:24px;">
+              <table width="100%" cellpadding="0" cellspacing="0" style="border-left:4px solid #059669; background-color:rgba(255,255,255,0.03); border-radius:8px; margin-bottom:24px;">
                 <tr>
                   <td style="padding:16px 20px;">
                     <h3 style="font-size:15px; font-weight:700; margin:0 0 6px 0; color:var(--primary);">Climate-Smart Preparedness</h3>
@@ -1275,7 +1567,7 @@ function App() {
               to { transform: translateX(0); opacity: 1; }
             }
           `}} />
-          <div style={{ background: '#10b981', borderRadius: '50%', width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: 'white' }}>
+          <div style={{ background: '#059669', borderRadius: '50%', width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: 'white' }}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
               <polyline points="22 4 12 14.01 9 11.01" />
@@ -1442,95 +1734,107 @@ function App() {
               </button>
             </nav>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
-              {/* Premium EN/ES Toggle Slider */}
-              <div 
-                onClick={() => setLang(lang === 'en' ? 'es' : 'en')}
-                style={{
-                  background: 'var(--bg-card-nested, rgba(15, 23, 42, 0.15))',
-                  border: '1px solid var(--border-color)',
-                  borderRadius: '24px',
-                  padding: '3px',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  position: 'relative',
-                  width: '120px',
-                  height: '32px',
-                  flexShrink: 0,
-                  cursor: 'pointer',
-                  userSelect: 'none',
-                  backdropFilter: 'blur(8px)',
-                  boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.1)',
-                }}
-              >
-                {/* Sliding indicator */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px', flexShrink: 0 }}>
+              {/* Row 1: Language Switcher and Resort Info */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                {/* Premium EN/ES Toggle Slider */}
                 <div 
+                  onClick={() => setLang(lang === 'en' ? 'es' : 'en')}
                   style={{
-                    position: 'absolute',
-                    top: '3px',
-                    left: '3px',
-                    bottom: '3px',
-                    width: 'calc(50% - 3px)',
-                    background: 'var(--primary)',
-                    borderRadius: '20px',
-                    transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
-                    transform: lang === 'en' ? 'translateX(0)' : 'translateX(100%)',
-                    boxShadow: '0 1px 4px rgba(0,0,0,0.15)',
-                    zIndex: 1
-                  }}
-                />
-                
-                {/* English label */}
-                <span style={{
-                  flex: 1,
-                  textAlign: 'center',
-                  fontSize: '0.72rem',
-                  fontWeight: '700',
-                  color: lang === 'en' ? 'var(--primary-btn-text, #ffffff)' : 'var(--text-muted)',
-                  zIndex: 2,
-                  transition: 'color 0.25s ease',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '3px'
-                }}>
-                  🇬🇧 EN
-                </span>
-
-                {/* Spanish label */}
-                <span style={{
-                  flex: 1,
-                  textAlign: 'center',
-                  fontSize: '0.72rem',
-                  fontWeight: '700',
-                  color: lang === 'es' ? 'var(--primary-btn-text, #ffffff)' : 'var(--text-muted)',
-                  zIndex: 2,
-                  transition: 'color 0.25s ease',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '3px'
-                }}>
-                  🇪🇸 ES
-                </span>
-              </div>
-              {view === 'operator' && operatorHotelId && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <span style={{
-                    background: 'rgba(255, 255, 255, 0.05)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                    color: '#ffffff',
-                    padding: '6px 12px',
-                    borderRadius: '20px',
-                    fontSize: '0.72rem',
-                    fontWeight: 600,
+                    background: 'var(--bg-card-nested, rgba(15, 23, 42, 0.15))',
+                    border: '1px solid var(--border-color)',
+                    borderRadius: '24px',
+                    padding: '3px',
                     display: 'inline-flex',
                     alignItems: 'center',
-                    gap: '6px'
+                    position: 'relative',
+                    width: '120px',
+                    height: '32px',
+                    flexShrink: 0,
+                    cursor: 'pointer',
+                    userSelect: 'none',
+                    backdropFilter: 'blur(8px)',
+                    boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.1)',
+                  }}
+                >
+                  {/* Sliding indicator */}
+                  <div 
+                    style={{
+                      position: 'absolute',
+                      top: '3px',
+                      left: '3px',
+                      bottom: '3px',
+                      width: 'calc(50% - 3px)',
+                      background: 'var(--primary)',
+                      borderRadius: '20px',
+                      transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+                      transform: lang === 'en' ? 'translateX(0)' : 'translateX(100%)',
+                      boxShadow: '0 1px 4px rgba(0,0,0,0.15)',
+                      zIndex: 1
+                    }}
+                  />
+                  
+                  {/* English label */}
+                  <span style={{
+                    flex: 1,
+                    textAlign: 'center',
+                    fontSize: '0.72rem',
+                    fontWeight: '700',
+                    color: lang === 'en' ? 'var(--primary-btn-text, #ffffff)' : 'var(--text-muted)',
+                    zIndex: 2,
+                    transition: 'color 0.25s ease',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '3px'
                   }}>
-                    <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#3ecdc6', boxShadow: '0 0 8px #3ecdc6' }}></span>
+                    🇬🇧 EN
+                  </span>
+
+                  {/* Spanish label */}
+                  <span style={{
+                    flex: 1,
+                    textAlign: 'center',
+                    fontSize: '0.72rem',
+                    fontWeight: '700',
+                    color: lang === 'es' ? 'var(--primary-btn-text, #ffffff)' : 'var(--text-muted)',
+                    zIndex: 2,
+                    transition: 'color 0.25s ease',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '3px'
+                  }}>
+                    🇪🇸 ES
+                  </span>
+                </div>
+
+                {operatorHotelId && (
+                  <span style={{
+                    background: '#0c0c0f',
+                    border: '1.5px solid rgba(255, 255, 255, 0.18)',
+                    color: '#ffffff',
+                    padding: '6px 14px',
+                    borderRadius: '20px',
+                    fontSize: '0.8rem',
+                    fontWeight: '700',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.35)'
+                  }}>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>
+                      <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                      <polyline points="9 22 9 12 15 12 15 22" />
+                    </svg>
                     Resort: {operatorHotelName}
                   </span>
+                )}
+              </div>
+
+              {/* Row 2: Logout, DB connection, Feedback */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                {operatorHotelId && (
                   <button
                     onClick={() => {
                       transitionState(() => {
@@ -1571,69 +1875,72 @@ function App() {
                       <line x1="21" y1="12" x2="9" y2="12" />
                     </svg>
                   </button>
-                </div>
-              )}
-              <span style={{ 
-                background: isRealDynamo ? 'rgba(16, 185, 129, 0.08)' : 'var(--primary-glow)', 
-                color: isRealDynamo ? '#10b981' : 'var(--primary)', 
-                border: `1px solid ${isRealDynamo ? 'rgba(16, 185, 129, 0.25)' : 'var(--border-color)'}`, 
-                padding: '6px 14px', 
-                borderRadius: '20px', 
-                fontSize: '0.72rem', 
-                fontWeight: 600,
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                letterSpacing: '0.04em'
-              }}>
-                <span style={{
-                  width: '6px',
-                  height: '6px',
-                  borderRadius: '50%',
-                  background: isRealDynamo ? '#10b981' : 'var(--primary)'
-                }}></span>
-                {isRealDynamo ? 'AWS DYNAMODB LIVE' : 'LOCAL SANDBOX DB'}
-              </span>
-              <button 
-                onClick={() => {
-                  const feedback = prompt("Please share your feedback on this AI experience:");
-                  if (feedback) {
-                    alert("Thank you for your feedback! It has been logged.");
-                    console.log("Feedback received:", feedback);
-                  }
-                }}
-                title="Share Feedback on this AI Experience"
-                style={{
-                  background: 'var(--primary-glow)',
-                  border: '1px solid var(--border-color)',
-                  color: 'var(--primary)',
-                  padding: '6px 14px',
-                  borderRadius: '20px',
-                  fontSize: '0.72rem',
+                )}
+                
+                <span style={{ 
+                  background: isRealDynamo ? 'rgba(5, 150, 105, 0.08)' : 'var(--primary-glow)', 
+                  color: isRealDynamo ? '#059669' : 'var(--primary)', 
+                  border: `1px solid ${isRealDynamo ? 'rgba(5, 150, 105, 0.25)' : 'var(--border-color)'}`, 
+                  padding: '6px 14px', 
+                  borderRadius: '20px', 
+                  fontSize: '0.72rem', 
                   fontWeight: 600,
-                  cursor: 'pointer',
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '6px',
-                  transition: 'all 0.2s ease',
                   letterSpacing: '0.04em'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = 'var(--primary)';
-                  e.currentTarget.style.background = 'var(--primary)';
-                  e.currentTarget.style.color = '#ffffff';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = 'var(--border-color)';
-                  e.currentTarget.style.background = 'var(--primary-glow)';
-                  e.currentTarget.style.color = 'var(--primary)';
-                }}
-              >
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                </svg>
-                FEEDBACK
-              </button>
+                }}>
+                  <span style={{
+                    width: '6px',
+                    height: '6px',
+                    borderRadius: '50%',
+                    background: isRealDynamo ? '#059669' : 'var(--primary)',
+                    boxShadow: isRealDynamo ? '0 0 6px #059669' : 'none'
+                  }}></span>
+                  {isRealDynamo ? 'AWS DYNAMODB LIVE' : 'LOCAL SANDBOX DB'}
+                </span>
+
+                <button 
+                  onClick={() => {
+                    const feedback = prompt("Please share your feedback on this AI experience:");
+                    if (feedback) {
+                      alert("Thank you for your feedback! It has been logged.");
+                      console.log("Feedback received:", feedback);
+                    }
+                  }}
+                  title="Share Feedback on this AI Experience"
+                  style={{
+                    background: 'var(--primary-glow)',
+                    border: '1px solid var(--border-color)',
+                    color: 'var(--primary)',
+                    padding: '6px 14px',
+                    borderRadius: '20px',
+                    fontSize: '0.72rem',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    transition: 'all 0.2s ease',
+                    letterSpacing: '0.04em'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = 'var(--primary)';
+                    e.currentTarget.style.background = 'var(--primary)';
+                    e.currentTarget.style.color = '#ffffff';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = 'var(--border-color)';
+                    e.currentTarget.style.background = 'var(--primary-glow)';
+                    e.currentTarget.style.color = 'var(--primary)';
+                  }}
+                >
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                  </svg>
+                  FEEDBACK
+                </button>
+              </div>
             </div>
           </>
         )}
@@ -1674,7 +1981,7 @@ function App() {
             <div style={{ fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
               <span style={{ color: 'var(--text-muted)' }}>Active Reservation:</span>
               <strong style={{ color: 'var(--primary)', fontWeight: 600 }}>
-                {(guests || []).find(g => g && g._id === guestId)?.name || 'Alex Mercer'} ({guestId})
+                {(guests || []).find(g => g && g._id === guestId)?.name || 'Dorien Van Den Abbeele'} ({guestId})
               </strong>
             </div>
           </div>
@@ -2255,7 +2562,7 @@ function App() {
                         <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>DynamoDB Tables & Stay State Engine</div>
                       </div>
                     </div>
-                    <span style={{ fontSize: '0.7rem', fontWeight: 600, padding: '3px 8px', borderRadius: '10px', background: 'rgba(5, 150, 105, 0.1)', color: '#10b981' }}>
+                    <span style={{ fontSize: '0.7rem', fontWeight: 600, padding: '3px 8px', borderRadius: '10px', background: 'rgba(5, 150, 105, 0.1)', color: '#059669' }}>
                       DATA_STORE
                     </span>
                   </div>
@@ -2371,7 +2678,7 @@ function App() {
                     </p>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.75rem', marginTop: '4px' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '6px 10px', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', borderRadius: '6px' }}>
-                        <span style={{ fontWeight: 700, color: '#10b981', fontFamily: 'monospace', width: '32px' }}>GET</span>
+                        <span style={{ fontWeight: 700, color: '#059669', fontFamily: 'monospace', width: '32px' }}>GET</span>
                         <code style={{ color: 'var(--text-primary)', fontWeight: 600 }}>/api/status</code>
                         <span style={{ color: 'var(--text-muted)', marginLeft: 'auto' }}>Retrieves stay metadata and brand setups</span>
                       </div>
@@ -3284,9 +3591,9 @@ function App() {
                                   fontSize: '0.68rem', 
                                   padding: '2px 6px', 
                                   borderRadius: '6px',
-                                  background: b.captain_status === 'confirmed' ? 'rgba(34, 197, 94, 0.12)' : 'rgba(14, 165, 233, 0.12)',
-                                  color: b.captain_status === 'confirmed' ? '#22c55e' : '#0ea5e9',
-                                  border: `1px solid ${b.captain_status === 'confirmed' ? 'rgba(34, 197, 94, 0.2)' : 'rgba(14, 165, 233, 0.2)'}`,
+                                  background: b.captain_status === 'confirmed' ? 'rgba(5, 150, 105, 0.08)' : 'rgba(14, 165, 233, 0.12)',
+                                  color: b.captain_status === 'confirmed' ? '#059669' : '#0ea5e9',
+                                  border: `1px solid ${b.captain_status === 'confirmed' ? 'rgba(5, 150, 105, 0.2)' : 'rgba(14, 165, 233, 0.2)'}`,
                                   fontWeight: 600,
                                   textTransform: 'capitalize'
                                 }}>
@@ -3356,9 +3663,9 @@ function App() {
                     B2B SaaS Product Analytics
                   </h3>
                   <span style={{ 
-                    background: 'rgba(16, 185, 129, 0.08)', 
-                    color: '#10b981', 
-                    border: '1px solid rgba(16, 185, 129, 0.25)', 
+                    background: 'rgba(5, 150, 105, 0.08)', 
+                    color: '#059669', 
+                    border: '1px solid rgba(5, 150, 105, 0.25)', 
                     padding: '3px 10px', 
                     borderRadius: '20px', 
                     fontSize: '0.65rem', 
@@ -3368,7 +3675,7 @@ function App() {
                     gap: '4px',
                     letterSpacing: '0.04em'
                   }}>
-                    <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#10b981', display: 'inline-block' }}></span>
+                    <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#059669', display: 'inline-block' }}></span>
                     SYSTEM ACTIVE
                   </span>
                 </div>
@@ -3392,7 +3699,7 @@ function App() {
                   <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)', marginTop: '2px', fontWeight: 500 }}>Avg Dispatch Latency</div>
                 </div>
                 <div style={{ background: 'rgba(255, 255, 255, 0.02)', border: '1px solid var(--border-color)', borderRadius: '10px', padding: '12px', textAlign: 'center' }}>
-                  <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#10b981' }}>+84</div>
+                  <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#059669' }}>+84</div>
                   <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)', marginTop: '2px', fontWeight: 500 }}>Net Friction Reduction NPS</div>
                 </div>
               </div>
@@ -4414,8 +4721,8 @@ function App() {
                       </div>
                     </div>
 
-                    <div style={{ fontSize: '0.78rem', color: 'var(--text-dim)', background: 'rgba(16, 185, 129, 0.01)', padding: '10px', borderRadius: '6px', border: '1px solid rgba(16, 185, 129, 0.1)', display: 'flex', alignItems: 'start', gap: '8px' }}>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: '2px', color: '#10b981' }}>
+                    <div style={{ fontSize: '0.78rem', color: 'var(--text-dim)', background: 'rgba(5, 150, 105, 0.01)', padding: '10px', borderRadius: '6px', border: '1px solid rgba(5, 150, 105, 0.1)', display: 'flex', alignItems: 'start', gap: '8px' }}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: '2px', color: '#059669' }}>
                         <circle cx="12" cy="12" r="10" />
                         <line x1="12" y1="16" x2="12" y2="12" />
                         <line x1="12" y1="8" x2="12.01" y2="8" />
@@ -5291,9 +5598,9 @@ function App() {
                       <button 
                         onClick={() => setPreviewChannel('whatsapp')}
                         style={{
-                          background: previewChannel === 'whatsapp' ? 'rgba(16, 185, 129, 0.15)' : 'rgba(255,255,255,0.01)',
-                          border: `1px solid ${previewChannel === 'whatsapp' ? '#10b981' : 'var(--border-color)'}`,
-                          color: previewChannel === 'whatsapp' ? '#10b981' : 'var(--text-muted)',
+                          background: previewChannel === 'whatsapp' ? 'rgba(5, 150, 105, 0.15)' : 'rgba(255,255,255,0.01)',
+                          border: `1px solid ${previewChannel === 'whatsapp' ? '#059669' : 'var(--border-color)'}`,
+                          color: previewChannel === 'whatsapp' ? '#059669' : 'var(--text-muted)',
                           padding: '6px 14px',
                           borderRadius: '20px',
                           fontSize: '0.75rem',
@@ -5305,7 +5612,7 @@ function App() {
                           transition: 'all 0.25s ease'
                         }}
                       >
-                        <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981', display: 'inline-block' }}></span>
+                        <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#059669', display: 'inline-block' }}></span>
                         WhatsApp Smartphone Simulator
                       </button>
                       <button 
@@ -5337,7 +5644,7 @@ function App() {
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        background: 'radial-gradient(circle at center, rgba(16, 185, 129, 0.05) 0%, transparent 70%)',
+                        background: 'radial-gradient(circle at center, rgba(5, 150, 105, 0.05) 0%, transparent 70%)',
                         minHeight: '520px'
                       }}>
                         {/* iPhone Frame */}
@@ -5385,8 +5692,8 @@ function App() {
                               <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'white', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '170px' }}>
                                 {activeMessagingGuest.hotel_name}
                               </span>
-                              <span style={{ fontSize: '0.62rem', color: '#10b981', display: 'flex', alignItems: 'center', gap: '3px' }}>
-                                <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#10b981' }}></span>
+                              <span style={{ fontSize: '0.62rem', color: '#059669', display: 'flex', alignItems: 'center', gap: '3px' }}>
+                                <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#059669' }}></span>
                                 Online Concierge
                               </span>
                             </div>
@@ -5494,7 +5801,7 @@ function App() {
                           <div style={{ display: 'flex', gap: '6px' }}>
                             <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ef4444' }}></span>
                             <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#f59e0b' }}></span>
-                            <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#10b981' }}></span>
+                            <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#059669' }}></span>
                           </div>
 
                           {/* Address Bar */}
@@ -5567,7 +5874,7 @@ function App() {
                     </div>
 
                     <div className="glass-card" style={{ padding: '16px', display: 'flex', alignItems: 'center', gap: '14px', background: 'rgba(255,255,255,0.01)', border: '1px solid var(--border-color)' }}>
-                      <div style={{ width: '40px', height: '40px', borderRadius: '8px', background: 'rgba(16, 185, 129, 0.12)', border: '1.5px solid #10b981', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#10b981' }}>
+                      <div style={{ width: '40px', height: '40px', borderRadius: '8px', background: 'rgba(5, 150, 105, 0.12)', border: '1.5px solid #059669', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#059669' }}>
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                           <polyline points="20 6 9 17 4 12"/>
                         </svg>
@@ -5657,9 +5964,9 @@ function App() {
                                       borderRadius: '4px',
                                       fontWeight: 600,
                                       letterSpacing: '0.03em',
-                                      background: item.type === 'shuttle' ? 'rgba(56, 189, 248, 0.1)' : (item.type === 'weather' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(16, 185, 129, 0.1)'),
-                                      color: item.type === 'shuttle' ? '#38bdf8' : (item.type === 'weather' ? '#ef4444' : '#10b981'),
-                                      border: `1px solid ${item.type === 'shuttle' ? 'rgba(56, 189, 248, 0.2)' : (item.type === 'weather' ? 'rgba(239, 68, 68, 0.2)' : 'rgba(16, 185, 129, 0.2)')}`
+                                      background: item.type === 'shuttle' ? 'rgba(56, 189, 248, 0.1)' : (item.type === 'weather' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(5, 150, 105, 0.1)'),
+                                      color: item.type === 'shuttle' ? '#38bdf8' : (item.type === 'weather' ? '#ef4444' : '#059669'),
+                                      border: `1px solid ${item.type === 'shuttle' ? 'rgba(56, 189, 248, 0.2)' : (item.type === 'weather' ? 'rgba(239, 68, 68, 0.2)' : 'rgba(5, 150, 105, 0.2)')}`
                                     }}>
                                       {item.type.toUpperCase()}
                                     </span>
@@ -5681,12 +5988,12 @@ function App() {
                                       display: 'inline-flex',
                                       alignItems: 'center',
                                       gap: '4px',
-                                      background: isPending ? 'rgba(245, 158, 11, 0.12)' : (isWhatsApp ? 'rgba(16, 185, 129, 0.12)' : 'rgba(56, 189, 248, 0.12)'),
-                                      color: isPending ? '#f59e0b' : (isWhatsApp ? '#10b981' : '#38bdf8'),
-                                      border: `1px solid ${isPending ? '#f59e0b' : (isWhatsApp ? '#10b981' : '#38bdf8')}`,
+                                      background: isPending ? 'rgba(245, 158, 11, 0.12)' : (isWhatsApp ? 'rgba(5, 150, 105, 0.12)' : 'rgba(56, 189, 248, 0.12)'),
+                                      color: isPending ? '#f59e0b' : (isWhatsApp ? '#059669' : '#38bdf8'),
+                                      border: `1px solid ${isPending ? '#f59e0b' : (isWhatsApp ? '#059669' : '#38bdf8')}`,
                                       boxShadow: 'none'
                                     }}>
-                                      <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: isPending ? '#f59e0b' : (isWhatsApp ? '#10b981' : '#38bdf8'), display: 'inline-block' }}></span>
+                                      <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: isPending ? '#f59e0b' : (isWhatsApp ? '#059669' : '#38bdf8'), display: 'inline-block' }}></span>
                                       {isPending ? 'PENDING DISPATCH' : (isWhatsApp ? 'DELIVERED (WhatsApp)' : 'SYNCED (Webhook)')}
                                     </span>
                                   </td>
@@ -5702,7 +6009,7 @@ function App() {
                                           fontSize: '0.68rem', 
                                           fontWeight: 700, 
                                           borderRadius: '4px',
-                                          background: isWhatsApp ? '#10b981' : 'var(--primary)',
+                                          background: isWhatsApp ? '#059669' : 'var(--primary)',
                                           color: isWhatsApp ? '#ffffff' : 'var(--primary-btn-text, #0f172a)'
                                         }}
                                       >
