@@ -1317,9 +1317,15 @@ function App() {
                     />
                   </div>
                 ) : (
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--primary)', flexShrink: 0 }}>
-                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                    <polyline points="9 22 9 12 15 12 15 22" />
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--primary)', flexShrink: 0 }}>
+                    <path d="M12 22c1-4 1-8 0-12" />
+                    <path d="M5 22c2-.5 12-.5 14 0" />
+                    <path d="M12 10c-3-2-7-1-9 2" />
+                    <path d="M12 10c3-2 7-1 9 2" />
+                    <path d="M12 10c-4 .5-8 3-9 7" />
+                    <path d="M12 10c4 .5 8 3 9 7" />
+                    <path d="M12 10c-1.5-4-5-6-8-6" />
+                    <path d="M12 10c1.5-4 5-6 8-6" />
                   </svg>
                 )}
                 {tenantBrand?.name || (guests || []).find(g => g && g._id === guestId)?.hotel_name || 'La Coralina Island House'}
@@ -1402,9 +1408,15 @@ function App() {
                     />
                   </div>
                 ) : (
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--primary)', flexShrink: 0 }}>
-                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                    <polyline points="9 22 9 12 15 12 15 22" />
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--primary)', flexShrink: 0 }}>
+                    <path d="M12 22c1-4 1-8 0-12" />
+                    <path d="M5 22c2-.5 12-.5 14 0" />
+                    <path d="M12 10c-3-2-7-1-9 2" />
+                    <path d="M12 10c3-2 7-1 9 2" />
+                    <path d="M12 10c-4 .5-8 3-9 7" />
+                    <path d="M12 10c4 .5 8 3 9 7" />
+                    <path d="M12 10c-1.5-4-5-6-8-6" />
+                    <path d="M12 10c1.5-4 5-6 8-6" />
                   </svg>
                 )}
                 Rain or Shine
@@ -3608,9 +3620,15 @@ function App() {
                   <div style={{ background: 'var(--slot-bg, rgba(255, 255, 255, 0.5))', border: '1px solid var(--border-color)', borderRadius: '12px', padding: '16px', display: 'flex', flexDirection: 'column', gap: '10px', position: 'relative', transition: 'all 0.2s ease' }}>
                     <div style={{ position: 'absolute', top: '12px', right: '12px', fontSize: '1.5rem', fontWeight: 900, color: 'var(--border-color)', opacity: 0.35, fontFamily: 'var(--font-serif)' }}>04</div>
                     <div style={{ color: 'var(--primary)', background: 'var(--primary-glow)', width: '36px', height: '36px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                        <polyline points="9 22 9 12 15 12 15 22" />
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M12 22c1-4 1-8 0-12" />
+                        <path d="M5 22c2-.5 12-.5 14 0" />
+                        <path d="M12 10c-3-2-7-1-9 2" />
+                        <path d="M12 10c3-2 7-1 9 2" />
+                        <path d="M12 10c-4 .5-8 3-9 7" />
+                        <path d="M12 10c4 .5 8 3 9 7" />
+                        <path d="M12 10c-1.5-4-5-6-8-6" />
+                        <path d="M12 10c1.5-4 5-6 8-6" />
                       </svg>
                     </div>
                     <div>
@@ -3785,9 +3803,15 @@ function App() {
                                     }}
                                   />
                                 ) : (
-                                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={accentColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                                    <polyline points="9 22 9 12 15 12 15 22" />
+                                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={accentColor} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                                    <path d="M12 22c1-4 1-8 0-12" />
+                                    <path d="M5 22c2-.5 12-.5 14 0" />
+                                    <path d="M12 10c-3-2-7-1-9 2" />
+                                    <path d="M12 10c3-2 7-1 9 2" />
+                                    <path d="M12 10c-4 .5-8 3-9 7" />
+                                    <path d="M12 10c4 .5 8 3 9 7" />
+                                    <path d="M12 10c-1.5-4-5-6-8-6" />
+                                    <path d="M12 10c1.5-4 5-6 8-6" />
                                   </svg>
                                 )}
                               </div>
