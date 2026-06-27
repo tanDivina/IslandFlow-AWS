@@ -339,10 +339,10 @@ export default function ControlPanel({
           <div style={{ borderLeft: '2px solid var(--primary)', paddingLeft: '12px', display: 'flex', flexDirection: 'column', gap: '6px', margin: '4px 0' }}>
             <div style={{ fontSize: '0.68rem', color: 'var(--text-dim)', fontWeight: 600, letterSpacing: '0.04em' }}>ACTIVE API CHANNELS</div>
             <div style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span style={{ color: '#a8ff35' }}>[ONLINE]</span> OpenWeatherMap API <span style={{ color: 'var(--text-muted)', fontWeight: 400, fontSize: '0.7rem' }}>(Live Weather Code Stream)</span>
+              <span style={{ color: '#10b981' }}>[ONLINE]</span> OpenWeatherMap API <span style={{ color: 'var(--text-muted)', fontWeight: 400, fontSize: '0.7rem' }}>(Live Weather Code Stream)</span>
             </div>
             <div style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span style={{ color: '#a8ff35' }}>[ONLINE]</span> Open-Meteo Marine API <span style={{ color: 'var(--text-muted)', fontWeight: 400, fontSize: '0.7rem' }}>(Real-time Reef Swells)</span>
+              <span style={{ color: '#10b981' }}>[ONLINE]</span> Open-Meteo Marine API <span style={{ color: 'var(--text-muted)', fontWeight: 400, fontSize: '0.7rem' }}>(Real-time Reef Swells)</span>
             </div>
           </div>
 

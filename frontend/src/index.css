@@ -868,3 +868,19 @@ body {
 .stagger-6 { animation-delay: 0.24s; }
 .stagger-7 { animation-delay: 0.28s; }
 .stagger-8 { animation-delay: 0.32s; }
+
+/* BRAND TAGLINE MOTION: PREMIUM FLOATING LETTER-BY-LETTER WAVE */
+@keyframes waveCharKeyframes {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.wave-char {
+  display: inline-block;
+  animation: waveCharKeyframes 2.4s ease-in-out infinite;
+  will-change: transform;
+}

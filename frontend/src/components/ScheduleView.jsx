@@ -1,9 +1,48 @@
 import React from 'react';
 
-export default function ScheduleView({ bookings, tours, logistics, guestId, lang = 'en' }) {
-  const dates = logistics && logistics.length > 0
-    ? [...logistics].sort((a, b) => a.date.localeCompare(b.date)).map(l => l.date)
-    : ["2026-05-30", "2026-05-31", "2026-06-01", "2026-06-02"];
+const getBocasFallbackDates = () => {
+  const dates = [];
+  try {
+    const d = new Date();
+    const formatter = new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'America/Panama',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    });
+    const todayStr = formatter.format(d);
+    const [yyyy, mm, dd] = todayStr.split('-').map(Number);
+    const baseDate = new Date(yyyy, mm - 1, dd, 12, 0, 0);
+    for (let i = 0; i < 4; i++) {
+      const nextD = new Date(baseDate);
+      nextD.setDate(baseDate.getDate() + i);
+      const y = nextD.getFullYear();
+      const m = String(nextD.getMonth() + 1).padStart(2, '0');
+      const day = String(nextD.getDate()).padStart(2, '0');
+      dates.push(`${y}-${m}-${day}`);
+    }
+  } catch (e) {
+    const today = new Date();
+    for (let i = 0; i < 4; i++) {
+      const nextD = new Date(today);
+      nextD.setDate(today.getDate() + i);
+      const y = nextD.getFullYear();
+      const m = String(nextD.getMonth() + 1).padStart(2, '0');
+      const day = String(nextD.getDate()).padStart(2, '0');
+      dates.push(`${y}-${m}-${day}`);
+    }
+  }
+  return dates;
+};
+
+export default function ScheduleView({ bookings = [], tours = [], logistics = [], guestId, lang = 'en' }) {
+  const safeBookings = Array.isArray(bookings) ? bookings : [];
+  const safeTours = Array.isArray(tours) ? tours : [];
+  const safeLogistics = Array.isArray(logistics) ? logistics : [];
+
+  const dates = safeLogistics && safeLogistics.length > 0
+    ? [...safeLogistics].sort((a, b) => a.date.localeCompare(b.date)).map(l => l.date)
+    : getBocasFallbackDates();
 
   // Fallback for browsers without native CSS scroll timelines support (e.g. Firefox)
   const [supportsScrollTimeline, setSupportsScrollTimeline] = React.useState(true);
@@ -42,11 +81,11 @@ export default function ScheduleView({ bookings, tours, logistics, guestId, lang
         }
       };
     }
-  }, [logistics, guestId]);
+  }, [safeLogistics, guestId]);
 
   // Filter bookings strictly by the active guestId to ensure one guest's timeline 
   // never leaks onto another's under any view, loading phase, or condition
-  const activeBookings = bookings.filter(
+  const activeBookings = safeBookings.filter(
     b => b.guest_id && guestId && String(b.guest_id) === String(guestId)
   );
 
@@ -54,7 +93,7 @@ export default function ScheduleView({ bookings, tours, logistics, guestId, lang
     const booking = activeBookings.find(b => b.date === date && b.slot === slot);
     if (!booking) return null;
     
-    const tour = tours.find(t => t._id === booking.tour_id);
+    const tour = safeTours.find(t => t._id === booking.tour_id);
     return {
       ...booking,
       tour
@@ -62,7 +101,7 @@ export default function ScheduleView({ bookings, tours, logistics, guestId, lang
   };
 
   const getWeatherForDate = (date) => {
-    const log = logistics.find(l => l.date === date);
+    const log = safeLogistics.find(l => l.date === date);
     return log ? { weather: log.weather, alert: log.alert } : { weather: 'Sunny', alert: 'none' };
   };
 

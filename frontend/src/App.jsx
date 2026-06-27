@@ -2625,13 +2625,31 @@ function App() {
           <div className="main-grid">
             <div className="guest-col-schedule" style={{ display: 'flex', flexDirection: 'column', gap: '24px', minWidth: 0, viewTransitionName: 'schedule-view' }}>
               <div className="fade-in-entry stagger-1">
-                <WeatherHorizon logistics={logistics} lang={lang} />
+                <ErrorBoundary fallback={
+                  <div className="glass-card" style={{ padding: '24px', textAlign: 'center', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
+                    <p style={{ color: '#ef4444', fontSize: '0.88rem', margin: 0 }}>Weather overview is temporarily unavailable.</p>
+                  </div>
+                }>
+                  <WeatherHorizon logistics={logistics} lang={lang} />
+                </ErrorBoundary>
               </div>
               <div className="fade-in-entry stagger-2">
-                <ScheduleView bookings={bookings} tours={tours} logistics={logistics} guestId={guestId} lang={lang} />
+                <ErrorBoundary fallback={
+                  <div className="glass-card" style={{ padding: '24px', textAlign: 'center', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
+                    <p style={{ color: '#ef4444', fontSize: '0.88rem', margin: 0 }}>Schedule details are temporarily unavailable.</p>
+                  </div>
+                }>
+                  <ScheduleView bookings={bookings} tours={tours} logistics={logistics} guestId={guestId} lang={lang} />
+                </ErrorBoundary>
               </div>
               <div className="fade-in-entry stagger-3">
-                <ItineraryDoc itineraryMarkdown={itineraryMarkdown} guestId={guestId} />
+                <ErrorBoundary fallback={
+                  <div className="glass-card" style={{ padding: '24px', textAlign: 'center', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
+                    <p style={{ color: '#ef4444', fontSize: '0.88rem', margin: 0 }}>Itinerary document is temporarily unavailable.</p>
+                  </div>
+                }>
+                  <ItineraryDoc itineraryMarkdown={itineraryMarkdown} guestId={guestId} />
+                </ErrorBoundary>
               </div>
               
               {/* Urgent Human Front Desk Emergency Assistance Card */}
@@ -2677,16 +2695,22 @@ function App() {
               </div>
             </div>
             <div className="guest-col-chat fade-in-entry stagger-5" style={{ viewTransitionName: 'chat-widget', position: 'sticky', top: '24px', alignSelf: 'start' }}>
-              <ChatWidget 
-                messages={messages} 
-                onSendMessage={handleSendMessage} 
-                onRespondProposal={handleRespondProposal} 
-                loading={loading}
-                bookings={bookings}
-                tenantBrand={tenantBrand}
-                tours={tours}
-                logistics={logistics}
-              />
+              <ErrorBoundary fallback={
+                <div className="glass-card" style={{ padding: '24px', textAlign: 'center', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
+                  <p style={{ color: '#ef4444', fontSize: '0.88rem', margin: 0 }}>Chat Assistant is temporarily unavailable.</p>
+                </div>
+              }>
+                <ChatWidget 
+                  messages={messages} 
+                  onSendMessage={handleSendMessage} 
+                  onRespondProposal={handleRespondProposal} 
+                  loading={loading}
+                  bookings={bookings}
+                  tenantBrand={tenantBrand}
+                  tours={tours}
+                  logistics={logistics}
+                />
+              </ErrorBoundary>
             </div>
           </div>
         </div>

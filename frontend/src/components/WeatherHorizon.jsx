@@ -1,16 +1,52 @@
 import React, { useRef } from 'react';
 
+const getBocasFallbackDates = () => {
+  const dates = [];
+  try {
+    const d = new Date();
+    const formatter = new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'America/Panama',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    });
+    const todayStr = formatter.format(d);
+    const [yyyy, mm, dd] = todayStr.split('-').map(Number);
+    const baseDate = new Date(yyyy, mm - 1, dd, 12, 0, 0);
+    for (let i = 0; i < 4; i++) {
+      const nextD = new Date(baseDate);
+      nextD.setDate(baseDate.getDate() + i);
+      const y = nextD.getFullYear();
+      const m = String(nextD.getMonth() + 1).padStart(2, '0');
+      const day = String(nextD.getDate()).padStart(2, '0');
+      dates.push(`${y}-${m}-${day}`);
+    }
+  } catch (e) {
+    const today = new Date();
+    for (let i = 0; i < 4; i++) {
+      const nextD = new Date(today);
+      nextD.setDate(today.getDate() + i);
+      const y = nextD.getFullYear();
+      const m = String(nextD.getMonth() + 1).padStart(2, '0');
+      const day = String(nextD.getDate()).padStart(2, '0');
+      dates.push(`${y}-${m}-${day}`);
+    }
+  }
+  return dates;
+};
+
 export default function WeatherHorizon({ logistics, lang = 'en' }) {
   const scrollContainerRef = useRef(null);
 
   const dates = logistics && logistics.length > 0
     ? [...logistics].sort((a, b) => a.date.localeCompare(b.date))
-    : [
-        { date: "2026-05-30", weather: "Sunny", alert: "none", wave_height: 0.6, wave_status: "safe" },
-        { date: "2026-05-31", weather: "Sunny", alert: "none", wave_height: 0.6, wave_status: "safe" },
-        { date: "2026-06-01", weather: "Sunny", alert: "none", wave_height: 0.6, wave_status: "safe" },
-        { date: "2026-06-02", weather: "Sunny", alert: "none", wave_height: 0.6, wave_status: "safe" }
-      ];
+    : getBocasFallbackDates().map(d => ({
+        date: d,
+        weather: "Sunny",
+        alert: "none",
+        wave_height: 0.6,
+        wave_status: "safe"
+      }));
 
   const scroll = (direction) => {
     if (scrollContainerRef.current) {

@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 export default function ChatWidget({ 
-  messages, 
+  messages = [], 
   onSendMessage, 
   onRespondProposal, 
   loading,
-  bookings,
+  bookings = [],
   tenantBrand,
   tours = [],
   logistics = []
