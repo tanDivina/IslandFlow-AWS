@@ -1721,7 +1721,7 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
             {/* Navigation Tabs */}
             <nav className="nav-links">
               <button className={`nav-link ${view === 'landing' ? 'active' : ''}`} onClick={() => navigateToView('landing')}>
-                {lang === 'es' ? 'Inicio / Nosotros' : 'Home / About'}
+                {lang === 'es' ? 'Nosotros' : 'About'}
               </button>
               <button className={`nav-link ${view === 'guest' ? 'active' : ''}`} onClick={() => navigateToView('guest')}>
                 {lang === 'es' ? 'Portal del Huésped' : 'Guest Portal'}
@@ -1832,7 +1832,7 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
                 )}
               </div>
 
-              {/* Row 2: Logout, DB connection, Feedback */}
+              {/* Row 2: Logout, DB connection */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 {operatorHotelId && (
                   <button
@@ -1899,7 +1899,10 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
                   }}></span>
                   {isRealDynamo ? 'AWS DYNAMODB LIVE' : 'LOCAL SANDBOX DB'}
                 </span>
+              </div>
 
+              {/* Row 3: Dedicated line for Feedback button */}
+              <div style={{ display: 'flex', alignItems: 'center' }}>
                 <button 
                   onClick={() => {
                     const feedback = prompt("Please share your feedback on this AI experience:");

@@ -36,36 +36,36 @@ body {
   background-image: radial-gradient(circle at 50% -20%, rgba(168, 255, 53, 0.05) 0%, transparent 50%);
 }
 
-/* Rainy Mode (Cozy Stormy Harbor - Soft Mist Gray & Cool Navy) */
+/* Rainy Mode (Cozy Stormy Harbor - Premium Dark Cozy Storm) */
 body.theme-rainy {
-  color-scheme: light;
-  --bg-color: hsl(222, 15%, 97%);
-  --panel-bg: hsla(222, 15%, 94%, 0.85);
-  --border-color: hsla(222, 12%, 50%, 0.22);
-  --border-glow: hsla(222, 22%, 55%, 0.35);
+  color-scheme: dark;
+  --bg-color: #030408;
+  --panel-bg: rgba(10, 14, 22, 0.85);
+  --border-color: rgba(255, 255, 255, 0.06);
+  --border-glow: rgba(99, 102, 241, 0.20);
   --primary-btn-text: #ffffff;
   
-  --primary: hsl(222, 22%, 48%);       /* Stormy Navy Blue */
-  --primary-glow: hsla(222, 22%, 48%, 0.08);
-  --accent: hsl(38, 35%, 42%);         /* Muted Gold */
-  --accent-glow: hsla(38, 35%, 42%, 0.08);
-  --warning: hsl(35, 65%, 42%);
-  --warning-glow: hsla(35, 65%, 42%, 0.08);
-  --error: hsl(352, 60%, 42%);
-  --error-glow: hsla(352, 60%, 42%, 0.08);
+  --primary: #6366f1;       /* Stormy Indigo accent */
+  --primary-glow: rgba(99, 102, 241, 0.12);
+  --accent: #38bdf8;         /* Cool Sky Blue */
+  --accent-glow: rgba(56, 189, 248, 0.08);
+  --warning: #f59e0b;
+  --warning-glow: rgba(245, 158, 11, 0.08);
+  --error: #f43f5e;
+  --error-glow: rgba(244, 63, 94, 0.08);
   
-  --text-primary: hsl(222, 24%, 12%);
-  --text-muted: hsl(222, 12%, 38%);
-  --text-dim: hsl(222, 8%, 52%);
+  --text-primary: #ffffff;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
   
-  --slot-bg: hsla(222, 15%, 92%, 0.85);
-  --slot-empty-bg: hsla(222, 15%, 95%, 0.4);
-  --msg-user-bg: hsla(222, 22%, 58%, 0.12);
-  --msg-agent-bg: hsla(38, 35%, 50%, 0.08);
+  --slot-bg: rgba(255, 255, 255, 0.03);
+  --slot-empty-bg: rgba(255, 255, 255, 0.01);
+  --msg-user-bg: rgba(99, 102, 241, 0.12);
+  --msg-agent-bg: rgba(255, 255, 255, 0.05);
   
-  --bg-card-nested: rgba(0, 0, 0, 0.03);
+  --bg-card-nested: rgba(255, 255, 255, 0.02);
   
-  background-image: none;
+  background-image: radial-gradient(circle at 50% -20%, rgba(99, 102, 241, 0.05) 0%, transparent 50%);
 }
 
 * {
