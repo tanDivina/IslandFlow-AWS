@@ -1,6 +1,5 @@
 fastapi>=0.110.0
 uvicorn>=0.28.0
-pymongo>=4.6.2
 google-genai>=0.1.0
 mcp>=1.2.0
 python-dotenv>=1.0.1

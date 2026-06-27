@@ -505,7 +505,7 @@ async def get_status(guest_id: str = "g1", token: str = None, secure: bool = Fal
                 msg["_id"] = str(msg["_id"])
  
         return {
-            "is_real_mongodb": db.is_real_mongo,
+            "is_real_dynamodb": db.is_real_dynamo,
             "guest_id": guest_id,
             "tours": tours,
             "bookings": bookings,

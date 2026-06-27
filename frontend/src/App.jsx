@@ -140,7 +140,7 @@ function App() {
   const [messages, setMessages] = useState([]);
   const [agentLogs, setAgentLogs] = useState(['🤖 Simulation environment initialized. Ready for weather events.']);
   const [loading, setLoading] = useState(false);
-  const [isRealMongo, setIsRealMongo] = useState(false);
+  const [isRealDynamo, setIsRealDynamo] = useState(false);
   const [guestId, setGuestId] = useState(initialParams.guestId);
   const [showItineraryModal, setShowItineraryModal] = useState(false);
   const [isGuestViewOnly, setIsGuestViewOnly] = useState(initialParams.guestViewOnly);
@@ -644,7 +644,7 @@ function App() {
           lastGuestIdRef.current = data.guest_id;
         }
         
-        setIsRealMongo(data.is_real_mongodb);
+        setIsRealDynamo(data.is_real_dynamodb);
       });
     } catch (error) {
       console.error("Error fetching status:", error);
@@ -1574,9 +1574,9 @@ function App() {
                 </div>
               )}
               <span style={{ 
-                background: isRealMongo ? 'rgba(16, 185, 129, 0.08)' : 'var(--primary-glow)', 
-                color: isRealMongo ? '#10b981' : 'var(--primary)', 
-                border: `1px solid ${isRealMongo ? 'rgba(16, 185, 129, 0.25)' : 'var(--border-color)'}`, 
+                background: isRealDynamo ? 'rgba(16, 185, 129, 0.08)' : 'var(--primary-glow)', 
+                color: isRealDynamo ? '#10b981' : 'var(--primary)', 
+                border: `1px solid ${isRealDynamo ? 'rgba(16, 185, 129, 0.25)' : 'var(--border-color)'}`, 
                 padding: '6px 14px', 
                 borderRadius: '20px', 
                 fontSize: '0.72rem', 
@@ -1590,9 +1590,9 @@ function App() {
                   width: '6px',
                   height: '6px',
                   borderRadius: '50%',
-                  background: isRealMongo ? '#10b981' : 'var(--primary)'
+                  background: isRealDynamo ? '#10b981' : 'var(--primary)'
                 }}></span>
-                {isRealMongo ? 'AWS DYNAMODB LIVE' : 'LOCAL SANDBOX DB'}
+                {isRealDynamo ? 'AWS DYNAMODB LIVE' : 'LOCAL SANDBOX DB'}
               </span>
               <button 
                 onClick={() => {

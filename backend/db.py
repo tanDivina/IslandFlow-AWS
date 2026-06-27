@@ -1,12 +1,11 @@
 import os
 import json
 import logging
-from pymongo import MongoClient
-from pymongo.errors import ConnectionFailure
 from dotenv import load_dotenv
 import boto3
 from decimal import Decimal
 import uuid
+
 
 load_dotenv()
 load_dotenv("backend/.env")
@@ -144,6 +143,16 @@ class MockCollection:
                             curr[parts[-1]] = uv
                         else:
                             item[uk] = uv
+                elif '$push' in update:
+                    for uk, uv in update['$push'].items():
+                        target_list = item.setdefault(uk, [])
+                        if not isinstance(target_list, list):
+                            target_list = []
+                            item[uk] = target_list
+                        if isinstance(uv, dict) and '$each' in uv:
+                            target_list.extend(uv['$each'])
+                        else:
+                            target_list.append(uv)
                 else:
                     for uk, uv in update.items():
                         if '.' in uk:
@@ -381,6 +390,17 @@ class DynamoDBCollection:
                 else:
                     doc[uk] = uv
             updated = True
+        elif '$push' in update:
+            for uk, uv in update['$push'].items():
+                target_list = doc.setdefault(uk, [])
+                if not isinstance(target_list, list):
+                    target_list = []
+                    doc[uk] = target_list
+                if isinstance(uv, dict) and '$each' in uv:
+                    target_list.extend(uv['$each'])
+                else:
+                    target_list.append(uv)
+            updated = True
         else:
             for uk, uv in update.items():
                 if '.' in uk:
@@ -421,6 +441,17 @@ class DynamoDBCollection:
                         curr[parts[-1]] = uv
                     else:
                         doc[uk] = uv
+                updated = True
+            elif '$push' in update:
+                for uk, uv in update['$push'].items():
+                    target_list = doc.setdefault(uk, [])
+                    if not isinstance(target_list, list):
+                        target_list = []
+                        doc[uk] = target_list
+                    if isinstance(uv, dict) and '$each' in uv:
+                        target_list.extend(uv['$each'])
+                    else:
+                        target_list.append(uv)
                 updated = True
             else:
                 for uk, uv in update.items():
@@ -566,28 +597,18 @@ def get_db():
             logger.info(f"Successfully connected to AWS DynamoDB with prefix '{prefix}'.")
             return DynamoDBDB(prefix, dynamodb), True
         except Exception as e:
-            logger.warning(f"Failed to connect to AWS DynamoDB: {e}. Falling back to MongoDB / JSON Mock DB.")
+            logger.warning(f"Failed to connect to AWS DynamoDB: {e}. Falling back to high-fidelity JSON Mock DB.")
 
-    mongo_uri = os.getenv("MONGO_URI")
-    if mongo_uri:
-        try:
-            client = MongoClient(mongo_uri, serverSelectionTimeoutMS=2000)
-            client.server_info()
-            logger.info("Successfully connected to MongoDB server.")
-            return client["bocas_concierge"], True
-        except Exception as e:
-            logger.warning(f"Failed to connect to MongoDB URI: {e}. Falling back to high-fidelity JSON Mock DB.")
-            
-    logger.info("MONGO_URI not set or failed. Falling back to high-fidelity JSON Mock DB.")
+    logger.info("Falling back to high-fidelity JSON Mock DB.")
     return MockDB("mock_db.json"), False
 
 _db_instance = None
-_is_real_mongo_instance = None
+_is_real_dynamo_instance = None
 
 def _lazy_init():
-    global _db_instance, _is_real_mongo_instance
+    global _db_instance, _is_real_dynamo_instance
     if _db_instance is None:
-        _db_instance, _is_real_mongo_instance = get_db()
+        _db_instance, _is_real_dynamo_instance = get_db()
 
 class LazyDBProxy:
     def __getitem__(self, name):
@@ -599,9 +620,9 @@ class LazyDBProxy:
         return getattr(_db_instance, name)
 
     @property
-    def is_real_mongo(self):
+    def is_real_dynamo(self):
         _lazy_init()
-        return _is_real_mongo_instance
+        return _is_real_dynamo_instance
 
 db = LazyDBProxy()
 
