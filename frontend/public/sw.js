@@ -1,4 +1,4 @@
-const CACHE_NAME = 'islandflow-cache-v2';
+const CACHE_NAME = 'rain-or-shine-cache-v3';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
