@@ -1,20 +1,20 @@
-# 🏝️ IslandFlow: AWS DynamoDB Guest Experience & Logistics Engine
+# Rain or Shine: Que Siga La Rumba!
 
 > **B2B SaaS Multi-Tenant Logistics Console & GenAI Concierge for Boutique Resorts**
 > Created for the Hackathon Submission | Fully Deployed & Operational
 
 ---
 
-## ⚡ Submission Snapshot
+## Submission Snapshot
 
 *   **Live Application URL:** [https://frontend-dorien-van-den-abbeeles-projects.vercel.app](https://frontend-dorien-van-den-abbeeles-projects.vercel.app)
 *   **Live Backend API URL:** [https://islandflow-aws-162640897083.us-central1.run.app](https://islandflow-aws-162640897083.us-central1.run.app)
-*   **GitHub Repository:** [https://github.com/tanDivina/IslandFlow-AWS](https://github.com/tanDivina/IslandFlow-AWS)
+*   **GitHub Repository:** [https://github.com/tanDivina/Rain or Shine-AWS](https://github.com/tanDivina/Rain or Shine-AWS)
 *   **Core Technology Stack:** FastAPI, React + Vite, Google Gemini 3.1-flash-lite, Model Context Protocol (FastMCP), AWS DynamoDB, Vanilla CSS & CSS-Ref Physics.
 
 ---
 
-## 💡 The Problem
+## The Problem
 
 Coordinating logistics in tropical, island-bound boutique resort regions (like **Bocas del Toro, Panama**) is a multi-million-dollar challenge. Resorts operate expensive private boat fleets, charter planes, and organize bespoke eco-tours across multiple properties. 
 
@@ -25,11 +25,11 @@ Three severe friction points drain profit margins and disrupt high-end guest exp
 
 ---
 
-## 🚀 The Solution: IslandFlow
+## The Solution: Rain or Shine
 
-**IslandFlow** is an autonomous, multi-tenant B2B SaaS logistics and concierge engine. It completely bridges the gap between guest experience, weather reality, and boat transport scheduling. 
+**Rain or Shine** is an autonomous, multi-tenant B2B SaaS logistics and concierge engine. It completely bridges the gap between guest experience, weather reality, and boat transport scheduling. 
 
-Instead of a passive chat interface, IslandFlow runs an active, self-prompting **AI Logistics Loop** powered by **Google Gemini 3.1-flash-lite** and **Model Context Protocol (MCP)** on top of **AWS DynamoDB**.
+Instead of a passive chat interface, Rain or Shine runs an active, self-prompting **AI Logistics Loop** powered by **Google Gemini 3.1-flash-lite** and **Model Context Protocol (MCP)** on top of **AWS DynamoDB**.
 
 ```mermaid
 graph TD
@@ -50,7 +50,7 @@ graph TD
 
 ---
 
-## 🏆 Winning the Bonus Points: The "Wow Factors"
+## Winning the Bonus Points: The "Wow Factors"
 
 We engineered several advanced, high-performance visual and backend systems specifically to target **maximum hackathon bonus points** for technical depth, design elegance, and operational resilience:
 
@@ -64,7 +64,7 @@ We engineered several advanced, high-performance visual and backend systems spec
 
 ### 3. Bulletproof Hybrid Database Fallback Resilience
 *   **The Bonus Factor:** System robustness and fault-tolerant architecture.
-*   **Technical Implementation:** In a live hackathon judging sandbox, database connections often fail due to strict IP whitelists, firewall blocks, or missing credentials. IslandFlow’s custom database connector (`db.py`) dynamically detects AWS DynamoDB credentials. If blocked, it **gracefully cascades** to a high-fidelity local file-backed JSON mock database, rendering the exact same live dashboard and console features to guarantee a **flawless, error-free judge demo experience under any environment.**
+*   **Technical Implementation:** In a live hackathon judging sandbox, database connections often fail due to strict IP whitelists, firewall blocks, or missing credentials. Rain or Shine’s custom database connector (`db.py`) dynamically detects AWS DynamoDB credentials. If blocked, it **gracefully cascades** to a high-fidelity local file-backed JSON mock database, rendering the exact same live dashboard and console features to guarantee a **flawless, error-free judge demo experience under any environment.**
 
 ### 4. Self-Correcting GenAI Constraints
 *   **The Bonus Factor:** Solves hallucination and duplicate booking issues.
@@ -72,7 +72,7 @@ We engineered several advanced, high-performance visual and backend systems spec
 
 ---
 
-## 🕹️ Interactive 3-Minute Judging Walkthrough Script
+## Interactive 3-Minute Judging Walkthrough Script
 
 Follow these steps to experience the complete self-prompting autonomous loop:
 
@@ -83,7 +83,7 @@ Follow these steps to experience the complete self-prompting autonomous loop:
 4.  Switch guests in the dropdown (e.g. from *Sophia (Nayara Bocas)* to *Emily (La Coralina)*). Watch the entire UI dynamically re-skin its color palette and logos to match the resort's premium branding.
 
 ### Step 2: Onboard a Custom Guest
-1.  Under the **⚙️ Operator Control Panel** (bottom-right), enter a custom guest name and select room details.
+1.  Under the **Operator Control Panel** (bottom-right), enter a custom guest name and select room details.
 2.  Click **Onboard Custom Guest**.
 3.  The backend securely updates AWS DynamoDB (or JSON fallback), seeding their initial bookings, and generating a secure guest-concierge URL.
 
@@ -106,14 +106,14 @@ Follow these steps to experience the complete self-prompting autonomous loop:
 
 ---
 
-## 🛠️ Setup & Local Running
+## Setup & Local Running
 
 Ready to run locally in under 60 seconds?
 
 ```bash
 # Clone the repository
-git clone https://github.com/tanDivina/IslandFlow-AWS.git
-cd IslandFlow-AWS
+git clone https://github.com/tanDivina/Rain or Shine-AWS.git
+cd Rain or Shine-AWS
 
 # 1. Backend Setup
 cd backend
@@ -131,4 +131,4 @@ npm run dev           # Runs frontend on http://localhost:5173
 
 ---
 
-*IslandFlow represents the future of agentic B2B SaaS integrations, turning raw LLM power into structured, resilient logistics systems that coordinate real-world fleets.*
+*Rain or Shine represents the future of agentic B2B SaaS integrations, turning raw LLM power into structured, resilient logistics systems that coordinate real-world fleets.*

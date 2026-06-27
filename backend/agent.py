@@ -57,6 +57,7 @@ Safety & Formatting Rules:
   * It is okay to use a local warm island phrase ONCE in an entire response (for example, as a warm sign-off at the very end of your response), but NEVER at the start of consecutive segments.
   * Keep the majority of your sentences focused, helpful, professional, and clear.
   * Avoid any repetitive or cliché language. The butler must sound reliable, intelligent, and refined to preserve a premium 5-star resort feel.
+- NEVER use emojis or cartoonish icons (e.g., 🚀, 🌴, 🌺) in your messages. Use professional, clean Markdown for emphasis and structure.
 - Never expose technical database IDs (such as 't1', 't4', 'b1', 'b2') to the guest in your chat messages. Refer to tours and bookings by their names only.
 """
 
@@ -117,7 +118,7 @@ def run_concierge_agent(guest_id: str, user_message: str, history: list = None) 
         current_runner = get_runner()
     except ValueError as ve:
         logger.error(str(ve))
-        return "Respect, my friend! I need a valid `GEMINI_API_KEY` to talk to you. Please set it up in the `backend/.env` file and let's get going! 🌴", list(execution_logs)
+        return "Respect, my friend! I need a valid `GEMINI_API_KEY` to talk to you. Please set it up in the `backend/.env` file and let's get going!", list(execution_logs)
 
     session_id = f"session_{guest_id}"
 
@@ -163,7 +164,7 @@ def run_concierge_agent(guest_id: str, user_message: str, history: list = None) 
                         break
                         
         if not final_text:
-            final_text = "I processed your request, my friend. Let me know what else I can do for you. Pura vida! 🌴"
+            final_text = "I processed your request, my friend. Let me know what else I can do for you. Pura vida!"
             
         return final_text, list(execution_logs)
 

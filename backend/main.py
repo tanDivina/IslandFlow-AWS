@@ -468,24 +468,28 @@ async def get_status(guest_id: str = "g1", token: str = None, secure: bool = Fal
                     
         if token_valid or secure:
             guests = [g for g in guests if g["_id"] == guest_id]
+            # Ensure bookings are also filtered to the specific guest
+            bookings = [b for b in bookings if b.get("guest_id") == guest_id]
             
         if hotel_id:
             guests = [g for g in guests if g.get("hotel_id") == hotel_id]
             guest_ids = {g["_id"] for g in guests}
             bookings = [b for b in bookings if b.get("guest_id") in guest_ids]
                     
-        # Check if local itinerary exists for this guest
-        itinerary_md = ""
-        filename = f"mock_itinerary_{guest_id}.md"
-        if os.path.exists(filename):
-            with open(filename, "r") as f:
-                itinerary_md = f.read()
-        else:
-            # Generate it if it doesn't exist yet
-            try:
-                itinerary_md = generate_itinerary(guest_id)
-            except Exception:
-                itinerary_md = ""
+        # Generate fresh itinerary from DB
+        try:
+            itinerary_md = generate_itinerary(guest_id)
+        except Exception as ge:
+            logger.error(f"Failed to generate dynamic itinerary: {ge}")
+            # Fallback to local file if dynamic generation fails
+            itinerary_md = ""
+            filename = f"mock_itinerary_{guest_id}.md"
+            if os.path.exists(filename):
+                try:
+                    with open(filename, "r") as f:
+                        itinerary_md = f.read()
+                except Exception:
+                    itinerary_md = ""
  
         # Fetch tenant brand configuration if guest exists
         current_guest = db["guests"].find_one({"_id": guest_id})
@@ -607,7 +611,7 @@ async def simulate_weather(payload: WeatherSimulationPayload):
 
         # Fallback if active guest wasn't affected but we still want a message
         if not agent_response:
-            agent_response = f"I've updated our island weather logistics for {payload.date} to {payload.weather}. No rescheduling was required for your itinerary, my friend! 🌴"
+            agent_response = f"I've updated our island weather logistics for {payload.date} to {payload.weather}. No rescheduling was required for your itinerary, my friend!"
 
         return {
             "message": "Weather simulated successfully.",
@@ -690,7 +694,7 @@ async def respond_proposal(payload: ProposalPayload):
             # Save accepted proposal to chat history
             tour = db["tours"].find_one({"_id": payload.alternative_tour_id})
             tour_name = tour["name"] if tour else "alternative tour"
-            response_text = f"Reschedule confirmed! I have swapped your rainy day excursion on {payload.new_date} to the indoor '{tour_name}' workshop, my friend. Your updated itinerary is now live in your Portal! 🌴"
+            response_text = f"Reschedule confirmed! I have swapped your rainy day excursion on {payload.new_date} to the indoor '{tour_name}' workshop, my friend. Your updated itinerary is now live in your Portal!"
             
             user_msg = {"role": "user", "text": "Approve reschedule proposal", "timestamp": datetime.datetime.now().isoformat()}
             model_msg = {"role": "model", "text": response_text, "timestamp": datetime.datetime.now().isoformat()}
@@ -711,7 +715,7 @@ async def respond_proposal(payload: ProposalPayload):
             )
             
             # Save declined proposal to chat history
-            response_text = "Respect! I have preserved your original outdoor excursion schedule, my friend. Let me know if you would like to explore any other alternatives. No stress! 🌴"
+            response_text = "Respect! I have preserved your original outdoor excursion schedule, my friend. Let me know if you would like to explore any other alternatives. No stress!"
             
             user_msg = {"role": "user", "text": "Decline reschedule proposal", "timestamp": datetime.datetime.now().isoformat()}
             model_msg = {"role": "model", "text": response_text, "timestamp": datetime.datetime.now().isoformat()}
@@ -881,7 +885,7 @@ class TenantBrandExtraction(BaseModel):
     primary_color: str = Field(description="A curated, premium brand primary color in HSL format 'hsl(H, S%, L%)'. Must be dark-mode-friendly, highly vibrant, and elegant. Avoid raw dull colors; prefer sand gold, emerald green, warm amber, sea turquoise, hibiscus magenta.")
     primary_glow: str = Field(description="A matching transparent glow in rgba format 'rgba(R, G, B, 0.12)' that perfectly corresponds to the HSL color.")
     font: str = Field(description="A premium Google Font family name stack matching the resort's vibe (e.g. 'Playfair Display, Georgia, serif' or 'Outfit, Poppins, system-ui, sans-serif').")
-    welcome_message: str = Field(description="A highly bespoke, premium luxury welcome message for the resort's guest dashboard. It must sound warm, elite, and hospitable (e.g., 'Welcome to your Balinese wellness sanctuary in the Caribbean. Pura vida! 🌸'). Do NOT start with repetitious cliché greetings like 'respect, my friend', make it unique.")
+    welcome_message: str = Field(description="A highly bespoke, premium luxury welcome message for the resort's guest dashboard. It must sound warm, elite, and hospitable (e.g., 'Welcome to your Balinese wellness sanctuary in the Caribbean. Pura vida!'). Do NOT start with repetitious cliché greetings like 'respect, my friend', make it unique.")
     logo_url: Optional[str] = Field(None, description="The brand's actual logo or real favicon image URL if found in HTML meta properties (e.g. 'og:logo', 'shortcut icon') or actual image elements on the page. If no authentic, real brand logo is found in the website content, return null or an empty string. DO NOT use generic fallbacks or invented logos like Clearbit or Google favicon API generators.")
 
 class BrandExtractPayload(BaseModel):
@@ -1240,7 +1244,7 @@ async def report_conditions_endpoint(payload: CaptainConditionsPayload):
         
         # Log dispatch alert if conditions are rough
         if payload.sea_state == "rough" or payload.rain == "heavy":
-            alert_msg = f"⚠️ Wave-level warning reported by {captain_name} on water: Sea State={payload.sea_state.upper()}, Rain={payload.rain.upper()}!"
+            alert_msg = f"[ALERT] Wave-level warning reported by {captain_name} on water: Sea State={payload.sea_state.upper()}, Rain={payload.rain.upper()}!"
             db["dispatches"].insert_one({
                 "type": "weather_warning",
                 "message": alert_msg,

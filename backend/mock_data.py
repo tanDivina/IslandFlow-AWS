@@ -472,7 +472,7 @@ def get_tenants_data():
             "primary_color": "hsl(188, 86%, 38%)",
             "primary_glow": "rgba(15, 186, 211, 0.12)",
             "font": "Inter, system-ui, sans-serif",
-            "welcome_message": "Your luxury overwater villa experience begins now. Pura vida! 🌴",
+            "welcome_message": "Your luxury overwater villa experience begins now. Pura vida!",
             "logo_url": None,
             "theme": "theme-ocean"
         },
@@ -482,7 +482,7 @@ def get_tenants_data():
             "primary_color": "hsl(45, 60%, 55%)",
             "primary_glow": "rgba(212, 175, 55, 0.12)",
             "font": "var(--font-serif), Georgia, serif",
-            "welcome_message": "Welcome to your Balinese wellness sanctuary in the Caribbean. Pura vida! 🌸",
+            "welcome_message": "Welcome to your Balinese wellness sanctuary in the Caribbean. Pura vida!",
             "logo_url": None,
             "theme": "theme-wellness"
         },
@@ -492,7 +492,7 @@ def get_tenants_data():
             "primary_color": "hsl(330, 75%, 45%)",
             "primary_glow": "rgba(219, 39, 119, 0.12)",
             "font": "Outfit, Poppins, system-ui, sans-serif",
-            "welcome_message": "Step into absolute, sustainable luxury on our private island estate. Respect! 🌺",
+            "welcome_message": "Step into absolute, sustainable luxury on our private island estate. Respect!",
             "logo_url": None,
             "theme": "theme-hibiscus"
         },
@@ -502,7 +502,7 @@ def get_tenants_data():
             "primary_color": "hsl(150, 65%, 35%)",
             "primary_glow": "rgba(34, 197, 94, 0.12)",
             "font": "Roboto, system-ui, sans-serif",
-            "welcome_message": "Your boutique cliffside eco-villa retreat is ready, my friend. No stress! 🦜",
+            "welcome_message": "Your boutique cliffside eco-villa retreat is ready, my friend. No stress!",
             "logo_url": None,
             "theme": "theme-forest"
         },
@@ -512,7 +512,7 @@ def get_tenants_data():
             "primary_color": "hsl(15, 85%, 50%)",
             "primary_glow": "rgba(249, 115, 22, 0.12)",
             "font": "Poppins, Inter, system-ui, sans-serif",
-            "welcome_message": "Welcome to our vibrant beachfront jungle playground. Pura vida! 🐸",
+            "welcome_message": "Welcome to our vibrant beachfront jungle playground. Pura vida!",
             "logo_url": None,
             "theme": "theme-volcano"
         }

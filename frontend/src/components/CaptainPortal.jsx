@@ -626,7 +626,7 @@ export default function CaptainPortal({ captainId, logistics, lang = 'en', setLa
                           try {
                             await navigator.share({
                               title: lang === 'es' ? 'Mi Portal de Capitán' : 'My Captain Portal',
-                              text: lang === 'es' ? 'Accede a mi itinerario de hoy en IslandFlow.' : 'Access my tour dispatcher schedule on IslandFlow.',
+                              text: lang === 'es' ? 'Accede a mi itinerario de hoy en Rain or Shine.' : 'Access my tour dispatcher schedule on Rain or Shine.',
                               url: link
                             });
                           } catch (err) {

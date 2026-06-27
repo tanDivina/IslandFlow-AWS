@@ -58,7 +58,7 @@ def test_connection():
             print("1. Attempting Write (insert_one)...")
             test_doc = {
                 "_id": test_id,
-                "message": "IslandFlow AWS Connection Verification Test",
+                "message": "Rain or Shine AWS Connection Verification Test",
                 "timestamp": "2026-06-27T11:15:00",
                 "status": "success",
                 "tags": ["test", "aws", "diagnostics"]

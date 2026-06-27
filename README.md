@@ -1,14 +1,14 @@
-# 🏝️ IslandFlow: AWS DynamoDB Guest Experience & Logistics Engine
+# Rain or Shine: Que Siga La Rumba!
 
-Welcome to **IslandFlow**! This project is an autonomous AI concierge, B2B SaaS logistics dispatcher, and guest experience optimizer designed for boutique island resorts, eco-lodges, and water transport operators.
+Welcome to **Rain or Shine**! This project is an autonomous AI concierge, B2B SaaS logistics dispatcher, and guest experience optimizer designed for boutique island resorts, eco-lodges, and water transport operators.
 
-By integrating **Google Gemini 3.1-flash-lite**, **Model Context Protocol (MCP)**, and **AWS DynamoDB**, IslandFlow goes "beyond chat" to actively manage guest itineraries, track user engagement telemetry, monitor weather forecasts, automatically propose activity rescheduling, handle marine dispatches, and log product analytics events directly to the cloud.
+By integrating **Google Gemini 3.1-flash-lite**, **Model Context Protocol (MCP)**, and **AWS DynamoDB**, Rain or Shine goes "beyond chat" to actively manage guest itineraries, track user engagement telemetry, monitor weather forecasts, automatically propose activity rescheduling, handle marine dispatches, and log product analytics events directly to the cloud.
 
-Live deployment: [https://github.com/tanDivina/IslandFlow-AWS](https://github.com/tanDivina/IslandFlow-AWS)
+Live deployment: [https://github.com/tanDivina/Rain or Shine-AWS](https://github.com/tanDivina/Rain or Shine-AWS)
 
 ---
 
-## 📸 Key Features
+## Key Features
 
 *   **B2B SaaS Analytics:**
     *   **Visitor & Account Mapping:** Maps individual guests to unique Visitor contexts and resort properties to B2B Account contexts (e.g. `hotel_nayara`).
@@ -29,7 +29,7 @@ Live deployment: [https://github.com/tanDivina/IslandFlow-AWS](https://github.co
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```mermaid
 graph TD
@@ -48,7 +48,7 @@ graph TD
 
 ---
 
-## 🚀 Setup & Execution
+## Setup & Execution
 
 ### 1. Prerequisites
 *   **Python 3.12** or higher
@@ -94,10 +94,10 @@ graph TD
 
 ---
 
-## 🕹️ Interactive Simulation Walkthrough
+## Interactive Simulation Walkthrough
 
 1.  **Select Language & Guest:** Navigate to the page. You will see the language is Spanish by default. Toggle the slider to **EN** (English) to read the UI.
-2.  **Add a Guest:** Under the **⚙️ Operator Control Panel** (bottom right), input a custom guest name, select a room, and click **Onboard Custom Guest**.
+2.  **Add a Guest:** Under the **Operator Control Panel** (bottom right), input a custom guest name, select a room, and click **Onboard Custom Guest**.
 3.  **Simulate Weather Shift:**
     *   Select the current day's date from the dropdown.
     *   Change weather to **Heavy Rain** and status to **Rain Warning**.
@@ -107,4 +107,4 @@ graph TD
     *   The Gemini agent analyzes the timeline, discovers an outdoor activity conflict, and offers an **interactive proposal card** in the chat box to swap it for an indoor alternative.
     *   Click **Confirm Swap** on the card.
     *   Observe the timeline update automatically and notice the **Live System Telemetry console** logging the database transactions.
-5.  **Delete Custom Guest:** In the Operator panel, locate your custom-added guest and click the delete button (`🗑️`). The guest and their corresponding bookings are deleted via the API, while the system mock profiles (`g1`-`g10`) remain protected.
+5.  **Delete Custom Guest:** In the Operator panel, locate your custom-added guest and click the delete button. The guest and their corresponding bookings are deleted via the API, while the system mock profiles (`g1`-`g10`) remain protected.

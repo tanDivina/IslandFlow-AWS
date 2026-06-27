@@ -55,7 +55,7 @@ const tenantBrandsMock = {
     primary_color: "hsl(188, 86%, 38%)",
     primary_glow: "rgba(15, 186, 211, 0.12)",
     font: "Inter, system-ui, sans-serif",
-    welcome_message: "Your luxury overwater villa experience begins now. Pura vida! 🌴",
+    welcome_message: "Your luxury overwater villa experience begins now. Respect.",
     theme: "theme-ocean"
   },
   hotel_lacoralina: {
@@ -63,7 +63,7 @@ const tenantBrandsMock = {
     primary_color: "hsl(45, 60%, 55%)",
     primary_glow: "rgba(212, 175, 55, 0.12)",
     font: "var(--font-serif), Georgia, serif",
-    welcome_message: "Welcome to your Balinese wellness sanctuary in the Caribbean. Pura vida! 🌸",
+    welcome_message: "Welcome to your Balinese wellness sanctuary in the Caribbean.",
     theme: "theme-wellness"
   },
   hotel_sweetbocas: {
@@ -71,7 +71,7 @@ const tenantBrandsMock = {
     primary_color: "hsl(330, 75%, 45%)",
     primary_glow: "rgba(219, 39, 119, 0.12)",
     font: "Outfit, Poppins, system-ui, sans-serif",
-    welcome_message: "Step into absolute, sustainable luxury on our private island estate. Respect! 🌺",
+    welcome_message: "Step into absolute, sustainable luxury on our private island estate.",
     theme: "theme-hibiscus"
   },
   hotel_bocasvillas: {
@@ -79,7 +79,7 @@ const tenantBrandsMock = {
     primary_color: "hsl(150, 65%, 35%)",
     primary_glow: "rgba(34, 197, 94, 0.12)",
     font: "Roboto, system-ui, sans-serif",
-    welcome_message: "Your boutique cliffside eco-villa retreat is ready, my friend. No stress! 🦜",
+    welcome_message: "Your boutique cliffside eco-villa retreat is ready, my friend.",
     theme: "theme-forest"
   },
   hotel_redfrog: {
@@ -87,7 +87,7 @@ const tenantBrandsMock = {
     primary_color: "hsl(15, 85%, 50%)",
     primary_glow: "rgba(249, 115, 22, 0.12)",
     font: "Poppins, Inter, system-ui, sans-serif",
-    welcome_message: "Welcome to our vibrant beachfront jungle playground. Pura vida! 🐸",
+    welcome_message: "Welcome to our vibrant beachfront jungle playground.",
     theme: "theme-volcano"
   }
 };
@@ -138,7 +138,7 @@ function App() {
   const [guests, setGuests] = useState([]);
   const [itineraryMarkdown, setItineraryMarkdown] = useState('');
   const [messages, setMessages] = useState([]);
-  const [agentLogs, setAgentLogs] = useState(['🤖 Simulation environment initialized. Ready for weather events.']);
+  const [agentLogs, setAgentLogs] = useState(['Simulation environment initialized. Ready for weather events.']);
   const [loading, setLoading] = useState(false);
   const [isRealDynamo, setIsRealDynamo] = useState(false);
   const [guestId, setGuestId] = useState(initialParams.guestId);
@@ -317,7 +317,7 @@ function App() {
       }
     } catch (err) {
       console.error("Error generating secure token:", err);
-      addLog(`⚠️ Token endpoint error: ${err.message}. Falling back to standard URL mapping.`);
+      addLog(`[ALERT] Token endpoint error: ${err.message}. Falling back to standard URL mapping.`);
     }
 
     // Save success guest details to display the premium onboarding card
@@ -337,7 +337,7 @@ function App() {
   const handleExtractBrand = async () => {
     if (!extractionUrl.trim()) return;
     setLoadingBrand(true);
-    addLog(`✨ Calling AI Brand Extractor endpoint with URL: ${extractionUrl}`);
+    addLog(`[ACTION] Calling AI Brand Extractor endpoint with URL: ${extractionUrl}`);
     try {
       const res = await fetch(`${API_BASE}/api/tenant/extract-brand`, {
         method: 'POST',
@@ -350,7 +350,7 @@ function App() {
       }
       const data = await res.json();
       if (data.success && data.tenant_brand) {
-        addLog(`🟢 Successfully brand-onboarded ${data.tenant_brand.name}! Generated theme: ${data.tenant_brand.theme}`);
+        addLog(`[SUCCESS] Successfully brand-onboarded ${data.tenant_brand.name}! Generated theme: ${data.tenant_brand.theme}`);
         
         // Add or update in tenantsList
         setTenantsList(prev => {
@@ -366,7 +366,7 @@ function App() {
       }
     } catch (err) {
       console.error("Error in brand extraction:", err);
-      addLog(`❌ Brand Extraction Failed: ${err.message}`);
+      addLog(`[ERROR] Brand Extraction Failed: ${err.message}`);
       alert(`Brand onboarding failed: ${err.message}`);
     } finally {
       setLoadingBrand(false);
@@ -379,7 +379,7 @@ function App() {
       return;
     }
     
-    addLog(`✨ Removing custom hotel brand: ${hotelId}`);
+    addLog(`[ACTION] Removing custom hotel brand: ${hotelId}`);
     try {
       const res = await fetch(`${API_BASE}/api/tenant/${hotelId}`, {
         method: 'DELETE'
@@ -388,7 +388,7 @@ function App() {
       
       if (res.ok && data.success) {
         setTenantsList(prev => prev.filter(t => t._id !== hotelId));
-        addLog(`🟢 Custom hotel brand '${hotelId}' removed successfully from DB.`);
+        addLog(`[SUCCESS] Custom hotel brand '${hotelId}' removed successfully from DB.`);
         if (manualHotel === hotelId) {
           setManualHotel("hotel_lacoralina");
         }
@@ -397,7 +397,7 @@ function App() {
       }
     } catch (err) {
       console.error("Error in hotel deletion:", err);
-      addLog(`❌ Hotel Deletion Failed: ${err.message}`);
+      addLog(`[ERROR] Hotel Deletion Failed: ${err.message}`);
       alert(`Hotel removal failed: ${err.message}`);
     }
   };
@@ -418,7 +418,7 @@ function App() {
       return;
     }
     
-    addLog(`✨ Deleting manual guest: ${targetGuestId}`);
+    addLog(`[ACTION] Deleting manual guest: ${targetGuestId}`);
     try {
       const res = await fetch(`${API_BASE}/api/guest/${targetGuestId}`, {
         method: 'DELETE'
@@ -427,7 +427,7 @@ function App() {
       
       if (res.ok && data.success) {
         setGuests(prev => prev.filter(g => g && g._id !== targetGuestId));
-        addLog(`🟢 Guest '${guestName}' removed successfully from DB.`);
+        addLog(`[SUCCESS] Guest '${guestName}' removed successfully from DB.`);
         
         // If we deleted the currently active guest, reset back to g1
         if (guestId === targetGuestId) {
@@ -455,7 +455,7 @@ function App() {
       }
     } catch (err) {
       console.error("Error in guest deletion:", err);
-      addLog(`❌ Guest Deletion Failed: ${err.message}`);
+      addLog(`[ERROR] Guest Deletion Failed: ${err.message}`);
       alert(`Guest deletion failed: ${err.message}`);
     }
   };
@@ -648,7 +648,7 @@ function App() {
       });
     } catch (error) {
       console.error("Error fetching status:", error);
-      addLog(`❌ Server Error: ${error.message}. Is the backend running on port 8000?`);
+      addLog(`[ERROR] Server Error: ${error.message}. Is the backend running on port 8000?`);
     }
   };
 
@@ -804,7 +804,7 @@ function App() {
     setLoading(true);
 
     try {
-      addLog(`💬 Guest [${guestId}] sent message: "${text}"`);
+      addLog(`[MESSAGE] Guest [${guestId}] sent message: "${text}"`);
       // 2. Call backend chat endpoint
       const res = await fetch(`${API_BASE}/api/chat`, {
         method: 'POST',
@@ -826,13 +826,13 @@ function App() {
 
       // 4. Add agent response to chat
       setMessages((prev) => [...prev, { role: 'model', text: data.response }]);
-      addLog(`🤖 Agent responded to [${guestId}]: "${data.response.substring(0, 60)}..."`);
+      addLog(`[AGENT] Agent responded to [${guestId}]: "${data.response.substring(0, 60)}..."`);
       
       // Refresh DB state in UI
       await fetchStatus(guestId);
     } catch (error) {
       console.error("Chat error:", error);
-      addLog(`❌ Chat API Error: ${error.message}`);
+      addLog(`[ERROR] Chat API Error: ${error.message}`);
       setMessages((prev) => [...prev, { 
         role: 'model', 
         text: "I'm having a little trouble communicating with the island server right now, my friend. Let's try that again. No stress!" 
@@ -844,7 +844,7 @@ function App() {
 
   const handleSimulate = async (payload) => {
     setLoading(true);
-    addLog(`⛈️ Simulating Weather Event: Setting ${payload.date} to ${payload.weather} (${payload.alert})`);
+    addLog(`[WEATHER] Simulating Weather Event: Setting ${payload.date} to ${payload.weather} (${payload.alert})`);
     try {
       const res = await fetch(`${API_BASE}/api/simulate-weather`, {
         method: 'POST',
@@ -866,13 +866,13 @@ function App() {
       // Post weather event announcement to chat widget
       if (data.agent_response) {
         setMessages((prev) => [...prev, { role: 'model', text: data.agent_response }]);
-        addLog(`🤖 Weather Response Triggered: "${data.agent_response.substring(0, 60)}..."`);
+        addLog(`[AGENT] Weather Response Triggered: "${data.agent_response.substring(0, 60)}..."`);
       }
 
       await fetchStatus(guestId);
     } catch (error) {
       console.error("Simulation error:", error);
-      addLog(`❌ Weather Shift Error: ${error.message}`);
+      addLog(`[ERROR] Weather Shift Error: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -898,14 +898,14 @@ function App() {
       const data = await res.json();
 
       if (accepted) {
-        addLog(`✅ Booking updated and slots shifted successfully!`);
+        addLog(`[SUCCESS] Booking updated and slots shifted successfully!`);
         setMessages((prev) => [...prev, { 
           role: 'model', 
-          text: "Respect, my friend! I have processed the change in DynamoDB, updated your booking slots, and generated your new official travel receipt below. Pura vida! 🌴" 
+          text: "Respect, my friend! I have processed the change in DynamoDB, updated your booking slots, and generated your new official travel receipt below. Pura vida!" 
         }]);
         setShowItineraryModal(true);
       } else {
-        addLog(`ℹ️ Proposal declined. Booking status preserved.`);
+        addLog(`[INFO] Proposal declined. Booking status preserved.`);
         setMessages((prev) => [...prev, { 
           role: 'model', 
           text: "No worries at all! I have kept your snorkeling trip. Let's hope for clear skies. Feel free to ask if you want to change anything else, respect!" 
@@ -915,7 +915,7 @@ function App() {
       await fetchStatus(guestId);
     } catch (error) {
       console.error("Proposal error:", error);
-      addLog(`❌ Proposal Update Error: ${error.message}`);
+      addLog(`[ERROR] Proposal Update Error: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -929,13 +929,13 @@ function App() {
       if (!res.ok) throw new Error("Reset request failed");
       
       setMessages([]);
-      setAgentLogs(['🤖 Simulation environment initialized. Ready for weather events.']);
-      addLog("✅ Database reset completed successfully!");
+      setAgentLogs(['Simulation environment initialized. Ready for weather events.']);
+      addLog("[SUCCESS] Database reset completed successfully!");
       
       await fetchStatus(guestId);
     } catch (error) {
       console.error("Reset error:", error);
-      addLog(`❌ Database Reset Error: ${error.message}`);
+      addLog(`[ERROR] Database Reset Error: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -943,7 +943,7 @@ function App() {
 
   const handlePMSSync = async (pmsPayload, skipRedirect = false) => {
     setLoading(true);
-    addLog(`🛎️ PMS Webhook: Syncing reservation for new guest '${pmsPayload.name}'...`);
+    addLog(`[PMS] PMS Webhook: Syncing reservation for new guest '${pmsPayload.name}'...`);
     try {
       const res = await fetch(`${API_BASE}/api/pms/sync-guest`, {
         method: 'POST',
@@ -952,7 +952,7 @@ function App() {
       });
       if (!res.ok) throw new Error("PMS synchronization request failed");
       const data = await res.json();
-      addLog(`✅ PMS Synced: ${data.message}`);
+      addLog(`[SUCCESS] PMS Synced: ${data.message}`);
       setTenantBrand(null);
       setGuestId(pmsPayload.guest_id);
       await fetchStatus(pmsPayload.guest_id);
@@ -961,7 +961,7 @@ function App() {
       }
     } catch (error) {
       console.error("PMS sync error:", error);
-      addLog(`❌ PMS Webhook Error: ${error.message}`);
+      addLog(`[ERROR] PMS Webhook Error: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -990,21 +990,21 @@ function App() {
   const getWhatsAppMessageText = (guest) => {
     if (!guest) return '';
     const magicLink = getMagicLink(guest);
-    let text = `🌴 *Welcome to Paradise, ${guest.name || 'Guest'}!* \n\nYour overwater concierge is ready at *${guest.hotel_name || 'La Coralina Island House'}* for your upcoming stay (${guest.stay_start || ''} to ${guest.stay_end || ''}).\n\nNo app downloads or passwords required! Scan or tap below to unlock your digital itinerary, live weather butler, and personalized island recommendations: \n🚀 *Get Started:* ${magicLink}`;
+    let text = `*Welcome to Paradise, ${guest.name || 'Guest'}!* \n\nYour overwater concierge is ready at *${guest.hotel_name || 'La Coralina Island House'}* for your upcoming stay (${guest.stay_start || ''} to ${guest.stay_end || ''}).\n\nNo app downloads or passwords required! Scan or tap below to unlock your digital itinerary, live weather butler, and personalized island recommendations: \n*Get Started:* ${magicLink}`;
     
     if (transferIncluded) {
-      text += `\n\n⛵ *Private Boat Transfer:* We notice your arrival water-taxi shuttle from Almirante hasn't been coordinated yet. Tap your portal above to secure your transfer and avoid island delays!`;
+      text += `\n\n*Private Boat Transfer:* We notice your arrival water-taxi shuttle from Almirante hasn't been coordinated yet. Tap your portal above to secure your transfer and avoid island delays!`;
     }
     
     if (weatherNoteIncluded) {
-      text += `\n\n🌧️ *Tropical Rain Advisory:* Bocas is expecting mild tropical rain showers. Don't worry—we've pre-stocked your bungalow with rain gear and umbrellas, and pre-booked premium indoor spa options for your check-in day!`;
+      text += `\n\n[ADVISORY] *Tropical Rain:* Bocas is expecting mild tropical rain showers. Don't worry—we've pre-stocked your bungalow with rain gear and umbrellas, and pre-booked premium indoor spa options for your check-in day!`;
     }
     
     return text;
   };
 
   const getEmailSubjectText = (guest) => {
-    return `Your Digital Concierge is Ready! 🌴 Welcome to ${guest.hotel_name}`;
+    return `Your Digital Concierge is Ready! Welcome to ${guest.hotel_name}`;
   };
 
   const getEmailHtmlSource = (guest) => {
@@ -1060,7 +1060,7 @@ function App() {
               <table width="100%" cellpadding="0" cellspacing="0" style="border-left:4px solid ${primaryColor}; background-color:rgba(255,255,255,0.03); border-radius:8px; margin-bottom:24px;">
                 <tr>
                   <td style="padding:16px 20px;">
-                    <h3 style="font-size:15px; font-weight:700; margin:0 0 6px 0; color:#ffffff;">⛵ Coordinate Private Boat Transfers</h3>
+                    <h3 style="font-size:15px; font-weight:700; margin:0 0 6px 0; color:#ffffff;">Coordinate Private Boat Transfers</h3>
                     <p style="font-size:13.5px; line-height:1.5; color:#9ca3af; margin:0;">
                       We noticed your overwater water-taxi shuttle from Almirante to the resort has not been scheduled yet. Open your digital portal below to coordinate your shuttle times live and avoid tropical arrival delays!
                     </p>
@@ -1074,7 +1074,7 @@ function App() {
               <table width="100%" cellpadding="0" cellspacing="0" style="border-left:4px solid #10b981; background-color:rgba(255,255,255,0.03); border-radius:8px; margin-bottom:24px;">
                 <tr>
                   <td style="padding:16px 20px;">
-                    <h3 style="font-size:15px; font-weight:700; margin:0 0 6px 0; color:#10b981;">🌧️ Climate-Smart Preparedness</h3>
+                    <h3 style="font-size:15px; font-weight:700; margin:0 0 6px 0; color:var(--primary);">Climate-Smart Preparedness</h3>
                     <p style="font-size:13.5px; line-height:1.5; color:#9ca3af; margin:0;">
                       Our sensors are tracking brief tropical rain showers during your week. No worries—we have pre-stocked your villa with premium rain-gear, and pre-scheduled priority access to indoor activities and spa therapies!
                     </p>
@@ -1088,7 +1088,7 @@ function App() {
                 <tr>
                   <td align="center">
                     <a href="${guestLink}" target="_blank" style="background-color:${primaryColor}; color:#000000; font-size:15px; font-weight:700; text-decoration:none; padding:15px 35px; border-radius:30px; display:inline-block; box-shadow:0 4px 15px rgba(255,255,255,0.15); transition:transform 0.2s ease;">
-                      Unlock Personalized Digital Concierge 🚀
+                      Unlock Personalized Digital Concierge
                     </a>
                   </td>
                 </tr>
@@ -1107,7 +1107,7 @@ function App() {
                 © ${new Date().getFullYear()} ${guest.hotel_name}. All rights reserved.
               </p>
               <p style="font-size:11px; color:#4b5563; margin-top:6px;">
-                Delivered via secure white-label automation by IslandFlow.
+                Delivered via secure white-label automation by Rain or Shine.
               </p>
             </td>
           </tr>
@@ -1132,8 +1132,8 @@ function App() {
         role: 'Water-Taxi Captain',
         phone: '+507-6411-9822',
         type: 'shuttle',
-        subject: `⛵ Shuttle Pick-up: ${g.name || 'Guest'}`,
-        message: `⛵ Shuttle Pick-up Confirmed: Guest ${g.name || 'Guest'} arriving Almirante on ${g.stay_start || 'arrival day'} at 11:30 AM for transfer to ${g.hotel_name || 'La Coralina'}.`,
+        subject: `Shuttle Pick-up: ${g.name || 'Guest'}`,
+        message: `Shuttle Pick-up Confirmed: Guest ${g.name || 'Guest'} arriving Almirante on ${g.stay_start || 'arrival day'} at 11:30 AM for transfer to ${g.hotel_name || 'La Coralina'}.`,
         status: notifiedProviders[`shuttle_${g._id}`] || 'pending'
       });
 
@@ -1184,8 +1184,8 @@ function App() {
             role,
             phone,
             type: 'weather',
-            subject: `⛈️ Weather Alert: ${tour.name || 'Custom Excursion'}`,
-            message: `⚠️ Weather Advisory: Rain forecast on ${b.date || 'scheduled day'}. Excursion "${tour.name || 'Custom Excursion'}" for Guest ${g.name || 'Guest'} is flagged for indoor weather fallback or reschedule.`,
+            subject: `[WEATHER] Alert: ${tour.name || 'Custom Excursion'}`,
+            message: `Weather Advisory: Rain forecast on ${b.date || 'scheduled day'}. Excursion "${tour.name || 'Custom Excursion'}" for Guest ${g.name || 'Guest'} is flagged for indoor weather fallback or reschedule.`,
             status: notifiedProviders[`weather_alert_${b._id}`] || 'pending'
           });
         }
@@ -1205,9 +1205,9 @@ function App() {
     }));
 
     if (method === 'whatsapp') {
-      setPushToastText(`💬 SMS/WA sent to ${providerName}: "${messageText}"`);
+      setPushToastText(`[MESSAGE] SMS/WA sent to ${providerName}: "${messageText}"`);
     } else {
-      setPushToastText(`⚡ Webhook API synced to ${providerName}: Payload delivered. Status: ACKNOWLEDGED.`);
+      setPushToastText(`[API] Webhook API synced to ${providerName}: Payload delivered. Status: ACKNOWLEDGED.`);
     }
     setShowPushToast(true);
     setTimeout(() => {
@@ -1318,14 +1318,8 @@ function App() {
                   </div>
                 ) : (
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--primary)', flexShrink: 0 }}>
-                    <path d="M12 22c1-4 1-8 0-12" />
-                    <path d="M5 22c2-.5 12-.5 14 0" />
-                    <path d="M12 10c-3-2-7-1-9 2" />
-                    <path d="M12 10c3-2 7-1 9 2" />
-                    <path d="M12 10c-4 .5-8 3-9 7" />
-                    <path d="M12 10c4 .5 8 3 9 7" />
-                    <path d="M12 10c-1.5-4-5-6-8-6" />
-                    <path d="M12 10c1.5-4 5-6 8-6" />
+                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                    <polyline points="9 22 9 12 15 12 15 22" />
                   </svg>
                 )}
                 {tenantBrand?.name || (guests || []).find(g => g && g._id === guestId)?.hotel_name || 'La Coralina Island House'}
@@ -1409,20 +1403,14 @@ function App() {
                   </div>
                 ) : (
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--primary)', flexShrink: 0 }}>
-                    <path d="M12 22c1-4 1-8 0-12" />
-                    <path d="M5 22c2-.5 12-.5 14 0" />
-                    <path d="M12 10c-3-2-7-1-9 2" />
-                    <path d="M12 10c3-2 7-1 9 2" />
-                    <path d="M12 10c-4 .5-8 3-9 7" />
-                    <path d="M12 10c4 .5 8 3 9 7" />
-                    <path d="M12 10c-1.5-4-5-6-8-6" />
-                    <path d="M12 10c1.5-4 5-6 8-6" />
+                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                    <polyline points="9 22 9 12 15 12 15 22" />
                   </svg>
                 )}
-                {lang === 'es' ? 'Experiencia IslandFlow' : 'IslandFlow Experience'}
+                Rain or Shine
               </h1>
               <p style={{ color: 'var(--text-muted)', opacity: 1, fontSize: '0.85rem' }}>
-                {lang === 'es' ? 'Coordinación Eco-Turística para Bocas del Toro' : 'Eco-Tourism Coordinator for Bocas del Toro'}
+                Que Siga La Rumba!
               </p>
             </div>
 
@@ -2297,7 +2285,7 @@ function App() {
                       Platform Integration Blueprint
                     </h4>
                     <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: '1.6', margin: 0 }}>
-                      IslandFlow shifts AI travel coordinators out of plain conversation models into an active, contextual stay manager. It binds React portals, FastAPI, Google's ADK, and Amazon DynamoDB.
+                      Rain or Shine shifts AI travel coordinators out of plain conversation models into an active, contextual stay manager. It binds React portals, FastAPI, Google's ADK, and Amazon DynamoDB.
                     </p>
                     <div style={{ borderLeft: '3px solid var(--primary)', paddingLeft: '14px', background: 'rgba(255,255,255,0.01)', borderRadius: '0 8px 8px 0', padding: '10px 14px' }}>
                       <div style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--primary)', marginBottom: '4px' }}>How data moves during weather shifts (Automated):</div>
@@ -2418,7 +2406,7 @@ function App() {
                       Google Cloud Agent Development Kit (ADK) Core
                     </h4>
                     <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: '1.5', margin: 0 }}>
-                      IslandFlow runs natively on the Google ADK ecosystem, removing any reliance on competitive third-party orchestrators.
+                      Rain or Shine runs natively on the Google ADK ecosystem, removing any reliance on competitive third-party orchestrators.
                     </p>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.8rem', marginTop: '4px' }}>
                       <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', padding: '10px 14px', borderRadius: '8px' }}>
@@ -3173,11 +3161,11 @@ function App() {
                             onClick={() => {
                               const cleanPhone = (selectedCaptain.phone || '').replace(/[^0-9+]/g, '');
                               const text = lang === 'es'
-                                ? `¡Hola ${selectedCaptain.name}! Aquí tiene su enlace personal para el Portal de Mando de IslandFlow. Toque para abrirlo e instalarlo como aplicación en su pantalla de inicio: ${captainDirectLink}`
-                                : `Hello ${selectedCaptain.name}! Here is your personal IslandFlow Captain Portal link. Tap to open and install as an app on your phone: ${captainDirectLink}`;
+                                ? `¡Hola ${selectedCaptain.name}! Aquí tiene su enlace personal para el Portal de Mando de Rain or Shine. Toque para abrirlo e instalarlo como aplicación en su pantalla de inicio: ${captainDirectLink}`
+                                : `Hello ${selectedCaptain.name}! Here is your personal Rain or Shine Captain Portal link. Tap to open and install as an app on your phone: ${captainDirectLink}`;
                               const waUrl = `https://wa.me/${cleanPhone.replace('+', '')}?text=${encodeURIComponent(text)}`;
                               window.open(waUrl, '_blank');
-                              setPushToastText(lang === 'es' ? `💬 Abriendo despacho en WhatsApp para ${selectedCaptain.name}...` : `💬 Opening WhatsApp dispatch for ${selectedCaptain.name}...`);
+                              setPushToastText(lang === 'es' ? `[DESPACHO] Abriendo WhatsApp para ${selectedCaptain.name}...` : `[DISPATCH] Opening WhatsApp for ${selectedCaptain.name}...`);
                             }}
                             style={{
                               background: 'rgba(34, 197, 94, 0.15)',
@@ -3252,7 +3240,7 @@ function App() {
                               {tour?.name || 'Eco Excursion'}
                             </div>
                             <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '2px' }}>
-                              📅 {b.date} &bull; <span style={{ textTransform: 'capitalize' }}>{b.slot}</span>
+                              {b.date} &bull; <span style={{ textTransform: 'capitalize' }}>{b.slot}</span>
                             </div>
                             {b.captain_status && (
                               <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '6px' }}>
@@ -3558,7 +3546,7 @@ function App() {
                       Frictionless White-Label Guest Workflow
                     </h3>
                     <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0 }}>
-                      How IslandFlow delivers a premium 5-star experience with zero login friction on the hotel ground.
+                      How Rain or Shine delivers a premium 5-star experience with zero login friction on the hotel ground.
                     </p>
                   </div>
                 </div>
@@ -3621,10 +3609,8 @@ function App() {
                     <div style={{ position: 'absolute', top: '12px', right: '12px', fontSize: '1.5rem', fontWeight: 900, color: 'var(--border-color)', opacity: 0.35, fontFamily: 'var(--font-serif)' }}>04</div>
                     <div style={{ color: 'var(--primary)', background: 'var(--primary-glow)', width: '36px', height: '36px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M12 22c1-4 1-8 0-12" />
-                        <path d="M5 22c2-.5 12-.5 14 0" />
-                        <path d="M12 10c-3-2-7-1-9 2" />
-                        <path d="M12 10c3-2 7-1 9 2" />
+                        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                        <polyline points="9 22 9 12 15 12 15 22" />
                       </svg>
                     </div>
                     <div>
@@ -3800,14 +3786,8 @@ function App() {
                                   />
                                 ) : (
                                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={accentColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                                    <path d="M12 22c1-4 1-8 0-12" />
-                                    <path d="M5 22c2-.5 12-.5 14 0" />
-                                    <path d="M12 10c-3-2-7-1-9 2" />
-                                    <path d="M12 10c3-2 7-1 9 2" />
-                                    <path d="M12 10c-4 .5-8 3-9 7" />
-                                    <path d="M12 10c4 .5 8 3 9 7" />
-                                    <path d="M12 10c-1.5-4-5-6-8-6" />
-                                    <path d="M12 10c1.5-4 5-6 8-6" />
+                                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                                    <polyline points="9 22 9 12 15 12 15 22" />
                                   </svg>
                                 )}
                               </div>
@@ -4192,7 +4172,7 @@ function App() {
                         fontWeight: 700,
                         letterSpacing: '0.05em'
                       }}>
-                        ✨ GUEST ONBOARDED LIVE
+                        GUEST ONBOARDED LIVE
                       </span>
                       <button 
                         onClick={() => setSuccessGuest(null)}
@@ -4900,7 +4880,7 @@ function App() {
                           }}
                           style={{ accentColor: 'var(--primary)', cursor: 'pointer', width: '15px', height: '15px' }}
                         />
-                        ☀️ Morning Slot
+                        Morning Slot
                       </label>
                       <label style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.82rem', color: 'var(--text-primary)' }}>
                         <input 
@@ -4915,7 +4895,7 @@ function App() {
                           }}
                           style={{ accentColor: 'var(--primary)', cursor: 'pointer', width: '15px', height: '15px' }}
                         />
-                        🌤️ Afternoon Slot
+                        Afternoon Slot
                       </label>
                     </div>
                   </div>
@@ -5028,7 +5008,7 @@ function App() {
                           <div style={{ display: 'flex', gap: '6px', marginTop: '2px' }}>
                             {tour.slots && tour.slots.map(s => (
                               <span key={s} style={{ fontSize: '0.62rem', background: 'rgba(255,255,255,0.04)', color: 'var(--text-muted)', padding: '2px 6px', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.06)' }}>
-                                {s === 'morning' ? '☀️ Morning' : '🌤️ Afternoon'}
+                                {s === 'morning' ? 'Morning' : 'Afternoon'}
                               </span>
                             ))}
                             <span style={{ fontSize: '0.62rem', background: 'rgba(255,255,255,0.04)', color: 'var(--text-muted)', padding: '2px 6px', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.06)', marginLeft: 'auto' }}>
@@ -5080,7 +5060,7 @@ function App() {
                       transition: 'all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1)'
                     }}
                   >
-                    💬 Guest Pre-Arrival Previews
+                    Guest Pre-Arrival Previews
                   </button>
                   <button 
                     onClick={() => setMessagingSubTab('providers')}
@@ -5096,7 +5076,7 @@ function App() {
                       transition: 'all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1)'
                     }}
                   >
-                    ⛵ Captains & Providers Dispatch
+                    Captains & Providers Dispatch
                   </button>
                 </div>
               </div>
@@ -5203,7 +5183,7 @@ function App() {
                         onClick={() => {
                           const text = getWhatsAppMessageText(activeMessagingGuest);
                           navigator.clipboard.writeText(text);
-                          setPushToastText("💬 WhatsApp text copied to clipboard!");
+                          setPushToastText("WhatsApp text copied to clipboard!");
                           setShowPushToast(true);
                           setTimeout(() => setShowPushToast(false), 3000);
                         }}
@@ -5221,7 +5201,7 @@ function App() {
                         onClick={() => {
                           const html = getEmailHtmlSource(activeMessagingGuest);
                           navigator.clipboard.writeText(html);
-                          setPushToastText("✉️ Responsive HTML Email source code copied!");
+                          setPushToastText("Responsive HTML Email source code copied!");
                           setShowPushToast(true);
                           setTimeout(() => setShowPushToast(false), 3000);
                         }}
@@ -5415,7 +5395,7 @@ function App() {
                             }}>
                               {getWhatsAppMessageText(activeMessagingGuest)}
                               <span style={{ fontSize: '0.58rem', color: '#8696a0', display: 'block', textAlign: 'right', marginTop: '4px' }}>
-                                {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} ✔️✔️
+                                {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} [SENT]
                               </span>
                             </div>
                           </div>
@@ -5495,7 +5475,7 @@ function App() {
                             Subject: {getEmailSubjectText(activeMessagingGuest)}
                           </span>
                           <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
-                            From: concierge@{activeMessagingGuest.hotel_id || 'lacoralina'}.com &lt;via IslandFlow Autonomic Engine&gt;
+                            From: concierge@{activeMessagingGuest.hotel_id || 'lacoralina'}.com &lt;via Rain or Shine Autonomic Engine&gt;
                           </span>
                         </div>
 
@@ -5678,7 +5658,7 @@ function App() {
                                           color: isWhatsApp ? '#ffffff' : 'var(--primary-btn-text, #0f172a)'
                                         }}
                                       >
-                                        💬 SMS/WA
+                                        SMS/WA
                                       </button>
                                       
                                       <button
@@ -5694,7 +5674,7 @@ function App() {
                                           color: isWebhook ? '#38bdf8' : 'var(--text-muted)'
                                         }}
                                       >
-                                        ⚡ Webhook
+                                        Webhook
                                       </button>
                                     </div>
                                   </td>

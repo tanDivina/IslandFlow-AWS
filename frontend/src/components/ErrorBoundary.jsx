@@ -62,7 +62,7 @@ class ErrorBoundary extends React.Component {
             Portal Sandbox Restored
           </h2>
           <p style={{ fontSize: '0.88rem', color: 'var(--text-muted, #9ca3af)', lineHeight: '1.5', margin: '0 0 24px 0' }}>
-            The active panel encountered a state exception or network discrepancy. IslandFlow has intercepted the crash to keep the browser thread alive.
+            The active panel encountered a state exception or network discrepancy. Rain or Shine has intercepted the crash to keep the browser thread alive.
           </p>
           
           {this.state.error && (

@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 
 const logTypes = [
-  { emoji: '🤖', label: 'AGENT', bg: 'rgba(59, 130, 246, 0.12)', color: '#3b82f6', border: 'rgba(59, 130, 246, 0.25)' },
-  { emoji: '💬', label: 'GUEST', bg: 'rgba(236, 72, 153, 0.12)', color: '#ec4899', border: 'rgba(236, 72, 153, 0.25)' },
-  { emoji: '❌', label: 'ERROR', bg: 'rgba(239, 68, 68, 0.12)', color: '#ef4444', border: 'rgba(239, 68, 68, 0.25)' },
-  { emoji: '⛈️', label: 'WEATHER', bg: 'rgba(139, 92, 246, 0.12)', color: '#8b5cf6', border: 'rgba(139, 92, 246, 0.25)' },
-  { emoji: '🔍', label: 'TOOL CALL', bg: 'rgba(234, 179, 8, 0.12)', color: '#eab308', border: 'rgba(234, 179, 8, 0.25)' },
-  { emoji: '📥', label: 'TOOL RETURN', bg: 'rgba(14, 165, 233, 0.12)', color: '#0ea5e9', border: 'rgba(14, 165, 233, 0.25)' },
-  { emoji: '👉', label: 'DECISION', bg: 'rgba(249, 115, 22, 0.12)', color: '#f97316', border: 'rgba(249, 115, 22, 0.25)' },
-  { emoji: '✅', label: 'SUCCESS', bg: 'rgba(16, 185, 129, 0.12)', color: '#10b981', border: 'rgba(16, 185, 129, 0.25)' },
-  { emoji: '🛎️', label: 'PMS WEBHOOK', bg: 'rgba(168, 85, 247, 0.12)', color: '#a855f7', border: 'rgba(168, 85, 247, 0.25)' },
-  { emoji: '🎒', label: 'INTEGRATION', bg: 'rgba(20, 184, 166, 0.12)', color: '#14b8a6', border: 'rgba(20, 184, 166, 0.25)' },
-  { emoji: 'ℹ️', label: 'INFO', bg: 'rgba(107, 114, 128, 0.12)', color: '#9ca3af', border: 'rgba(107, 114, 128, 0.25)' },
-  { emoji: '🔄', label: 'SYSTEM', bg: 'rgba(107, 114, 128, 0.12)', color: '#9ca3af', border: 'rgba(107, 114, 128, 0.25)' },
+  { label: 'AGENT', bg: 'rgba(168, 255, 53, 0.1)', color: '#a8ff35', border: 'rgba(168, 255, 53, 0.2)' },
+  { label: 'GUEST', bg: 'rgba(236, 72, 153, 0.12)', color: '#ec4899', border: 'rgba(236, 72, 153, 0.25)' },
+  { label: 'ERROR', bg: 'rgba(239, 68, 68, 0.12)', color: '#ef4444', border: 'rgba(239, 68, 68, 0.25)' },
+  { label: 'WEATHER', bg: 'rgba(139, 92, 246, 0.12)', color: '#8b5cf6', border: 'rgba(139, 92, 246, 0.25)' },
+  { label: 'TOOL CALL', bg: 'rgba(234, 179, 8, 0.12)', color: '#eab308', border: 'rgba(234, 179, 8, 0.25)' },
+  { label: 'TOOL RETURN', bg: 'rgba(14, 165, 233, 0.12)', color: '#0ea5e9', border: 'rgba(14, 165, 233, 0.25)' },
+  { label: 'DECISION', bg: 'rgba(249, 115, 22, 0.12)', color: '#f97316', border: 'rgba(249, 115, 22, 0.25)' },
+  { label: 'SUCCESS', bg: 'rgba(168, 255, 53, 0.12)', color: '#a8ff35', border: 'rgba(168, 255, 53, 0.25)' },
+  { label: 'PMS WEBHOOK', bg: 'rgba(168, 85, 247, 0.12)', color: '#a855f7', border: 'rgba(168, 85, 247, 0.25)' },
+  { label: 'INTEGRATION', bg: 'rgba(20, 184, 166, 0.12)', color: '#14b8a6', border: 'rgba(20, 184, 166, 0.25)' },
+  { label: 'INFO', bg: 'rgba(107, 114, 128, 0.12)', color: '#9ca3af', border: 'rgba(107, 114, 128, 0.25)' },
+  { label: 'SYSTEM', bg: 'rgba(107, 114, 128, 0.12)', color: '#9ca3af', border: 'rgba(107, 114, 128, 0.25)' },
 ];
 
 function getLogIcon(label) {
@@ -121,21 +121,21 @@ function getLogIcon(label) {
 
 function renderParsedLog(log, index) {
   let matched = null;
-  for (const lt of logTypes) {
-    if (log.startsWith(lt.emoji)) {
-      matched = lt;
-      break;
+  let logText = log;
+
+  // New logic: Check for bracketed prefixes instead of emojis
+  const prefixMatch = log.match(/^\[(.*?)\]/);
+  if (prefixMatch) {
+    const label = prefixMatch[1];
+    matched = logTypes.find(lt => lt.label === label);
+    if (matched) {
+      logText = log.substring(prefixMatch[0].length).trim();
     }
   }
 
-  const isCall = matched?.emoji === '🔍';
-  const isRet = matched?.emoji === '📥';
-  const isError = matched?.emoji === '❌';
-
-  let logText = log;
-  if (matched) {
-    logText = log.substring(matched.emoji.length).trim();
-  }
+  const isCall = matched?.label === 'TOOL CALL';
+  const isRet = matched?.label === 'TOOL RETURN';
+  const isError = matched?.label === 'ERROR';
 
   const staggerClass = `stagger-${(index % 8) + 1}`;
 
@@ -263,7 +263,7 @@ export default function ControlPanel({
         <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
           <span style={{ fontSize: '0.82rem', fontWeight: 650, color: 'var(--text-primary)' }}>Operation Mode</span>
           <span style={{ fontSize: '0.68rem', color: 'var(--text-muted)', lineHeight: '1.3', marginTop: '2px' }}>
-            {isProductionMode ? '🟢 Live IoT Feed: Streaming programmatic telemetry' : 'Sandbox mode for manual testing simulations'}
+            {isProductionMode ? 'Live IoT Feed: Streaming programmatic telemetry' : 'Sandbox mode for manual testing simulations'}
           </span>
         </div>
         <div style={{ display: 'flex', gap: '4px', background: 'rgba(0,0,0,0.25)', borderRadius: '8px', padding: '3px', border: '1px solid rgba(255,255,255,0.03)', flexShrink: 0 }}>
@@ -339,10 +339,10 @@ export default function ControlPanel({
           <div style={{ borderLeft: '2px solid var(--primary)', paddingLeft: '12px', display: 'flex', flexDirection: 'column', gap: '6px', margin: '4px 0' }}>
             <div style={{ fontSize: '0.68rem', color: 'var(--text-dim)', fontWeight: 600, letterSpacing: '0.04em' }}>ACTIVE API CHANNELS</div>
             <div style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span style={{ color: '#10b981' }}>✓</span> OpenWeatherMap API <span style={{ color: 'var(--text-muted)', fontWeight: 400, fontSize: '0.7rem' }}>(Live Weather Code Stream)</span>
+              <span style={{ color: '#a8ff35' }}>[ONLINE]</span> OpenWeatherMap API <span style={{ color: 'var(--text-muted)', fontWeight: 400, fontSize: '0.7rem' }}>(Live Weather Code Stream)</span>
             </div>
             <div style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span style={{ color: '#10b981' }}>✓</span> Open-Meteo Marine API <span style={{ color: 'var(--text-muted)', fontWeight: 400, fontSize: '0.7rem' }}>(Real-time Reef Swells)</span>
+              <span style={{ color: '#a8ff35' }}>[ONLINE]</span> Open-Meteo Marine API <span style={{ color: 'var(--text-muted)', fontWeight: 400, fontSize: '0.7rem' }}>(Real-time Reef Swells)</span>
             </div>
           </div>
 
@@ -355,7 +355,7 @@ export default function ControlPanel({
             color: 'var(--text-muted)',
             lineHeight: '1.4'
           }}>
-            💡 <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>Autonomic Action</span>: A background cron worker automatically executes a telemetry poll check every 10 minutes. If rain warning codes or waves &gt; 1.5m are flagged on stay dates, Gemini launches instant rescheduling swap cards.
+            <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>Autonomic Action</span>: A background cron worker automatically executes a telemetry poll check every 10 minutes. If rain warning codes or waves &gt; 1.5m are flagged on stay dates, Gemini launches instant rescheduling swap cards.
           </div>
           
           <button 
@@ -451,7 +451,7 @@ export default function ControlPanel({
                 />
               </div>
               <span style={{ fontSize: '0.68rem', fontWeight: 600, color: selectedWaveHeight > 1.5 ? 'var(--error)' : 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.03em' }}>
-                {selectedWaveHeight > 1.5 ? '⚠️ High Waves' : '🟢 Safe Seas'}
+                {selectedWaveHeight > 1.5 ? '[HIGH WAVES]' : '[SAFE SEAS]'}
               </span>
             </div>
           </div>
@@ -538,7 +538,7 @@ export default function ControlPanel({
         </div>
       </div>
 
-      {/* 🛡️ Real-World Agent Compliance & Safety Monitor */}
+      {/* Real-World Agent Compliance & Safety Monitor */}
       <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
         <h3 style={{ fontSize: '0.9rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px', margin: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '24px', height: '24px', flexShrink: 0 }}>
@@ -625,15 +625,15 @@ export default function ControlPanel({
               gap: '6px'
             }}>
               {loading ? (
-                '🔄 Evaluating alternative schedules...'
+                'Evaluating alternative schedules...'
               ) : isConfirmed ? (
-                '🟢 Approved & Booking Rescheduled'
+                '[APPROVED] Booking Rescheduled'
               ) : isDeclined ? (
-                '🔴 Proposal Declined by Guest'
+                '[DECLINED] Proposal Declined by Guest'
               ) : hasRainAlert ? (
-                '⚠️ Proposal Sent - Awaiting Consent'
+                '[WARNING] Proposal Sent - Awaiting Consent'
               ) : (
-                '🟢 Sync Active (No Conflict)'
+                '[SUCCESS] Sync Active (No Conflict)'
               )}
             </span>
           </div>
@@ -650,11 +650,11 @@ export default function ControlPanel({
               gap: '6px'
             }}>
               {isConfirmed ? (
-                '🟢 Boat Captain Notified via Dispatch'
+                '[NOTIFIED] Boat Captain Dispatched'
               ) : hasRainAlert ? (
-                '🟡 Dispatch Intercepted (Hold)'
+                '[HOLD] Dispatch Intercepted'
               ) : (
-                '🟢 Standby / Schedule Aligned'
+                '[READY] Standby / Schedule Aligned'
               )}
             </span>
           </div>
@@ -663,7 +663,7 @@ export default function ControlPanel({
           <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', gridColumn: 'span 2', borderTop: '1px solid var(--border-color)', paddingTop: '8px', marginTop: '4px' }}>
             <span style={{ fontSize: '0.65rem', textTransform: 'uppercase', color: 'var(--text-dim)', fontWeight: 600, letterSpacing: '0.03em' }}>Institutional Safety Guard</span>
             <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--primary)', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-              🟢 Anti-Double-Booking Lock Enforced
+              [ACTIVE] Anti-Double-Booking Lock Enforced
             </span>
           </div>
         </div>

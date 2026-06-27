@@ -120,7 +120,7 @@ def check_weather(date: str) -> str:
             if weather in ["Rainy", "Heavy Rain"] or alert != "none" or wave_height > 1.5:
                 res_msg = f"Weather forecast for {date}: {weather} (Alert status: {alert.upper()}). Ocean wave heights are {wave_height}m."
                 if wave_height > 1.5:
-                    res_msg += " ⚠️ DANGEROUS SURF ALERT: Outer-reef marine transits are strictly locked due to hazardous waves."
+                    res_msg += " [ALERT] DANGEROUS SURF: Outer-reef marine transits are strictly locked due to hazardous waves."
                 add_execution_log(f"📥 Tool **check_weather** returned simulated override: {weather} (Alert: {alert}, Waves: {wave_height}m)")
                 return res_msg
     except Exception as e:
@@ -191,13 +191,13 @@ def check_weather(date: str) -> str:
                 )
                 
                 if max_wave > 1.5:
-                    res_msg += " ⚠️ DANGEROUS SURF ALERT: Outer-reef marine transits are strictly locked due to hazardous waves."
+                    res_msg += " [ALERT] DANGEROUS SURF: Outer-reef marine transits are strictly locked due to hazardous waves."
                     
                 add_execution_log(f"📥 Tool **check_weather** completed live Open-Meteo API query: {weather_status} (Waves: {max_wave:.2f}m)")
                 return res_msg
     except Exception as ex_live:
         logger.error(f"Failed to query live Open-Meteo API: {ex_live}")
-        add_execution_log("⚠️ Live Open-Meteo lookup failed or date out of forecast window. Falling back to logistics DB.")
+        add_execution_log("[WARNING] Live Open-Meteo lookup failed or date out of forecast window. Falling back to logistics DB.")
 
     # 3. Fallback to local logistics database (Simulated or seeded weather)
     try:
@@ -219,7 +219,7 @@ def check_weather(date: str) -> str:
                 
         res_msg = f"Weather forecast for {date}: {weather} (Alert status: {alert.upper()}). Ocean wave heights are {wave_height}m."
         if wave_height > 1.5:
-            res_msg += " ⚠️ DANGEROUS SURF ALERT: Outer-reef marine transits are strictly locked due to hazardous waves."
+            res_msg += " [ALERT] DANGEROUS SURF: Outer-reef marine transits are strictly locked due to hazardous waves."
         add_execution_log(f"📥 Tool **check_weather** returned DB fallback: {weather} (Alert: {alert}, Waves: {wave_height}m)")
         return res_msg
     except Exception as e:
@@ -508,7 +508,7 @@ def generate_itinerary(guest_id: str) -> str:
         bookings = list(db["bookings"].find({"guest_id": guest_id}))
         
         output = (
-            f"# Bocas del Toro Concierge Itinerary\n"
+            f"# Rain or Shine: Que Siga La Rumba!\n"
             f"**Resort Stay:** {guest.get('hotel_name', 'Bocas Eco-Lodge')}\n"
             f"**Guest:** {guest['name']} | **Contact:** {guest['phone']}\n"
             f"**Stay Period:** {guest['stay_start']} to {guest['stay_end']}\n"
@@ -533,7 +533,7 @@ def generate_itinerary(guest_id: str) -> str:
             tour_desc = tour["description"] if tour else ""
             
             output += (
-                f"### 📅 {b['date']} - {b['slot'].capitalize()}\n"
+                f"### {b['date']} - {b['slot'].capitalize()}\n"
                 f"**Activity:** {tour_name}\n"
                 f"**Location:** {tour_location}\n"
                 f"**Price:** ${b['price']}\n"
@@ -545,11 +545,14 @@ def generate_itinerary(guest_id: str) -> str:
         output += f"---\n**Total Package Cost:** ${total_cost:.2f}\n"
         output += "*Thank you for choosing Bocas del Toro Eco-Tourism. Direct any questions to your island concierge.*"
         
-        # Save itinerary file to disk as well
-        with open(f"mock_itinerary_{guest_id}.md", "w") as f:
-            f.write(output)
+        # Save itinerary file to disk as well (Best effort, don't fail if read-only)
+        try:
+            with open(f"mock_itinerary_{guest_id}.md", "w") as f:
+                f.write(output)
+        except Exception as fe:
+            add_execution_log(f"⚠️ Note: Could not save itinerary file to disk: {fe}")
             
-        add_execution_log("📥 Tool **generate_itinerary** completed and saved.")
+        add_execution_log("📥 Tool **generate_itinerary** completed.")
         return output
     except Exception as e:
         res = f"Error generating itinerary: {str(e)}"
@@ -689,7 +692,7 @@ def get_current_coastal_advisory() -> str:
         
         if wave_height > 1.5:
             bulletin += (
-                f"⚠️ STATUS: RED ALERT / SMALL CRAFT WARNING ACTIVE\n"
+                f"[STATUS] RED ALERT / SMALL CRAFT WARNING ACTIVE\n"
                 f"* Live Outer-Reef Wave Heights: {wave_height:.2f} meters (DANGEROUS SEAS)\n"
                 f"* Safety Notice: All non-essential maritime transit, outer-reef water taxis (lanchas), "
                 f"and open-ocean excursions are STRICTLY SUSPENDED. Vessels must remain in protected harbors.\n"
@@ -705,7 +708,7 @@ def get_current_coastal_advisory() -> str:
             )
         else:
             bulletin += (
-                f"🟢 STATUS: GREEN LIGHT / ALL CLEAR\n"
+                f"[STATUS] GREEN LIGHT / ALL CLEAR\n"
                 f"* Live Outer-Reef Wave Heights: {wave_height:.2f} meters (CALM SEAS)\n"
                 f"* Safety Notice: Weather and ocean conditions are fully optimal for water transit, "
                 f"diving, and island crossings. Captains are cleared for normal operations."
