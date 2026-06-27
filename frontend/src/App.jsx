@@ -2606,7 +2606,7 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
                     <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: '1.6', margin: 0 }}>
                       Rain or Shine shifts AI travel coordinators out of plain conversation models into an active, contextual stay manager. It binds React portals, FastAPI, Google's ADK, and Amazon DynamoDB.
                     </p>
-                    <div style={{ borderLeft: '3px solid var(--primary)', paddingLeft: '14px', background: 'rgba(255,255,255,0.01)', borderRadius: '0 8px 8px 0', padding: '10px 14px' }}>
+                    <div style={{ borderLeft: '3px solid var(--primary)', paddingLeft: '14px', background: 'rgba(255,255,255,0.04)', borderRadius: '0 8px 8px 0', padding: '10px 14px' }}>
                       <div style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--primary)', marginBottom: '4px' }}>How data moves during weather shifts (Automated):</div>
                       <ol style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: 0, paddingLeft: '16px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
                         <li>OpenWeatherMap API or an IoT reef sensor transmits a live weather/swell alert (simulated in the Operator console for testing).</li>
@@ -2619,15 +2619,15 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
                       </ol>
                     </div>
                     <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
-                      <div style={{ flex: 1, padding: '10px', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', borderRadius: '8px' }}>
+                      <div style={{ flex: 1, padding: '10px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)', borderRadius: '8px' }}>
                         <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Core Language</div>
                         <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)' }}>Python & JavaScript</div>
                       </div>
-                      <div style={{ flex: 1, padding: '10px', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', borderRadius: '8px' }}>
+                      <div style={{ flex: 1, padding: '10px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)', borderRadius: '8px' }}>
                         <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Orchestration</div>
                         <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)' }}>Google Cloud ADK</div>
                       </div>
-                      <div style={{ flex: 1, padding: '10px', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', borderRadius: '8px' }}>
+                      <div style={{ flex: 1, padding: '10px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)', borderRadius: '8px' }}>
                         <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Partner Database</div>
                         <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)' }}>Amazon DynamoDB</div>
                       </div>
@@ -2650,13 +2650,13 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
                       A high-fidelity client app composed of separate role portals and synchronization sub-views.
                     </p>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.8rem', marginTop: '4px' }}>
-                      <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', padding: '10px 14px', borderRadius: '8px' }}>
+                      <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)', padding: '10px 14px', borderRadius: '8px' }}>
                         <strong style={{ color: 'var(--text-primary)' }}>Guest Companion Portal:</strong> Renders a live stay schedule timeline, interactive markdown receipts, and real-time chat widgets with dynamic loading/status cues.
                       </div>
-                      <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', padding: '10px 14px', borderRadius: '8px' }}>
+                      <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)', padding: '10px 14px', borderRadius: '8px' }}>
                         <strong style={{ color: 'var(--text-primary)' }}>Operator Dashboard Console:</strong> Houses the front-desk activity layout, the weather event simulation controls, and generates physical onboarding flyers with custom check-in QR codes.
                       </div>
-                      <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', padding: '10px 14px', borderRadius: '8px' }}>
+                      <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)', padding: '10px 14px', borderRadius: '8px' }}>
                         <strong style={{ color: 'var(--text-primary)' }}>Live Theme Engine:</strong> Handles multi-brand luxury styling. Synchronizes active themes instantly (La Coralina Gold, Nayara Cyan, and more) across all tabs by injecting custom typography and color configurations directly into root variables.
                       </div>
                     </div>
@@ -2677,27 +2677,27 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
                       Connects client web layers with Amazon DynamoDB data layers and our ADK reasoning loops.
                     </p>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.75rem', marginTop: '4px' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '6px 10px', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', borderRadius: '6px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '6px 10px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)', borderRadius: '6px' }}>
                         <span style={{ fontWeight: 700, color: '#059669', fontFamily: 'monospace', width: '32px' }}>GET</span>
                         <code style={{ color: 'var(--text-primary)', fontWeight: 600 }}>/api/status</code>
                         <span style={{ color: 'var(--text-muted)', marginLeft: 'auto' }}>Retrieves stay metadata and brand setups</span>
                       </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '6px 10px', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', borderRadius: '6px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '6px 10px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)', borderRadius: '6px' }}>
                         <span style={{ fontWeight: 700, color: '#6366f1', fontFamily: 'monospace', width: '32px' }}>POST</span>
                         <code style={{ color: 'var(--text-primary)', fontWeight: 600 }}>/api/chat</code>
                         <span style={{ color: 'var(--text-muted)', marginLeft: 'auto' }}>Injects context and runs the Gemini ADK loop</span>
                       </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '6px 10px', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', borderRadius: '6px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '6px 10px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)', borderRadius: '6px' }}>
                         <span style={{ fontWeight: 700, color: '#6366f1', fontFamily: 'monospace', width: '32px' }}>POST</span>
                         <code style={{ color: 'var(--text-primary)', fontWeight: 600 }}>/api/simulate-weather</code>
                         <span style={{ color: 'var(--text-muted)', marginLeft: 'auto' }}>Triggers weather shifts & schedules checks</span>
                       </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '6px 10px', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', borderRadius: '6px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '6px 10px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)', borderRadius: '6px' }}>
                         <span style={{ fontWeight: 700, color: '#6366f1', fontFamily: 'monospace', width: '32px' }}>POST</span>
                         <code style={{ color: 'var(--text-primary)', fontWeight: 600 }}>/api/pms/sync-guest</code>
                         <span style={{ color: 'var(--text-muted)', marginLeft: 'auto' }}>Pushes hotel PMS check-ins automatically</span>
                       </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '6px 10px', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', borderRadius: '6px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '6px 10px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)', borderRadius: '6px' }}>
                         <span style={{ fontWeight: 700, color: '#6366f1', fontFamily: 'monospace', width: '32px' }}>POST</span>
                         <code style={{ color: 'var(--text-primary)', fontWeight: 600 }}>/api/tenant/extract-brand</code>
                         <span style={{ color: 'var(--text-muted)', marginLeft: 'auto' }}>Crawls and skins custom B2B theme values</span>
@@ -2728,13 +2728,13 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
                       Rain or Shine runs natively on the Google ADK ecosystem, removing any reliance on competitive third-party orchestrators.
                     </p>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.8rem', marginTop: '4px' }}>
-                      <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', padding: '10px 14px', borderRadius: '8px' }}>
+                      <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)', padding: '10px 14px', borderRadius: '8px' }}>
                         <strong style={{ color: 'var(--text-primary)' }}>Native ADK Runner Architecture:</strong> Managed by `BocasEcoConciergeAgent` inside `agent.py`. It coordinates logical threads, reads and writes active user memory state, and interfaces directly with Gemini models.
                       </div>
-                      <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', padding: '10px 14px', borderRadius: '8px' }}>
+                      <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)', padding: '10px 14px', borderRadius: '8px' }}>
                         <strong style={{ color: 'var(--text-primary)' }}>In-Memory Session Isolation:</strong> Integrates custom memory stores mapped per unique guest ID, preventing data leakage across active rooms.
                       </div>
-                      <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', padding: '10px 14px', borderRadius: '8px' }}>
+                      <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)', padding: '10px 14px', borderRadius: '8px' }}>
                         <strong style={{ color: 'var(--text-primary)' }}>Invisible Context Injections:</strong> Prefixes all user-facing inputs with critical variables (active ID, date, system clock), orienting the agent instantly without questioning the guest.
                       </div>
                     </div>
@@ -2776,7 +2776,7 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
                             fontWeight: 600,
                             borderRadius: '12px',
                             cursor: 'pointer',
-                            background: selectedToolId === t.id ? 'var(--primary)' : 'rgba(255,255,255,0.03)',
+                            background: selectedToolId === t.id ? 'var(--primary)' : 'rgba(255,255,255,0.05)',
                             color: selectedToolId === t.id ? '#000000' : 'var(--text-muted)',
                             border: selectedToolId === t.id ? '1px solid var(--primary)' : '1px solid var(--border-color)',
                             transition: 'all 0.15s ease'
@@ -2789,7 +2789,7 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
 
                     {/* Tool Detail Card */}
                     {selectedToolId && (
-                      <div style={{ background: 'rgba(255,255,255,0.02)', border: '1.5px solid var(--border-color)', padding: '14px 18px', borderRadius: '10px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      <div style={{ background: 'rgba(255,255,255,0.05)', border: '1.5px solid var(--border-color)', padding: '14px 18px', borderRadius: '10px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                           <span style={{ fontSize: '0.85rem', fontFamily: 'monospace', fontWeight: 700, color: 'var(--primary)' }}>
                             {selectedToolId}(...)
@@ -2873,15 +2873,15 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
                       A DynamoDB-backed persistent structure tracking resort resources, itineraries, and tenant color presets.
                     </p>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.78rem', marginTop: '4px' }}>
-                      <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', padding: '8px 12px', borderRadius: '6px' }}>
+                      <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)', padding: '8px 12px', borderRadius: '6px' }}>
                         <strong style={{ color: 'var(--text-primary)' }}>Collection: guests</strong>
                         <div style={{ color: 'var(--text-muted)', fontSize: '0.72rem', marginTop: '2px' }}>Contains profile metadata, allergies, preferences, room numbers, and hotel affiliations.</div>
                       </div>
-                      <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', padding: '8px 12px', borderRadius: '6px' }}>
+                      <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)', padding: '8px 12px', borderRadius: '6px' }}>
                         <strong style={{ color: 'var(--text-primary)' }}>Collection: bookings</strong>
                         <div style={{ color: 'var(--text-muted)', fontSize: '0.72rem', marginTop: '2px' }}>Reservations referencing guest IDs, excursion names, dates, times, and slots.</div>
                       </div>
-                      <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', padding: '8px 12px', borderRadius: '6px' }}>
+                      <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)', padding: '8px 12px', borderRadius: '6px' }}>
                         <strong style={{ color: 'var(--text-primary)' }}>Collection: tours</strong>
                         <div style={{ color: 'var(--text-muted)', fontSize: '0.72rem', marginTop: '2px' }}>Activities catalogue containing types (indoor/outdoor), prices, slots, and capacities.</div>
                       </div>
