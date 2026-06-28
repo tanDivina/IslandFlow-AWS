@@ -1794,7 +1794,12 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
                           if (view !== 'guest') e.currentTarget.style.background = 'transparent';
                         }}
                       >
-                        <span style={{ fontSize: '1rem', width: '18px', display: 'inline-block', textAlign: 'center' }}>🌴</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, color: view === 'guest' ? 'var(--primary)' : 'var(--text-muted)' }}>
+                          <rect x="3" y="8" width="18" height="12" rx="2" ry="2" />
+                          <path d="M16 8V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v3" />
+                          <line x1="12" y1="12" x2="12" y2="16" />
+                          <line x1="8" y1="14" x2="16" y2="14" />
+                        </svg>
                         <span>{lang === 'es' ? 'Portal del Huésped' : 'Guest Portal'}</span>
                         {view === 'guest' && <span style={{ marginLeft: 'auto', fontSize: '0.75rem', color: 'var(--primary)' }}>●</span>}
                       </button>
@@ -1827,7 +1832,10 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
                           if (view !== 'operator') e.currentTarget.style.background = 'transparent';
                         }}
                       >
-                        <span style={{ fontSize: '1rem', width: '18px', display: 'inline-block', textAlign: 'center' }}>💼</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, color: view === 'operator' ? 'var(--primary)' : 'var(--text-muted)' }}>
+                          <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+                          <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                        </svg>
                         <span>{lang === 'es' ? 'Portal del Operador' : 'Operator Portal'}</span>
                         {view === 'operator' && <span style={{ marginLeft: 'auto', fontSize: '0.75rem', color: 'var(--primary)' }}>●</span>}
                       </button>
@@ -1860,7 +1868,14 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
                           if (view !== 'captain') e.currentTarget.style.background = 'transparent';
                         }}
                       >
-                        <span style={{ fontSize: '1.1rem', width: '18px', display: 'inline-block', textAlign: 'center' }}>⚓</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, color: view === 'captain' ? 'var(--primary)' : 'var(--text-muted)' }}>
+                          <circle cx="12" cy="5" r="3" />
+                          <line x1="12" y1="8" x2="12" y2="20" />
+                          <line x1="8" y1="12" x2="16" y2="12" />
+                          <path d="M5 12c0 3.87 3.13 7 7 7s7-3.13 7-7" />
+                          <path d="M3 10l2 2 2-2" />
+                          <path d="M21 10l-2 2-2-2" />
+                        </svg>
                         <span>{lang === 'es' ? 'Portal de Mando' : 'Captain Portal'}</span>
                         {view === 'captain' && <span style={{ marginLeft: 'auto', fontSize: '0.75rem', color: 'var(--primary)' }}>●</span>}
                       </button>
@@ -1874,107 +1889,99 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
               </button>
             </nav>
 
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px', flexShrink: 0 }}>
-              {/* Row 1: Language Switcher and Resort Info */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                {/* Premium EN/ES Toggle Slider */}
+            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px', flexShrink: 0, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+              {/* Compact EN/ES Toggle Slider (No Emojis) */}
+              <div 
+                onClick={() => setLang(lang === 'en' ? 'es' : 'en')}
+                style={{
+                  background: 'var(--bg-card-nested, rgba(15, 23, 42, 0.15))',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: '24px',
+                  padding: '2px',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  position: 'relative',
+                  width: '96px',
+                  height: '28px',
+                  flexShrink: 0,
+                  cursor: 'pointer',
+                  userSelect: 'none',
+                  backdropFilter: 'blur(8px)',
+                  boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.1)',
+                }}
+              >
+                {/* Sliding indicator */}
                 <div 
-                  onClick={() => setLang(lang === 'en' ? 'es' : 'en')}
                   style={{
-                    background: 'var(--bg-card-nested, rgba(15, 23, 42, 0.15))',
-                    border: '1px solid var(--border-color)',
-                    borderRadius: '24px',
-                    padding: '3px',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    position: 'relative',
-                    width: '120px',
-                    height: '32px',
-                    flexShrink: 0,
-                    cursor: 'pointer',
-                    userSelect: 'none',
-                    backdropFilter: 'blur(8px)',
-                    boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.1)',
-                  }}
-                >
-                  {/* Sliding indicator */}
-                  <div 
-                    style={{
-                      position: 'absolute',
-                      top: '3px',
-                      left: '3px',
-                      bottom: '3px',
-                      width: 'calc(50% - 3px)',
-                      background: 'var(--primary)',
-                      borderRadius: '20px',
-                      transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
-                      transform: lang === 'en' ? 'translateX(0)' : 'translateX(100%)',
-                      boxShadow: '0 1px 4px rgba(0,0,0,0.15)',
-                      zIndex: 1
-                    }}
-                  />
-                  
-                  {/* English label */}
-                  <span style={{
-                    flex: 1,
-                    textAlign: 'center',
-                    fontSize: '0.72rem',
-                    fontWeight: '700',
-                    color: lang === 'en' ? 'var(--primary-btn-text, #ffffff)' : 'var(--text-muted)',
-                    zIndex: 2,
-                    transition: 'color 0.25s ease',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '3px'
-                  }}>
-                    🇬🇧 EN
-                  </span>
-
-                  {/* Spanish label */}
-                  <span style={{
-                    flex: 1,
-                    textAlign: 'center',
-                    fontSize: '0.72rem',
-                    fontWeight: '700',
-                    color: lang === 'es' ? 'var(--primary-btn-text, #ffffff)' : 'var(--text-muted)',
-                    zIndex: 2,
-                    transition: 'color 0.25s ease',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '3px'
-                  }}>
-                    🇪🇸 ES
-                  </span>
-                </div>
-
-                {operatorHotelId && (
-                  <span style={{
-                    background: '#0c0c0f',
-                    border: '1.5px solid rgba(255, 255, 255, 0.18)',
-                    color: '#ffffff',
-                    padding: '6px 14px',
+                    position: 'absolute',
+                    top: '2px',
+                    left: '2px',
+                    bottom: '2px',
+                    width: 'calc(50% - 2px)',
+                    background: 'var(--primary)',
                     borderRadius: '20px',
-                    fontSize: '0.8rem',
-                    fontWeight: '700',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.35)'
-                  }}>
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>
-                      <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                      <polyline points="9 22 9 12 15 12 15 22" />
-                    </svg>
-                    Resort: {operatorHotelName}
-                  </span>
-                )}
+                    transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+                    transform: lang === 'en' ? 'translateX(0)' : 'translateX(100%)',
+                    boxShadow: '0 1px 4px rgba(0,0,0,0.15)',
+                    zIndex: 1
+                  }}
+                />
+                
+                {/* English label */}
+                <span style={{
+                  flex: 1,
+                  textAlign: 'center',
+                  fontSize: '0.72rem',
+                  fontWeight: '700',
+                  color: lang === 'en' ? 'var(--primary-btn-text, #ffffff)' : 'var(--text-muted)',
+                  zIndex: 2,
+                  transition: 'color 0.25s ease',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                  EN
+                </span>
+
+                {/* Spanish label */}
+                <span style={{
+                  flex: 1,
+                  textAlign: 'center',
+                  fontSize: '0.72rem',
+                  fontWeight: '700',
+                  color: lang === 'es' ? 'var(--primary-btn-text, #ffffff)' : 'var(--text-muted)',
+                  zIndex: 2,
+                  transition: 'color 0.25s ease',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                  ES
+                </span>
               </div>
 
-              {/* Row 2: Logout, DB connection */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                {operatorHotelId && (
+              {/* Unified Operator Session Capsule (Resort + Logout) */}
+              {operatorHotelId && (
+                <div style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  background: 'var(--bg-card-nested, rgba(15, 23, 42, 0.15))',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: '24px',
+                  height: '28px',
+                  padding: '0 4px 0 10px',
+                  gap: '8px',
+                  backdropFilter: 'blur(8px)',
+                  boxShadow: 'var(--shadow-sm)'
+                }}>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.8, color: 'var(--text-primary)' }}>
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                    <polyline points="9 22 9 12 15 12 15 22" />
+                  </svg>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-primary)' }}>
+                    {operatorHotelName}
+                  </span>
+                  <div style={{ width: '1px', height: '14px', background: 'var(--border-color)' }}></div>
                   <button
                     onClick={() => {
                       transitionState(() => {
@@ -1984,106 +1991,108 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
                         setOperatorHotelName(null);
                       });
                     }}
+                    title="Log Out"
                     style={{
-                      background: 'rgba(239, 68, 68, 0.08)',
-                      border: '1px solid rgba(239, 68, 68, 0.18)',
+                      background: 'transparent',
+                      border: 'none',
                       color: '#f87171',
-                      padding: '6px 12px',
-                      borderRadius: '20px',
+                      padding: '0 8px',
+                      height: '20px',
+                      borderRadius: '12px',
                       fontSize: '0.72rem',
                       fontWeight: 600,
                       cursor: 'pointer',
                       display: 'inline-flex',
                       alignItems: 'center',
                       gap: '4px',
-                      transition: 'all 0.15s ease',
-                      boxShadow: 'none'
+                      transition: 'all 0.15s ease'
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.background = 'rgba(239, 68, 68, 0.15)';
-                      e.currentTarget.style.borderColor = 'rgba(239, 68, 68, 0.3)';
+                      e.currentTarget.style.background = 'rgba(239, 68, 68, 0.12)';
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.background = 'rgba(239, 68, 68, 0.08)';
-                      e.currentTarget.style.borderColor = 'rgba(239, 68, 68, 0.18)';
+                      e.currentTarget.style.background = 'transparent';
                     }}
                   >
                     <span>Log Out</span>
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
                       <polyline points="16 17 21 12 16 7" />
                       <line x1="21" y1="12" x2="9" y2="12" />
                     </svg>
                   </button>
-                )}
-                
-                <span style={{ 
-                  background: isRealDynamo ? 'rgba(5, 150, 105, 0.08)' : 'var(--primary-glow)', 
-                  color: isRealDynamo ? '#059669' : 'var(--primary)', 
-                  border: `1px solid ${isRealDynamo ? 'rgba(5, 150, 105, 0.25)' : 'var(--border-color)'}`, 
-                  padding: '6px 14px', 
-                  borderRadius: '20px', 
-                  fontSize: '0.72rem', 
+                </div>
+              )}
+
+              {/* Database Connection Badge */}
+              <div style={{ 
+                background: isRealDynamo ? 'rgba(5, 150, 105, 0.05)' : 'var(--primary-glow)', 
+                color: isRealDynamo ? '#10b981' : 'var(--primary)', 
+                border: `1px solid ${isRealDynamo ? 'rgba(16, 185, 129, 0.2)' : 'var(--border-color)'}`, 
+                padding: '0 10px', 
+                borderRadius: '24px', 
+                height: '28px',
+                fontSize: '0.72rem', 
+                fontWeight: 600,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                letterSpacing: '0.04em',
+                flexShrink: 0
+              }}>
+                <span style={{
+                  width: '6px',
+                  height: '6px',
+                  borderRadius: '50%',
+                  background: isRealDynamo ? '#10b981' : 'var(--primary)',
+                  boxShadow: isRealDynamo ? '0 0 6px #10b981' : 'none'
+                }}></span>
+                <span>{isRealDynamo ? 'AWS LIVE' : 'SANDBOX DB'}</span>
+              </div>
+
+              {/* Feedback Button */}
+              <button 
+                onClick={() => {
+                  const feedback = prompt("Please share your feedback on this AI experience:");
+                  if (feedback) {
+                    alert("Thank you for your feedback! It has been logged.");
+                    console.log("Feedback received:", feedback);
+                  }
+                }}
+                title={lang === 'es' ? "Compartir comentarios" : "Share Feedback on this AI Experience"}
+                style={{
+                  background: 'transparent',
+                  border: '1px solid var(--border-color)',
+                  color: 'var(--text-muted)',
+                  padding: '0 10px',
+                  borderRadius: '24px',
+                  height: '28px',
+                  fontSize: '0.72rem',
                   fontWeight: 600,
+                  cursor: 'pointer',
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '6px',
-                  letterSpacing: '0.04em'
-                }}>
-                  <span style={{
-                    width: '6px',
-                    height: '6px',
-                    borderRadius: '50%',
-                    background: isRealDynamo ? '#059669' : 'var(--primary)',
-                    boxShadow: isRealDynamo ? '0 0 6px #059669' : 'none'
-                  }}></span>
-                  {isRealDynamo ? 'AWS DYNAMODB LIVE' : 'LOCAL SANDBOX DB'}
-                </span>
-              </div>
-
-              {/* Row 3: Dedicated line for Feedback button */}
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <button 
-                  onClick={() => {
-                    const feedback = prompt("Please share your feedback on this AI experience:");
-                    if (feedback) {
-                      alert("Thank you for your feedback! It has been logged.");
-                      console.log("Feedback received:", feedback);
-                    }
-                  }}
-                  title="Share Feedback on this AI Experience"
-                  style={{
-                    background: 'var(--primary-glow)',
-                    border: '1px solid var(--border-color)',
-                    color: 'var(--primary)',
-                    padding: '6px 14px',
-                    borderRadius: '20px',
-                    fontSize: '0.72rem',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    transition: 'all 0.2s ease',
-                    letterSpacing: '0.04em'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = 'var(--primary)';
-                    e.currentTarget.style.background = 'var(--primary)';
-                    e.currentTarget.style.color = '#ffffff';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = 'var(--border-color)';
-                    e.currentTarget.style.background = 'var(--primary-glow)';
-                    e.currentTarget.style.color = 'var(--primary)';
-                  }}
-                >
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                  </svg>
-                  FEEDBACK
-                </button>
-              </div>
+                  transition: 'all 0.2s ease',
+                  letterSpacing: '0.04em',
+                  flexShrink: 0
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = 'var(--primary)';
+                  e.currentTarget.style.color = 'var(--primary)';
+                  e.currentTarget.style.background = 'var(--primary-glow)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'var(--border-color)';
+                  e.currentTarget.style.color = 'var(--text-muted)';
+                  e.currentTarget.style.background = 'transparent';
+                }}
+              >
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                </svg>
+                <span>{lang === 'es' ? 'COMENTARIOS' : 'FEEDBACK'}</span>
+              </button>
             </div>
           </>
         )}
