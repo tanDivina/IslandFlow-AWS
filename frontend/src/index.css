@@ -38,6 +38,9 @@ body, body.theme-sunny {
   
   --bg-card-nested: rgba(0, 0, 0, 0.03);
   
+  --chat-header-bg: hsla(38, 30%, 93%, 0.6);
+  --chat-footer-bg: hsla(38, 30%, 91%, 0.7);
+  
   background-image: none;
 }
 
@@ -69,6 +72,9 @@ body.theme-rainy {
   --msg-agent-bg: hsla(38, 35%, 50%, 0.08);
   
   --bg-card-nested: rgba(0, 0, 0, 0.03);
+  
+  --chat-header-bg: hsla(222, 15%, 91%, 0.6);
+  --chat-footer-bg: hsla(222, 15%, 89%, 0.7);
   
   background-image: none;
 }

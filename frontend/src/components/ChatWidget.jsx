@@ -91,7 +91,7 @@ export default function ChatWidget({
   return (
     <div className="glass-card chat-widget-card" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       {/* Header */}
-      <div style={{ padding: '18px 20px', borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', gap: '14px', background: 'hsla(210, 32%, 7%, 0.4)' }}>
+      <div style={{ padding: '18px 20px', borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', gap: '14px', background: 'var(--chat-header-bg)' }}>
         <div style={{ position: 'relative' }}>
           <img 
             src="/concierge_avatar.png" 
@@ -128,9 +128,9 @@ export default function ChatWidget({
           title="Call Front Desk for Emergency Assistance"
           style={{
             marginLeft: 'auto',
-            background: 'rgba(239, 68, 68, 0.08)',
-            border: '1px solid rgba(239, 68, 68, 0.25)',
-            color: '#f87171',
+            background: 'rgba(220, 38, 38, 0.08)',
+            border: '1px solid rgba(220, 38, 38, 0.25)',
+            color: '#dc2626',
             padding: '6px 12px',
             borderRadius: '20px',
             fontSize: '0.75rem',
@@ -143,14 +143,14 @@ export default function ChatWidget({
             whiteSpace: 'nowrap'
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.background = 'rgba(239, 68, 68, 0.16)';
-            e.currentTarget.style.borderColor = '#ef4444';
-            e.currentTarget.style.color = '#ef4444';
+            e.currentTarget.style.background = 'rgba(220, 38, 38, 0.16)';
+            e.currentTarget.style.borderColor = '#b91c1c';
+            e.currentTarget.style.color = '#b91c1c';
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.background = 'rgba(239, 68, 68, 0.08)';
-            e.currentTarget.style.borderColor = 'rgba(239, 68, 68, 0.25)';
-            e.currentTarget.style.color = '#f87171';
+            e.currentTarget.style.background = 'rgba(220, 38, 38, 0.08)';
+            e.currentTarget.style.borderColor = 'rgba(220, 38, 38, 0.25)';
+            e.currentTarget.style.color = '#dc2626';
           }}
         >
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -489,7 +489,7 @@ export default function ChatWidget({
       </div>
 
       {/* Input bar - No readOnly constraint to prevent keyboard layout shifts */}
-      <form onSubmit={handleSubmit} style={{ padding: '16px 20px', borderTop: '1px solid var(--border-color)', display: 'flex', gap: '12px', background: 'hsla(210, 32%, 6%, 0.6)' }}>
+      <form onSubmit={handleSubmit} style={{ padding: '16px 20px', borderTop: '1px solid var(--border-color)', display: 'flex', gap: '12px', background: 'var(--chat-footer-bg)' }}>
         <input 
           type="text" 
           value={input}

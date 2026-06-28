@@ -423,6 +423,8 @@ function App() {
   const guestDropdownRef = React.useRef(null);
   const [flyerDropdownOpen, setFlyerDropdownOpen] = useState(false);
   const flyerDropdownRef = React.useRef(null);
+  const [portalsDropdownOpen, setPortalsDropdownOpen] = useState(false);
+  const portalsDropdownRef = React.useRef(null);
 
   // Transition Helper for silky same-document view morphs using React 19 flushSync
   const transitionState = (updateFn) => {
@@ -442,6 +444,9 @@ function App() {
       }
       if (flyerDropdownRef.current && !flyerDropdownRef.current.contains(event.target)) {
         setFlyerDropdownOpen(false);
+      }
+      if (portalsDropdownRef.current && !portalsDropdownRef.current.contains(event.target)) {
+        setPortalsDropdownOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -1733,12 +1738,137 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
               <button className={`nav-link ${view === 'landing' ? 'active' : ''}`} onClick={() => navigateToView('landing')}>
                 {lang === 'es' ? 'Nosotros' : 'About'}
               </button>
-              <button className={`nav-link ${view === 'guest' ? 'active' : ''}`} onClick={() => navigateToView('guest')}>
-                {lang === 'es' ? 'Portal del Huésped' : 'Guest Portal'}
-              </button>
-              <button className={`nav-link ${view === 'operator' ? 'active' : ''}`} onClick={() => navigateToView('operator')}>
-                {lang === 'es' ? 'Consola del Operador' : 'Operator Console'}
-              </button>
+              
+              {/* Unified Portals Dropdown */}
+              <div className="custom-dropdown-container" ref={portalsDropdownRef} style={{ display: 'inline-block' }}>
+                <button
+                  onClick={() => setPortalsDropdownOpen(!portalsDropdownOpen)}
+                  className={`nav-link custom-dropdown-trigger ${['guest', 'operator', 'captain'].includes(view) ? 'active' : ''} ${portalsDropdownOpen ? 'active' : ''}`}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    background: 'transparent',
+                    border: 'none',
+                    padding: '6px 12px',
+                    cursor: 'pointer',
+                    fontWeight: 500
+                  }}
+                >
+                  <span>{lang === 'es' ? 'Portales' : 'Portals'}</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ transform: portalsDropdownOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s ease', color: 'var(--primary)' }}>
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
+                </button>
+                {portalsDropdownOpen && (
+                  <div className="custom-dropdown-menu" style={{ right: 0, left: 'auto', transformOrigin: 'top right' }}>
+                    <div style={{ padding: '8px 12px', fontSize: '0.72rem', color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.05em', borderBottom: '1px solid var(--border-color)', marginBottom: '4px' }}>
+                      {lang === 'es' ? 'Seleccionar Portal' : 'Select Portal'}
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                      <button
+                        onClick={() => {
+                          navigateToView('guest');
+                          setPortalsDropdownOpen(false);
+                        }}
+                        style={{
+                          background: view === 'guest' ? 'var(--primary-glow)' : 'transparent',
+                          color: view === 'guest' ? 'var(--primary)' : 'var(--text-primary)',
+                          border: 'none',
+                          padding: '10px 12px',
+                          borderRadius: '6px',
+                          textAlign: 'left',
+                          fontSize: '0.85rem',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '10px',
+                          transition: 'all 0.2s ease',
+                          fontFamily: 'var(--font-sans)',
+                          width: '100%'
+                        }}
+                        onMouseEnter={(e) => {
+                          if (view !== 'guest') e.currentTarget.style.background = 'var(--bg-card-nested)';
+                        }}
+                        onMouseLeave={(e) => {
+                          if (view !== 'guest') e.currentTarget.style.background = 'transparent';
+                        }}
+                      >
+                        <span style={{ fontSize: '1rem', width: '18px', display: 'inline-block', textAlign: 'center' }}>🌴</span>
+                        <span>{lang === 'es' ? 'Portal del Huésped' : 'Guest Portal'}</span>
+                        {view === 'guest' && <span style={{ marginLeft: 'auto', fontSize: '0.75rem', color: 'var(--primary)' }}>●</span>}
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          navigateToView('operator');
+                          setPortalsDropdownOpen(false);
+                        }}
+                        style={{
+                          background: view === 'operator' ? 'var(--primary-glow)' : 'transparent',
+                          color: view === 'operator' ? 'var(--primary)' : 'var(--text-primary)',
+                          border: 'none',
+                          padding: '10px 12px',
+                          borderRadius: '6px',
+                          textAlign: 'left',
+                          fontSize: '0.85rem',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '10px',
+                          transition: 'all 0.2s ease',
+                          fontFamily: 'var(--font-sans)',
+                          width: '100%'
+                        }}
+                        onMouseEnter={(e) => {
+                          if (view !== 'operator') e.currentTarget.style.background = 'var(--bg-card-nested)';
+                        }}
+                        onMouseLeave={(e) => {
+                          if (view !== 'operator') e.currentTarget.style.background = 'transparent';
+                        }}
+                      >
+                        <span style={{ fontSize: '1rem', width: '18px', display: 'inline-block', textAlign: 'center' }}>💼</span>
+                        <span>{lang === 'es' ? 'Portal del Operador' : 'Operator Portal'}</span>
+                        {view === 'operator' && <span style={{ marginLeft: 'auto', fontSize: '0.75rem', color: 'var(--primary)' }}>●</span>}
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          navigateToView('captain');
+                          setPortalsDropdownOpen(false);
+                        }}
+                        style={{
+                          background: view === 'captain' ? 'var(--primary-glow)' : 'transparent',
+                          color: view === 'captain' ? 'var(--primary)' : 'var(--text-primary)',
+                          border: 'none',
+                          padding: '10px 12px',
+                          borderRadius: '6px',
+                          textAlign: 'left',
+                          fontSize: '0.85rem',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '10px',
+                          transition: 'all 0.2s ease',
+                          fontFamily: 'var(--font-sans)',
+                          width: '100%'
+                        }}
+                        onMouseEnter={(e) => {
+                          if (view !== 'captain') e.currentTarget.style.background = 'var(--bg-card-nested)';
+                        }}
+                        onMouseLeave={(e) => {
+                          if (view !== 'captain') e.currentTarget.style.background = 'transparent';
+                        }}
+                      >
+                        <span style={{ fontSize: '1.1rem', width: '18px', display: 'inline-block', textAlign: 'center' }}>⚓</span>
+                        <span>{lang === 'es' ? 'Portal de Mando' : 'Captain Portal'}</span>
+                        {view === 'captain' && <span style={{ marginLeft: 'auto', fontSize: '0.75rem', color: 'var(--primary)' }}>●</span>}
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+
               <button className={`nav-link ${view === 'integrations' ? 'active' : ''}`} onClick={() => navigateToView('integrations')}>
                 {lang === 'es' ? 'Integraciones' : 'Business Integrations'}
               </button>
@@ -2168,7 +2298,7 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
                   <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
                 </svg>
               </div>
-              <h3 className="role-title">Operator Console</h3>
+              <h3 className="role-title">Operator Portal</h3>
               <p className="role-desc">
                 Hotel and lodge logistics management. Trigger custom weather changes, review current calendar listings, and inspect the real-time agent log console to view underlying MCP execution sequences.
               </p>
@@ -2260,7 +2390,7 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
                   <h4 style={{ fontSize: '1.05rem', fontWeight: '700', margin: 0, color: 'var(--text-primary)' }}>Hotel Desk Dispatch</h4>
                 </div>
                 <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', lineHeight: '1.5', margin: 0 }}>
-                  The front desk operator logs into the <strong>Operator Console</strong>, defines boat capacities, and maps local captains. 
+                  The front desk operator logs into the <strong>Operator Portal</strong>, defines boat capacities, and maps local captains. <span></span>
                 </p>
                 <div style={{ background: 'var(--bg-card-nested)', padding: '10px 12px', borderRadius: '8px', fontSize: '0.75rem', border: '1px solid var(--border-color)' }}>
                   <span style={{ color: 'var(--accent, #3ecdc6)', fontWeight: '600', display: 'block', marginBottom: '2px' }}>Operational Action:</span>
@@ -2622,7 +2752,7 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
                     <div style={{ borderLeft: '3px solid var(--primary)', paddingLeft: '14px', background: 'rgba(255,255,255,0.04)', borderRadius: '0 8px 8px 0', padding: '10px 14px' }}>
                       <div style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--primary)', marginBottom: '4px' }}>How data moves during weather shifts (Automated):</div>
                       <ol style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: 0, paddingLeft: '16px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                        <li>OpenWeatherMap API or an IoT reef sensor transmits a live weather/swell alert (simulated in the Operator console for testing).</li>
+                        <li>OpenWeatherMap API or an IoT reef sensor transmits a live weather/swell alert (simulated in the Operator portal for testing).</li>
                         <li>FastAPI receives the weather/swell shift and automatically commits it to Amazon DynamoDB.</li>
                         <li>The backend triggers an automated background check through the Google ADK model.</li>
                         <li>Gemini uses `check_weather` and `get_bookings` to scan for outdoor conflicts.</li>
@@ -3036,7 +3166,7 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
         </div>
       )}
 
-      {/* Render Operator Console View */}
+      {/* Render Operator Portal View */}
       {view === 'operator' && !operatorHotelId && (
         <div className="fade-in-entry stagger-1" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh', padding: '24px' }}>
           <OperatorLoginForm 

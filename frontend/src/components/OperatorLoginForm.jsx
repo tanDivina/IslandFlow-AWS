@@ -109,7 +109,7 @@ export default function OperatorLoginForm({ onLoginSuccess }) {
           color: 'var(--text-primary)',
           margin: 0
         }}>
-          Hotel Operator Console
+          Hotel Operator Portal
         </h2>
         <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '6px' }}>
           Secure tenant gateway for luxury resort dispatchers
