@@ -2414,7 +2414,7 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
           <div className="landing-features" style={{ marginTop: '50px', borderTop: '1px solid var(--border-color)', paddingTop: '40px' }}>
             <h3 className="section-title">Real-World Dispatch & Onboarding Workflow Guide</h3>
             <p className="landing-intro" style={{ maxWidth: '750px', margin: '-10px auto 40px auto', fontSize: '0.95rem' }}>
-              Designed for luxury overwater resorts (like Nayara Bocas or La Coralina). This guide illustrates how hotels onboard staff, how boat captains install the app in seconds, and how guests stay synced.
+              Designed for any boutique hotel, ecolodge, or Airbnb host in the Bocas del Toro archipelago coordinating water transfers and boat excursions. Since island transit relies entirely on local captains and water taxis, this guide illustrates how hosts seamlessly manage dispatches during sudden weather/swell shifts, how captains install the PWA in seconds, and how guests stay synced.
             </p>
 
             <div style={{

@@ -22,7 +22,7 @@
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js?v=3.1.7')
+          navigator.serviceWorker.register('/sw.js?v=3.1.8')
             .then(reg => {
               console.log('Service Worker registered successfully with scope:', reg.scope);
               // Force checking for updates immediately on load to bypass aggressive caching
