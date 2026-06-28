@@ -380,6 +380,8 @@ function App() {
   const [operatorHotelId, setOperatorHotelId] = useState(() => safeLocalStorageGet('operatorHotelId', 'hotel_nayara'));
   const [operatorHotelName, setOperatorHotelName] = useState(() => safeLocalStorageGet('operatorHotelName', 'Nayara Bocas del Toro'));
   const lastGuestIdRef = React.useRef(null);
+  const isInitialLoadRef = React.useRef(true);
+  const hasLoadedBackendItineraryRef = React.useRef(false);
   const lastRequestRef = React.useRef(0);
 
   const [view, setView] = useState(initialParams.view);
@@ -861,10 +863,12 @@ function App() {
         }
         
         const newMarkdown = data.itinerary_markdown || '';
+        const isSameGuest = lastGuestIdRef.current === data.guest_id;
+        
         setItineraryMarkdown(prev => {
           // Trigger the updated itinerary popup modal ONLY if the guest ID remains the same
-          // (This avoids triggering the modal merely when switching active guest profiles)
-          if (lastGuestIdRef.current === data.guest_id) {
+          // and we have already successfully loaded the initial backend itinerary for this guest.
+          if (isSameGuest && hasLoadedBackendItineraryRef.current) {
             if (prev && newMarkdown && prev !== newMarkdown) {
               setShowItineraryModal(true);
             }
@@ -876,6 +880,18 @@ function App() {
         if (data.guest_id) {
           lastGuestIdRef.current = data.guest_id;
         }
+
+        // Track whether backend itinerary has been loaded for the active guest
+        if (isSameGuest) {
+          if (data.itinerary_markdown) {
+            hasLoadedBackendItineraryRef.current = true;
+          }
+        } else {
+          hasLoadedBackendItineraryRef.current = !!data.itinerary_markdown;
+        }
+
+        // Keep as fallback/failsafe for legacy initial load flags
+        isInitialLoadRef.current = false;
         
         setIsRealDynamo(data.is_real_dynamodb);
       });
@@ -1734,25 +1750,27 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
             </div>
 
             {/* Navigation Tabs */}
-            <nav className="nav-links">
+            <nav className="nav-links" style={{ display: 'flex', alignItems: 'center' }}>
               <button className={`nav-link ${view === 'landing' ? 'active' : ''}`} onClick={() => navigateToView('landing')}>
                 {lang === 'es' ? 'Nosotros' : 'About'}
               </button>
               
               {/* Unified Portals Dropdown */}
-              <div className="custom-dropdown-container" ref={portalsDropdownRef} style={{ display: 'inline-block' }}>
+              <div className="custom-dropdown-container" ref={portalsDropdownRef} style={{ display: 'flex', alignItems: 'center' }}>
                 <button
                   onClick={() => setPortalsDropdownOpen(!portalsDropdownOpen)}
-                  className={`nav-link custom-dropdown-trigger ${['guest', 'operator', 'captain'].includes(view) ? 'active' : ''} ${portalsDropdownOpen ? 'active' : ''}`}
+                  className={`nav-link ${['guest', 'operator', 'captain'].includes(view) ? 'active' : ''} ${portalsDropdownOpen ? 'active' : ''}`}
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '6px',
+                    gap: '4px',
                     background: 'transparent',
                     border: 'none',
-                    padding: '6px 12px',
+                    padding: '10px 0',
                     cursor: 'pointer',
-                    fontWeight: 500
+                    fontWeight: 500,
+                    outline: 'none',
+                    boxShadow: 'none'
                   }}
                 >
                   <span>{lang === 'es' ? 'Portales' : 'Portals'}</span>
@@ -2747,7 +2765,7 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
                 {/* 1. All Summary view */}
                 {archActiveLayer === 'all' && (
                   <>
-                    <h4 style={{ fontSize: '1.25rem', fontFamily: 'var(--font-serif)', color: 'var(--text-primary)', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <h4 style={{ fontSize: '1.25rem', fontFamily: 'var(--font-serif)', color: 'var(--text-dim)', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
                         <circle cx="12" cy="12" r="10" />
                         <line x1="2" y1="12" x2="22" y2="12" />
@@ -2758,8 +2776,8 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
                     <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: '1.6', margin: 0 }}>
                       Rain or Shine shifts AI travel coordinators out of plain conversation models into an active, contextual stay manager. It binds React portals, FastAPI, Google's ADK, and Amazon DynamoDB.
                     </p>
-                    <div style={{ borderLeft: '3px solid var(--primary)', paddingLeft: '14px', background: 'rgba(255,255,255,0.04)', borderRadius: '0 8px 8px 0', padding: '10px 14px' }}>
-                      <div style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--primary)', marginBottom: '4px' }}>How data moves during weather shifts (Automated):</div>
+                    <div style={{ borderLeft: '3px solid var(--text-dim)', paddingLeft: '14px', background: 'var(--bg-card-nested)', borderRadius: '0 8px 8px 0', padding: '10px 14px' }}>
+                      <div style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '4px' }}>How data moves during weather shifts (Automated):</div>
                       <ol style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: 0, paddingLeft: '16px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
                         <li>OpenWeatherMap API or an IoT reef sensor transmits a live weather/swell alert (simulated in the Operator portal for testing).</li>
                         <li>FastAPI receives the weather/swell shift and automatically commits it to Amazon DynamoDB.</li>
@@ -2771,17 +2789,17 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
                       </ol>
                     </div>
                     <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
-                      <div style={{ flex: 1, padding: '10px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)', borderRadius: '8px' }}>
+                      <div style={{ flex: 1, padding: '10px', background: 'var(--slot-empty-bg)', border: '1px solid var(--border-color)', borderRadius: '8px' }}>
                         <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Core Language</div>
                         <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)' }}>Python & JavaScript</div>
                       </div>
-                      <div style={{ flex: 1, padding: '10px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)', borderRadius: '8px' }}>
+                      <div style={{ flex: 1, padding: '10px', background: 'var(--slot-empty-bg)', border: '1px solid var(--border-color)', borderRadius: '8px' }}>
                         <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Orchestration</div>
                         <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)' }}>Google Cloud ADK</div>
                       </div>
-                      <div style={{ flex: 1, padding: '10px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)', borderRadius: '8px' }}>
+                      <div style={{ flex: 1, padding: '10px', background: 'var(--slot-empty-bg)', border: '1px solid var(--border-color)', borderRadius: '8px' }}>
                         <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Partner Database</div>
-                        <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)' }}>Amazon DynamoDB</div>
+                        <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-muted)' }}>Amazon DynamoDB</div>
                       </div>
                     </div>
                   </>
@@ -5065,21 +5083,21 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
                 {/* Conceptual Process Flow Infographic */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', background: 'rgba(0,0,0,0.15)', padding: '16px', borderRadius: '10px', border: '1px solid var(--border-color)' }}>
                   <div style={{ display: 'flex', gap: '12px', alignItems: 'start' }}>
-                    <div style={{ background: 'var(--primary-glow)', color: 'var(--primary)', borderRadius: '50%', width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '0.8rem', flexShrink: 0 }}>1</div>
+                    <div style={{ background: 'var(--slot-empty-bg)', color: 'var(--text-dim)', border: '1px solid var(--border-color)', borderRadius: '50%', width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '0.8rem', flexShrink: 0 }}>1</div>
                     <div>
                       <span style={{ fontSize: '0.85rem', fontWeight: 650, display: 'block', color: 'var(--text-primary)' }}>Staff Checks-In Guest</span>
                       <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>You check in Michael Jordan at your front desk in your PMS software (e.g. Cloudbeds).</span>
                     </div>
                   </div>
                   <div style={{ display: 'flex', gap: '12px', alignItems: 'start' }}>
-                    <div style={{ background: 'var(--primary-glow)', color: 'var(--primary)', borderRadius: '50%', width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '0.8rem', flexShrink: 0 }}>2</div>
+                    <div style={{ background: 'var(--slot-empty-bg)', color: 'var(--text-dim)', border: '1px solid var(--border-color)', borderRadius: '50%', width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '0.8rem', flexShrink: 0 }}>2</div>
                     <div>
                       <span style={{ fontSize: '0.85rem', fontWeight: 650, display: 'block', color: 'var(--text-primary)' }}>PMS Sends Background Message</span>
                       <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>Your software immediately emails details to our secure webhook URL behind the scenes.</span>
                     </div>
                   </div>
                   <div style={{ display: 'flex', gap: '12px', alignItems: 'start' }}>
-                    <div style={{ background: 'var(--primary-glow)', color: 'var(--primary)', borderRadius: '50%', width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '0.8rem', flexShrink: 0 }}>3</div>
+                    <div style={{ background: 'var(--slot-empty-bg)', color: 'var(--text-dim)', border: '1px solid var(--border-color)', borderRadius: '50%', width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '0.8rem', flexShrink: 0 }}>3</div>
                     <div>
                       <span style={{ fontSize: '0.85rem', fontWeight: 650, display: 'block', color: 'var(--text-primary)' }}>Itinerary Activated Instantly</span>
                       <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>Amazon DynamoDB tables are seeded, the AI compiles a weather-aware flyer, and prints their welcome QR code!</span>
@@ -5262,14 +5280,14 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
                   
                   {/* Name field */}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    <label style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-primary)' }}>Excursion Name</label>
+                    <label style={{ fontSize: '0.8rem', fontWeight: 550, color: 'var(--text-muted)' }}>Excursion Name</label>
                     <input 
                       type="text" 
                       placeholder="e.g., Starfish Beach Eco-Kayak Adventure" 
                       value={customTourName}
                       onChange={(e) => setCustomTourName(e.target.value)}
                       style={{
-                        background: 'rgba(0,0,0,0.2)',
+                        background: 'var(--slot-empty-bg)',
                         border: '1px solid var(--border-color)',
                         borderRadius: '6px',
                         color: 'var(--text-primary)',
@@ -5284,12 +5302,12 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
                     {/* Type field */}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                      <label style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-primary)' }}>Excursion Type</label>
+                      <label style={{ fontSize: '0.8rem', fontWeight: 550, color: 'var(--text-muted)' }}>Excursion Type</label>
                       <select 
                         value={customTourType}
                         onChange={(e) => setCustomTourType(e.target.value)}
                         style={{
-                          background: 'rgba(0,0,0,0.2)',
+                          background: 'var(--slot-empty-bg)',
                           border: '1px solid var(--border-color)',
                           borderRadius: '6px',
                           color: 'var(--text-primary)',
@@ -5306,7 +5324,7 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
 
                     {/* Price field */}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                      <label style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-primary)' }}>Price per Guest ($ USD)</label>
+                      <label style={{ fontSize: '0.8rem', fontWeight: 550, color: 'var(--text-muted)' }}>Price per Guest ($ USD)</label>
                       <input 
                         type="number" 
                         min="0"
@@ -5315,7 +5333,7 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
                         value={customTourPrice}
                         onChange={(e) => setCustomTourPrice(e.target.value)}
                         style={{
-                          background: 'rgba(0,0,0,0.2)',
+                          background: 'var(--slot-empty-bg)',
                           border: '1px solid var(--border-color)',
                           borderRadius: '6px',
                           color: 'var(--text-primary)',
@@ -5330,7 +5348,7 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
                     {/* Capacity field */}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                      <label style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-primary)' }}>Max Capacity (Guests)</label>
+                      <label style={{ fontSize: '0.8rem', fontWeight: 550, color: 'var(--text-muted)' }}>Max Capacity (Guests)</label>
                       <input 
                         type="number" 
                         min="1"
@@ -5338,7 +5356,7 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
                         value={customTourCapacity}
                         onChange={(e) => setCustomTourCapacity(e.target.value)}
                         style={{
-                          background: 'rgba(0,0,0,0.2)',
+                          background: 'var(--slot-empty-bg)',
                           border: '1px solid var(--border-color)',
                           borderRadius: '6px',
                           color: 'var(--text-primary)',
@@ -5351,14 +5369,14 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
 
                     {/* Location field */}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                      <label style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-primary)' }}>Location</label>
+                      <label style={{ fontSize: '0.8rem', fontWeight: 550, color: 'var(--text-muted)' }}>Location</label>
                       <input 
                         type="text" 
                         placeholder="e.g., Isla Colon" 
                         value={customTourLocation}
                         onChange={(e) => setCustomTourLocation(e.target.value)}
                         style={{
-                          background: 'rgba(0,0,0,0.2)',
+                          background: 'var(--slot-empty-bg)',
                           border: '1px solid var(--border-color)',
                           borderRadius: '6px',
                           color: 'var(--text-primary)',
@@ -5372,12 +5390,12 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
 
                   {/* Slots field */}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    <label style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-primary)' }}>Available Time Slots</label>
-                    <div style={{ display: 'flex', gap: '16px', background: 'rgba(0,0,0,0.15)', padding: '10px 14px', borderRadius: '6px', border: '1px solid var(--border-color)' }}>
-                      <label style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.82rem', color: 'var(--text-primary)' }}>
+                    <label style={{ fontSize: '0.8rem', fontWeight: 550, color: 'var(--text-muted)' }}>Available Time Slots</label>
+                    <div style={{ display: 'flex', gap: '16px', background: 'var(--slot-empty-bg)', padding: '10px 14px', borderRadius: '6px', border: '1px solid var(--border-color)' }}>
+                      <label style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.82rem', color: 'var(--text-muted)' }}>
                         <input 
                           type="checkbox" 
-                          checked={customTourSlots.includes('morning')} 
+                           checked={customTourSlots.includes('morning')} 
                           onChange={(e) => {
                             if (e.target.checked) {
                               setCustomTourSlots(prev => [...prev, 'morning']);
@@ -5385,11 +5403,11 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
                               setCustomTourSlots(prev => prev.filter(s => s !== 'morning'));
                             }
                           }}
-                          style={{ accentColor: 'var(--primary)', cursor: 'pointer', width: '15px', height: '15px' }}
+                          style={{ accentColor: 'var(--text-muted)', cursor: 'pointer', width: '15px', height: '15px' }}
                         />
                         Morning Slot
                       </label>
-                      <label style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.82rem', color: 'var(--text-primary)' }}>
+                      <label style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.82rem', color: 'var(--text-muted)' }}>
                         <input 
                           type="checkbox" 
                           checked={customTourSlots.includes('afternoon')} 
@@ -5400,7 +5418,7 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
                               setCustomTourSlots(prev => prev.filter(s => s !== 'afternoon'));
                             }
                           }}
-                          style={{ accentColor: 'var(--primary)', cursor: 'pointer', width: '15px', height: '15px' }}
+                          style={{ accentColor: 'var(--text-muted)', cursor: 'pointer', width: '15px', height: '15px' }}
                         />
                         Afternoon Slot
                       </label>
@@ -5409,14 +5427,14 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
 
                   {/* Description field */}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    <label style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-primary)' }}>Excursion Description</label>
+                    <label style={{ fontSize: '0.8rem', fontWeight: 550, color: 'var(--text-muted)' }}>Excursion Description</label>
                     <textarea 
                       placeholder="Give a vivid, high-fidelity description of this overwater or rainforest excursion..." 
                       rows="3"
                       value={customTourDesc}
                       onChange={(e) => setCustomTourDesc(e.target.value)}
                       style={{
-                        background: 'rgba(0,0,0,0.2)',
+                        background: 'var(--slot-empty-bg)',
                         border: '1px solid var(--border-color)',
                         borderRadius: '6px',
                         color: 'var(--text-primary)',
