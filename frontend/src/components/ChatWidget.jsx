@@ -4,6 +4,7 @@ export default function ChatWidget({
   messages = [], 
   onSendMessage, 
   onRespondProposal, 
+  onSubmitFeedback,
   loading,
   bookings = [],
   tenantBrand,
@@ -164,8 +165,11 @@ export default function ChatWidget({
           onClick={() => {
             const feedback = prompt("Please share your feedback on this AI experience:");
             if (feedback) {
-              alert("Thank you for your feedback! It has been logged.");
-              console.log("Feedback received:", feedback);
+              if (onSubmitFeedback) {
+                onSubmitFeedback(feedback);
+              } else {
+                console.log("Feedback received:", feedback);
+              }
             }
           }}
           title="Share Feedback on this AI Experience"

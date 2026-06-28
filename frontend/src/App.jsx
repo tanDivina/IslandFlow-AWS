@@ -1234,6 +1234,30 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
     }
   };
 
+  const handleSendFeedback = async (text) => {
+    try {
+      const response = await fetch(`${API_BASE}/api/feedback`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          text,
+          guest_id: guestId || null,
+          view: view || null
+        })
+      });
+      const data = await response.json();
+      if (data.success) {
+        alert(lang === 'es' ? "¡Gracias por sus comentarios! Se han registrado de forma permanente." : "Thank you for your feedback! It has been logged permanently.");
+      } else {
+        console.error("Feedback submission failed:", data);
+        alert(lang === 'es' ? "Error al enviar los comentarios." : "Failed to submit feedback.");
+      }
+    } catch (err) {
+      console.error("Error submitting feedback:", err);
+      alert(lang === 'es' ? "Error al enviar los comentarios." : "Failed to submit feedback.");
+    }
+  };
+
   const handleReset = async () => {
     setLoading(true);
     addLog("🔄 Resetting database to initial seeded state...");
@@ -2071,10 +2095,9 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
               {/* Feedback Button */}
               <button 
                 onClick={() => {
-                  const feedback = prompt("Please share your feedback on this AI experience:");
+                  const feedback = prompt(lang === 'es' ? "Por favor comparta sus comentarios sobre esta experiencia de IA:" : "Please share your feedback on this AI experience:");
                   if (feedback) {
-                    alert("Thank you for your feedback! It has been logged.");
-                    console.log("Feedback received:", feedback);
+                    handleSendFeedback(feedback);
                   }
                 }}
                 title={lang === 'es' ? "Compartir comentarios" : "Share Feedback on this AI Experience"}
@@ -3181,6 +3204,7 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
                   messages={messages} 
                   onSendMessage={handleSendMessage} 
                   onRespondProposal={handleRespondProposal} 
+                  onSubmitFeedback={handleSendFeedback}
                   loading={loading}
                   bookings={bookings}
                   tenantBrand={tenantBrand}
@@ -5317,8 +5341,8 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
                           cursor: 'pointer'
                         }}
                       >
-                        <option value="outdoor">🌿 Outdoor Adventure</option>
-                        <option value="indoor">🏡 Indoor Experience</option>
+                        <option value="outdoor">Outdoor Adventure</option>
+                        <option value="indoor">Indoor Experience</option>
                       </select>
                     </div>
 
@@ -5512,8 +5536,30 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
                               <span style={{ fontSize: '0.85rem', fontWeight: 650, color: 'var(--text-primary)' }}>
                                 {tour.name}
                               </span>
-                              <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                                {tour.type === 'outdoor' ? '🌿 Outdoor Adventure' : '🏡 Indoor Experience'} • 📍 {tour.location || 'Bocas'}
+                              <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                                {tour.type === 'outdoor' ? (
+                                  <>
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--primary)' }}>
+                                      <circle cx="12" cy="12" r="10" />
+                                      <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
+                                    </svg>
+                                    <span>Outdoor Adventure</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--primary)' }}>
+                                      <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                                      <polyline points="9 22 9 12 15 12 15 22" />
+                                    </svg>
+                                    <span>Indoor Experience</span>
+                                  </>
+                                )}
+                                <span style={{ color: 'rgba(255,255,255,0.15)' }}>•</span>
+                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--text-muted)' }}>
+                                  <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                                  <circle cx="12" cy="10" r="3" />
+                                </svg>
+                                <span>{tour.location || 'Bocas'}</span>
                               </span>
                             </div>
                             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'end', gap: '4px' }}>

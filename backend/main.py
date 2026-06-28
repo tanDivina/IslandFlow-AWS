@@ -164,6 +164,12 @@ class OperatorLoginPayload(BaseModel):
     email: str
     password: str
 
+class FeedbackPayload(BaseModel):
+    text: str
+    guest_id: Optional[str] = None
+    view: Optional[str] = None
+
+
 
 # --- Automated Weather Rescheduling ---
 def trigger_automated_weather_reschedules(date: str, weather: str, alert: str):
@@ -749,6 +755,30 @@ async def generate_token_endpoint(payload: TokenGeneratePayload):
         logger.error(f"Error generating token: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.post("/api/feedback")
+async def receive_feedback(payload: FeedbackPayload):
+    try:
+        import uuid
+        feedback_id = f"fb_{uuid.uuid4().hex[:8]}"
+        timestamp = datetime.datetime.utcnow().isoformat() + "Z"
+        feedback_doc = {
+            "_id": feedback_id,
+            "text": payload.text,
+            "guest_id": payload.guest_id,
+            "view": payload.view,
+            "timestamp": timestamp
+        }
+        db["feedback"].insert_one(feedback_doc)
+        logger.info(f"Feedback persisted to DB: {feedback_doc}")
+        return {
+            "success": True,
+            "message": "Feedback submitted successfully.",
+            "id": feedback_id
+        }
+    except Exception as e:
+        logger.error(f"Error persisting feedback: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 @app.post("/api/reset")
 async def reset_simulation():
     """Reset database to initial seeded state (zero-out for repeat tests)."""
@@ -761,6 +791,7 @@ async def reset_simulation():
         db["tenants"].delete_many({})
         db["dispatches"].delete_many({})
         db["captains"].delete_many({})
+        db["feedback"].delete_many({})
         
         # Remove all guest itinerary files
         for file in os.listdir("."):
