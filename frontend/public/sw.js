@@ -1,5 +1,5 @@
-// Version 3.1.6 - Force active cache-busting
-const CACHE_NAME = 'rain-or-shine-cache-v8';
+// Version 3.1.7 - Force active cache-busting
+const CACHE_NAME = 'rain-or-shine-cache-v9';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
