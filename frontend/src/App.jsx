@@ -2466,7 +2466,7 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
                 </p>
                 <div style={{ background: 'var(--bg-card-nested)', padding: '10px 12px', borderRadius: '8px', fontSize: '0.75rem', border: '1px solid var(--border-color)' }}>
                   <span style={{ color: 'var(--primary)', fontWeight: '600', display: 'block', marginBottom: '2px' }}>Operational Action:</span>
-                  Open Captain Portal, tap install, select preferred language (<strong>Bilingual Switcher 🇪🇸 / 🇬🇧</strong>), accept dispatches, and log real-time sea swell reports.
+                  Open Captain Portal, tap install, select preferred language (<strong>Bilingual Switcher ES / EN</strong>), accept dispatches, and log real-time sea swell reports.
                 </div>
               </div>
 
