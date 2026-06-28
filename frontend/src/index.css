@@ -4,68 +4,73 @@
   --font-sans: 'Geist', 'Inter', sans-serif;
   --font-serif: 'Playfair Display', serif;
   --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.2);
-  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.4);
-  --shadow-glow: 0 0 15px rgba(168, 255, 53, 0.3);
-  
-  /* Hero-Apps Premium Dark Theme */
-  --bg-color: #050507;
-  --panel-bg: rgba(12, 12, 15, 0.85);
-  --border-color: rgba(255, 255, 255, 0.06);
-  --border-glow: rgba(168, 255, 53, 0.2);
-  --primary: #a8ff35;
-  --primary-alt: #7cd315;
-  --primary-glow: rgba(168, 255, 53, 0.12);
-  --primary-btn-text: #050507;
-  
-  --text-primary: #ffffff;
-  --text-muted: #a1a1a6;
-  --text-dim: #71717a;
-  
-  --slot-bg: rgba(255, 255, 255, 0.03);
-  --slot-empty-bg: rgba(255, 255, 255, 0.01);
-  --msg-user-bg: rgba(168, 255, 53, 0.1);
-  --msg-agent-bg: rgba(255, 255, 255, 0.05);
-  
-  --bg-card-nested: rgba(255, 255, 255, 0.02);
+  --shadow-sm: 0 4px 16px rgba(38, 30, 20, 0.05);
+  --shadow-lg: 0 12px 32px rgba(38, 30, 20, 0.1);
+  --shadow-glow: none;
 }
 
-body {
-  color-scheme: dark;
-  background-color: var(--bg-color);
-  background-image: radial-gradient(circle at 50% -20%, rgba(168, 255, 53, 0.05) 0%, transparent 50%);
-}
-
-/* Rainy Mode (Cozy Stormy Harbor - Premium Dark Cozy Storm) */
-body.theme-rainy {
-  color-scheme: dark;
-  --bg-color: #030408;
-  --panel-bg: rgba(10, 14, 22, 0.85);
-  --border-color: rgba(255, 255, 255, 0.06);
-  --border-glow: rgba(99, 102, 241, 0.20);
+/* Sunny Mode (Premium Beach Coast - Soft Cream & Warm Gold/Sand) */
+body, body.theme-sunny {
+  color-scheme: light;
+  --bg-color: hsl(38, 30%, 98%);
+  --panel-bg: hsla(38, 30%, 95%, 0.85);
+  --border-color: hsla(38, 40%, 60%, 0.22);
+  --border-glow: hsla(38, 40%, 60%, 0.4);
   --primary-btn-text: #ffffff;
   
-  --primary: #6366f1;       /* Stormy Indigo accent */
-  --primary-glow: rgba(99, 102, 241, 0.12);
-  --accent: #38bdf8;         /* Cool Sky Blue */
-  --accent-glow: rgba(56, 189, 248, 0.08);
-  --warning: #f59e0b;
-  --warning-glow: rgba(245, 158, 11, 0.08);
-  --error: #f43f5e;
-  --error-glow: rgba(244, 63, 94, 0.08);
+  --primary: hsl(38, 40%, 45%);        /* Champagne/Sand Gold (darker for contrast) */
+  --primary-glow: hsla(38, 40%, 45%, 0.08);
+  --accent: hsl(188, 65%, 32%);        /* Deep Ocean Teal */
+  --accent-glow: hsla(188, 65%, 32%, 0.1);
+  --warning: hsl(35, 85%, 42%);        /* Sunset Amber */
+  --warning-glow: hsla(35, 85%, 42%, 0.1);
+  --error: hsl(352, 70%, 45%);         /* Deep Coral Red */
+  --error-glow: hsla(352, 70%, 45%, 0.1);
   
-  --text-primary: #ffffff;
-  --text-muted: #94a3b8;
-  --text-dim: #64748b;
+  --text-primary: hsl(210, 24%, 12%);   /* Deep Slate */
+  --text-muted: hsl(210, 12%, 38%);    /* Muted Slate */
+  --text-dim: hsl(210, 8%, 52%);      /* Dim Slate */
   
-  --slot-bg: rgba(255, 255, 255, 0.03);
-  --slot-empty-bg: rgba(255, 255, 255, 0.01);
-  --msg-user-bg: rgba(99, 102, 241, 0.12);
-  --msg-agent-bg: rgba(255, 255, 255, 0.05);
+  --slot-bg: hsla(38, 30%, 93%, 0.85);
+  --slot-empty-bg: hsla(38, 30%, 96%, 0.45);
+  --msg-user-bg: hsla(38, 45%, 60%, 0.14);
+  --msg-agent-bg: hsla(188, 55%, 38%, 0.08);
   
-  --bg-card-nested: rgba(255, 255, 255, 0.02);
+  --bg-card-nested: rgba(0, 0, 0, 0.03);
   
-  background-image: radial-gradient(circle at 50% -20%, rgba(99, 102, 241, 0.05) 0%, transparent 50%);
+  background-image: none;
+}
+
+/* Rainy Mode (Cozy Stormy Harbor - Soft Mist Gray & Cool Navy) */
+body.theme-rainy {
+  color-scheme: light;
+  --bg-color: hsl(222, 15%, 97%);
+  --panel-bg: hsla(222, 15%, 94%, 0.85);
+  --border-color: hsla(222, 12%, 50%, 0.22);
+  --border-glow: hsla(222, 22%, 55%, 0.35);
+  --primary-btn-text: #ffffff;
+  
+  --primary: hsl(222, 22%, 48%);       /* Stormy Navy Blue */
+  --primary-glow: hsla(222, 22%, 48%, 0.08);
+  --accent: hsl(38, 35%, 42%);         /* Muted Gold */
+  --accent-glow: hsla(38, 35%, 42%, 0.08);
+  --warning: hsl(35, 65%, 42%);
+  --warning-glow: hsla(35, 65%, 42%, 0.08);
+  --error: hsl(352, 60%, 42%);
+  --error-glow: hsla(352, 60%, 42%, 0.08);
+  
+  --text-primary: hsl(222, 24%, 12%);
+  --text-muted: hsl(222, 12%, 38%);
+  --text-dim: hsl(222, 8%, 52%);
+  
+  --slot-bg: hsla(222, 15%, 92%, 0.85);
+  --slot-empty-bg: hsla(222, 15%, 95%, 0.4);
+  --msg-user-bg: hsla(222, 22%, 58%, 0.12);
+  --msg-agent-bg: hsla(38, 35%, 50%, 0.08);
+  
+  --bg-card-nested: rgba(0, 0, 0, 0.03);
+  
+  background-image: none;
 }
 
 * {
