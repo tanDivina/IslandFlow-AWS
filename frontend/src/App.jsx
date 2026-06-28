@@ -1674,7 +1674,7 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
           </div>
         ) : (
           <>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
               <h1 className="app-title" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px' }} onClick={() => navigateToView('landing')}>
                 {currentActiveBrand?.logo_url && !logoErrors[currentActiveBrand._id || 'active'] ? (
                   <div style={{
@@ -1713,8 +1713,18 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
                 )}
                 Rain or Shine
               </h1>
-              <p style={{ color: 'var(--text-muted)', opacity: 1, fontSize: '0.85rem' }}>
-                Que Siga La Rumba!
+              <p style={{ color: 'var(--text-muted)', opacity: 1, fontSize: '0.85rem', margin: 0, display: 'flex' }}>
+                {"Que Siga La Rumba!".split('').map((char, idx) => (
+                  <span
+                    key={idx}
+                    className="wave-char"
+                    style={{
+                      animationDelay: `${idx * 0.08}s`
+                    }}
+                  >
+                    {char === ' ' ? '\u00A0' : char}
+                  </span>
+                ))}
               </p>
             </div>
 
