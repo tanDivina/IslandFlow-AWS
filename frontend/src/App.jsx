@@ -2095,12 +2095,12 @@ Your luxury tropical experience begins now. Under our active, weather-aware guid
               {/* Feedback Button */}
               <button 
                 onClick={() => {
-                  const feedback = prompt(lang === 'es' ? "Por favor comparta sus comentarios sobre esta experiencia de IA:" : "Please share your feedback on this AI experience:");
+                  const feedback = prompt(lang === 'es' ? "¡Valoramos su opinión! Comparta sus comentarios sobre su experiencia en IslandFlow:" : "We value your input! Share your feedback on your IslandFlow experience:");
                   if (feedback) {
                     handleSendFeedback(feedback);
                   }
                 }}
-                title={lang === 'es' ? "Compartir comentarios" : "Share Feedback on this AI Experience"}
+                title={lang === 'es' ? "Compartir comentarios" : "Share Feedback on your Experience"}
                 style={{
                   background: 'transparent',
                   border: '1px solid var(--border-color)',

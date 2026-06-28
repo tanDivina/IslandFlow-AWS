@@ -163,7 +163,7 @@ export default function ChatWidget({
         {/* Product Feedback Button */}
         <button 
           onClick={() => {
-            const feedback = prompt("Please share your feedback on this AI experience:");
+            const feedback = prompt("We value your input! Share your feedback on your IslandFlow experience:");
             if (feedback) {
               if (onSubmitFeedback) {
                 onSubmitFeedback(feedback);
@@ -172,7 +172,7 @@ export default function ChatWidget({
               }
             }
           }}
-          title="Share Feedback on this AI Experience"
+          title="Share Feedback on your Experience"
           style={{
             background: 'var(--primary-glow)',
             border: '1px solid var(--primary)',
