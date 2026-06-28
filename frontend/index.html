@@ -22,13 +22,23 @@
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js?v=3.1.4')
+          navigator.serviceWorker.register('/sw.js?v=3.1.5')
             .then(reg => {
               console.log('Service Worker registered successfully with scope:', reg.scope);
               // Force checking for updates immediately on load to bypass aggressive caching
               reg.update();
             })
             .catch(err => console.log('Service Worker registration failed:', err));
+        });
+
+        // Auto-refresh when a new Service Worker takes control
+        let refreshing = false;
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+          if (!refreshing) {
+            refreshing = true;
+            console.log('Service Worker took control, reloading page for latest updates...');
+            window.location.reload();
+          }
         });
       }
     </script>
