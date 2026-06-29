@@ -117,7 +117,7 @@ class MockCollection:
             inserted_id = document['_id']
         return InsertOneResult()
 
-    def update_one(self, query, update):
+    def update_one(self, query, update, upsert=False):
         db_data = self._read_data()
         items = db_data.get(self.collection_name, [])
         updated = False
@@ -169,9 +169,36 @@ class MockCollection:
         if updated:
             db_data[self.collection_name] = items
             self._write_data(db_data)
+        elif upsert:
+            # build a new document
+            new_doc = {}
+            for k, v in query.items():
+                new_doc[k] = v
+            if "_id" not in new_doc:
+                new_doc["_id"] = query.get("_id") or str(len(items) + 1)
+            
+            if '$set' in update:
+                for uk, uv in update['$set'].items():
+                    if '.' in uk:
+                        parts = uk.split('.')
+                        curr = new_doc
+                        for p in parts[:-1]:
+                            curr = curr.setdefault(p, {})
+                        curr[parts[-1]] = uv
+                    else:
+                        new_doc[uk] = uv
+            else:
+                for uk, uv in update.items():
+                    if not uk.startswith('$'):
+                        new_doc[uk] = uv
+            
+            items.append(new_doc)
+            db_data[self.collection_name] = items
+            self._write_data(db_data)
+            updated = True
             
         class UpdateResult:
-            matched_count = 1 if updated else 0
+            matched_count = 1 if (updated and not upsert) else 0
             modified_count = 1 if updated else 0
         return UpdateResult()
 
@@ -370,13 +397,41 @@ class DynamoDBCollection:
             inserted_id = document['_id']
         return InsertOneResult()
 
-    def update_one(self, query, update):
+    def update_one(self, query, update, upsert=False):
         doc = self.find_one(query)
         if not doc:
-            class UpdateResult:
-                matched_count = 0
-                modified_count = 0
-            return UpdateResult()
+            if upsert:
+                new_doc = {}
+                for k, v in query.items():
+                    new_doc[k] = v
+                if "_id" not in new_doc:
+                    new_doc["_id"] = query.get("_id") or str(uuid.uuid4())
+                
+                if '$set' in update:
+                    for uk, uv in update['$set'].items():
+                        if '.' in uk:
+                            parts = uk.split('.')
+                            curr = new_doc
+                            for p in parts[:-1]:
+                                curr = curr.setdefault(p, {})
+                            curr[parts[-1]] = uv
+                        else:
+                            new_doc[uk] = uv
+                else:
+                    for uk, uv in update.items():
+                        if not uk.startswith('$'):
+                            new_doc[uk] = uv
+                
+                self.insert_one(new_doc)
+                class UpdateResult:
+                    matched_count = 0
+                    modified_count = 1
+                return UpdateResult()
+            else:
+                class UpdateResult:
+                    matched_count = 0
+                    modified_count = 0
+                return UpdateResult()
 
         updated = False
         if '$set' in update:
